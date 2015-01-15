@@ -13,5 +13,10 @@
 	<body>
 		<c:url value="/showMessage.html" var="messageUrl" />
 		<a href="${messageUrl}">Click to enter</a>
+		<form action="submit.action">
+		...
+		    <img src="captcha/generate" /> <input type="text" name="jcaptcha" value="" />
+		...
+		</form>
 	</body>
 </html>

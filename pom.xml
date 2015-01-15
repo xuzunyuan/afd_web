@@ -12,7 +12,7 @@
 		<relativePath>../afd_parent</relativePath>
 		<version>1.0</version>
 	</parent>
-	
+
 	<build>
 		<finalName>afd_web</finalName>
 	</build>
