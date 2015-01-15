@@ -39,5 +39,10 @@
 	     <version>1.6.1</version>
         </dependency>
         
+        <dependency>
+            <groupId>com.yiwang</groupId>
+            <artifactId>unionpay</artifactId>
+            <version>2.5</version>
+        </dependency>
 	</dependencies>
 </project>
