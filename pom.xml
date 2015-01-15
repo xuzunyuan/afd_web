@@ -16,4 +16,28 @@
 	<build>
 		<finalName>afd_web</finalName>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.20</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.12.4</version>
+		</dependency>
+		<dependency>
+	      <groupId>commons-httpclient</groupId>
+	      <artifactId>commons-httpclient</artifactId>
+	      <version>3.0.1</version>
+        </dependency>
+        
+        <dependency>
+	     <groupId>dom4j</groupId>
+	     <artifactId>dom4j</artifactId>
+	     <version>1.6.1</version>
+        </dependency>
+        
+	</dependencies>
 </project>
