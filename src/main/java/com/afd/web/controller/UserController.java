@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.afd.web.service.impl.LoginServiceImpl;
@@ -25,5 +26,12 @@ public class UserController {
 	public String login(HttpServletRequest req,HttpServletResponse resp){
 		boolean success = this.loginService.login(req, resp);
 		return "success";
+	}
+	
+	@RequestMapping("/isLogin")
+	public String islogin(HttpServletRequest req,HttpServletResponse resp,ModelMap map){
+		boolean success = LoginServiceImpl.isLogin(req, resp);
+		map.addAttribute("success", success);
+		return "islogin";
 	}
 }

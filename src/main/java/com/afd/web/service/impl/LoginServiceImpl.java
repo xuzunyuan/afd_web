@@ -1,5 +1,7 @@
 package com.afd.web.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,7 @@ import com.afd.service.user.IUserService;
 
 @Service("loginService")
 public class LoginServiceImpl {
+	private static final Logger log = LoggerFactory.getLogger(LoginServiceImpl.class);
 	@Autowired
 	private IUserService userServcie;
 
@@ -125,9 +130,14 @@ public class LoginServiceImpl {
 		String userId = null;
 		String _u = RequestUtils.getCookieValue(req, SystemConstants.COOKIE_U);
 		if(StringUtils.isNotBlank(_u)){
-			String[] userInfo = _u.split("|");
-			if(userInfo.length>2){
-				userId = userInfo[0];
+			try {
+				_u = URLDecoder.decode(_u,"utf-8");
+				String[] userInfo = _u.split("\\|");
+				if(userInfo.length>2){
+					userId = userInfo[0];
+				}
+			} catch (UnsupportedEncodingException e) {
+				log.error(e.getMessage(), e);
 			}
 		}
 		return userId;
@@ -142,9 +152,14 @@ public class LoginServiceImpl {
 		String expireTime = null;
 		String _ut = RequestUtils.getCookieValue(req, SystemConstants.COOKIE_UT);
 		if(StringUtils.isNotBlank(_ut)){
-			String[] utInfo = _ut.split("|");
-			if(utInfo.length==2){
-				expireTime = utInfo[0];
+			try {
+				_ut = URLDecoder.decode(_ut,"utf-8");
+				String[] utInfo = _ut.split("\\|");
+				if(utInfo.length==2){
+					expireTime = utInfo[0];
+				}
+			} catch (UnsupportedEncodingException e) {
+				log.error(e.getMessage(), e);
 			}
 		}
 		return expireTime;
@@ -159,9 +174,14 @@ public class LoginServiceImpl {
 		String timeDiff = null;
 		String _ut = RequestUtils.getCookieValue(req, SystemConstants.COOKIE_UT);
 		if(StringUtils.isNotBlank(_ut)){
-			String[] utInfo = _ut.split("|");
-			if(utInfo.length==2){
-				timeDiff = utInfo[1];
+			try {
+				_ut = URLDecoder.decode(_ut,"utf-8");
+				String[] utInfo = _ut.split("\\|");
+				if(utInfo.length==2){
+					timeDiff = utInfo[1];
+				}
+			} catch (UnsupportedEncodingException e) {
+				log.error(e.getMessage(), e);
 			}
 		}
 		return timeDiff;
