@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.afd.web.service.impl.LoginServiceImpl;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
-	private Logger log = LoggerFactory.getLogger(UserController.class);
+@RequestMapping("/login")
+public class LoginController {
+	private Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
 	private LoginServiceImpl loginService;
@@ -46,11 +46,5 @@ public class UserController {
 		
 		return "success";
 	}
-	
-	@RequestMapping("/isLogin")
-	public String islogin(HttpServletRequest req,HttpServletResponse resp,ModelMap map){
-		boolean success = LoginServiceImpl.isLogin(req, resp);
-		map.addAttribute("success", success);
-		return "islogin";
-	}
+
 }
