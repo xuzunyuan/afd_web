@@ -73,6 +73,11 @@ public class LoginServiceImpl {
 			long timeDiff = cliTime - now.getTime();
 			String _ut=expireTime+"|"+timeDiff;
 			RequestUtils.setCookie(req, resp, "_ut", _ut,SystemConstants.COOKIE_UT_PERIOD);
+			
+			user.setLastLoginDate(DateUtils.currentDate());
+			user.setLastLoginIp(RequestUtils.getRemoteAddr(req));
+			this.userServcie.updateUser(user);
+			
 			return true;
 		}
 
