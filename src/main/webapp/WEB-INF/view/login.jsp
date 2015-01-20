@@ -7,7 +7,7 @@
 		<title>Welcome</title>
 	</head> 
 	<body>
-		<form action="${ctx}/user/formLogin">
+		<form action="${ctx}/login/formLogin.action">
 			用户名：<input type="text" name="userName" />
 			密码：<input type="text" name="pwd" />
 			<input type="submit" value="登录" />

@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.afd.common.util.DateUtils;
 import com.afd.web.service.impl.LoginServiceImpl;
 
 @Controller
@@ -46,5 +47,7 @@ public class LoginController {
 		
 		return "success";
 	}
-
+	public static void main(String[] args) {
+		System.out.println(DateUtils.parseDate(1421736556321l));
+	}
 }
