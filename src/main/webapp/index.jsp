@@ -31,7 +31,6 @@
 						var newExpired = serverTime + 2*60*60*1000;
 						var newExpiredDate = new Date();
 						newExpiredDate.setTime(newExpired);
-						alert(newExpiredDate);
 						$.cookie("_ut",newExpired+"|"+timeDiff,{expires:newExpiredDate,path:"/",domain:".afd.com"});
 					}
 				}
