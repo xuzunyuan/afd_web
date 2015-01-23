@@ -69,8 +69,6 @@ public class TradeController{
 	@Autowired
 	private IPaymentServices paymentServices;
 
-	private static final String USER_NO_LOGIN_TEL_VALIDATOR_PREFIX = "USER_NO_LOGIN_TEL_VALIDATOR_";
-
 	private static final Logger log = LoggerFactory
 			.getLogger(TradeController.class);
 
@@ -78,8 +76,6 @@ public class TradeController{
 	public String tradeinfo(
 			@CookieValue(value = "cart", required = true, defaultValue = "") String cookieCart,
 			Model model, HttpServletRequest request, HttpServletResponse response) {
-		boolean isLogin = LoginServiceImpl.isLogin(request, response);
-		long userId = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
 		List<Cart> carts_confirm=new ArrayList<Cart>();
 		carts_confirm = this.cartService.showCart(cookieCart);
 		//保存购物车
@@ -91,14 +87,10 @@ public class TradeController{
 		
 		List<CookieCartItem> cartItems = CartTransferUtils.cartToCookieCartItems(carts_confirm);
 		
-		RequestUtils.setCookie(request, response, OrderConstants.COOKIE_CART + "confirm", 
+		RequestUtils.setCookie(request, response, OrderConstants.COOKIE_CART_CONFIRM, 
 				JSON.toJSONString(cartItems), OrderConstants.COOKIE_CART_PERIOD);
-		
-		if (userId != 0l) {
-			return "tradelogin_n";
-		} else {			
-			return "trade_n";
-		}
+
+		return "trade";
 	}
 
 	/**
@@ -117,7 +109,7 @@ public class TradeController{
 			return "redirect:/cart.jsp";
 		}
 		String ip = request.getRemoteAddr();//返回发出请求的IP地址
-		String cookieCart_confirm = RequestUtils.getCookieValue(request, OrderConstants.COOKIE_CART + "confirm");// 确认购买的商品
+		String cookieCart_confirm = RequestUtils.getCookieValue(request, OrderConstants.COOKIE_CART_CONFIRM);// 确认购买的商品
 		if (StringUtils.isEmpty(cookieCart_confirm)) {//no cart_confirm cookie
 			log.error("---------------create oreder info:cookie_null------------");
 			cookieCart_confirm = "";
@@ -189,7 +181,7 @@ public class TradeController{
 			}
 			
 			orderids_str = orderids.substring(0, orderids.length() - 1);
-			RequestUtils.deleteCookie(request, response, OrderConstants.COOKIE_CART + "confirm", true);
+			RequestUtils.deleteCookie(request, response, OrderConstants.COOKIE_CART_CONFIRM, true);
 		} catch (Exception e) {
 			log.error("---------------create oreder error"
 					+ JSON.toJSONString(tradelist) + "------------");

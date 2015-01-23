@@ -64,7 +64,7 @@ public class CartController{
 		List<CartItem> cartItems = this.cartService.modifyQuantity(cookieCart, bsDetailId,
 				newQuantity, oldQuantity);
 		
-		saveCart(
+		this.saveCart(
 				CartTransferUtils.cartItemsToCookieCartItems(cartItems),
 				request, response);
 		CartItem cartItem = new CartItem();
@@ -100,8 +100,7 @@ public class CartController{
 		// 将carts添加到模型中
 		modelMap.addAttribute("carts", carts);
 		boolean isEmpty = Boolean.parseBoolean(request.getParameter("isEmpty"));
-		boolean hasError = Boolean.parseBoolean(request
-				.getParameter("hasError"));
+		boolean hasError = Boolean.parseBoolean(request.getParameter("hasError"));
 		// 是否没有选商品结算（用户点击结算按钮）
 		modelMap.addAttribute("isEmpty", isEmpty);
 		// 结算商品是否有错误（点击结算按钮）
@@ -175,7 +174,7 @@ public class CartController{
 			HttpServletRequest request, HttpServletResponse response) {
 		// 清除失效商品
 		List<CartItem> cartItems = this.cartService.clearFailureProduct(cookieCart);
-		saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems),
+		this.saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems),
 				request, response);
 		// 跳回购物车
 		return "redirect:/cart/cartContent.action";
@@ -223,7 +222,7 @@ public class CartController{
 			setBsDetailsIds.add(Long.parseLong(bsDetail));
 		}
 		List<CartItem> cartItems = this.cartService.chgChecked(cookieCart, setBsDetailsIds, checked);
-		saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems),
+		this.saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems),
 				request, response);
 	}
 	
