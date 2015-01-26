@@ -313,9 +313,9 @@ public class TradeController{
 
 			trade.setOrderType("1");
 			trade.setOrderSource("1");
-			trade.setDeliverFee(new BigDecimal("0"));
+			trade.setDeliverFee(BigDecimal.ZERO);
 
-			trade.setDeliverDiscountFee(new BigDecimal("0"));
+			trade.setDeliverDiscountFee(BigDecimal.ZERO);
 			trade.setOptName(user.getUserName());
 
 			trades.add(trade);
