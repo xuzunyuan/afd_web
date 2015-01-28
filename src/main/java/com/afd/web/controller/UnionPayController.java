@@ -120,7 +120,7 @@ public class UnionPayController {
         pay.init(request);
         verifyTrans(request, pay);      
         log.error("--------unionpay callback-------"+ JSON.toJSONString(pay)+"------------");
-        if(!pay.getResult() && null == pay.getPaymentId()) {
+        if(!pay.getResult() || null == pay.getPaymentId()) {
         	log.error("--------unionpay callbackpage fail-------------------");
             return "unionpay/null";
         }
@@ -165,7 +165,7 @@ public class UnionPayController {
         pay.init(request);
         verifyTrans(request, pay);
         log.error("--------unionpay callbackpage-------"+ JSON.toJSONString(pay)+"------------");
-        if(!pay.getResult() && null == pay.getPaymentId()) {
+        if(!pay.getResult() || null == pay.getPaymentId()) {
         	log.error("--------unionpay callbackpage fail-------------------");
             return "unionpay/fail";//todo
         }
