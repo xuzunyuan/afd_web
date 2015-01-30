@@ -8,8 +8,8 @@
 	<title>购物车</title>
 	<script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
 	<script type="text/javascript" src="${jsDomain}/jquery.cookie.js"></script>
-	<link rel="stylesheet" type="text/css" href="${cssDomain }/allstyle.css"/>
-	<link rel="stylesheet" type="text/css" href="${cssDomain }/order.css"/>
+	<link rel="stylesheet" type="text/css" href="${cssDomain }/css/allstyle.css"/>
+	<link rel="stylesheet" type="text/css" href="${cssDomain }/css/order.css"/>
 	<script type="text/javascript">
 		$(function(){
 			$.cookie("tradesubmit", null, {
