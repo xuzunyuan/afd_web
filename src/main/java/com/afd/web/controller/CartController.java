@@ -46,6 +46,40 @@ public class CartController{
 
 	private static final String cookie = "[{\"num\":2,\"selected\":false,\"skuId\":37},{\"num\":2,\"selected\":false,\"skuId\":29},{\"num\":2,\"selected\":false,\"skuId\":1},{\"num\":2,\"selected\":false,\"skuId\":40}]";
 
+	@RequestMapping("/cart")
+	public String cart() {
+		return "/cart/cart";
+	}
+
+	/**
+	 * 展示购物车
+	 * 
+	 * @param cookieCart
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/cartContent")
+	public String showCart(
+			@CookieValue(value = "cart", required = false) String cookieCart,
+			ModelMap modelMap, HttpServletResponse response,
+			HttpServletRequest request) {
+		// 展示购物车
+		List<Cart> carts = cartService.showCart(cookieCart);
+		// 保存购物车
+		saveCart(CartTransferUtils.cartToCookieCartItems(carts), request,
+				response);
+		// 将carts添加到模型中
+		modelMap.addAttribute("carts", carts);
+		boolean isEmpty = Boolean.parseBoolean(request.getParameter("isEmpty"));
+		boolean hasError = Boolean.parseBoolean(request.getParameter("hasError"));
+		// 是否没有选商品结算（用户点击结算按钮）
+		modelMap.addAttribute("isEmpty", isEmpty);
+		// 结算商品是否有错误（点击结算按钮）
+		modelMap.addAttribute("hasError", hasError);
+		return "/cart/cartContent";
+	}
+
 	/**
 	 * 修改购物车商品数量
 	 * 
@@ -78,36 +112,7 @@ public class CartController{
 
 		return cartItem;
 	}
-
-	/**
-	 * 展示购物车
-	 * 
-	 * @param cookieCart
-	 * @param modelMap
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping("/cartContent")
-	public String showCart(
-			@CookieValue(value = "cart", required = false) String cookieCart,
-			ModelMap modelMap, HttpServletResponse response,
-			HttpServletRequest request) {
-		// 展示购物车
-		List<Cart> carts = cartService.showCart(cookieCart);
-		// 保存购物车
-		saveCart(CartTransferUtils.cartToCookieCartItems(carts), request,
-				response);
-		// 将carts添加到模型中
-		modelMap.addAttribute("carts", carts);
-		boolean isEmpty = Boolean.parseBoolean(request.getParameter("isEmpty"));
-		boolean hasError = Boolean.parseBoolean(request.getParameter("hasError"));
-		// 是否没有选商品结算（用户点击结算按钮）
-		modelMap.addAttribute("isEmpty", isEmpty);
-		// 结算商品是否有错误（点击结算按钮）
-		modelMap.addAttribute("hasError", hasError);
-		return "cartContent";
-	}
-
+	
 	/**
 	 * 删除商品
 	 * 
