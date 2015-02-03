@@ -130,8 +130,7 @@ public class CartController{
 			bsDetailIds.add(bsDetailId);
 			// 删除商品
 			List<CartItem> cartItems = this.cartService.deleteCartItems(cookieCart, bsDetailIds);
-			saveCart(
-					CartTransferUtils.cartItemsToCookieCartItems(cartItems),
+			saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems),
 					request, response);
 		}
 		// 跳回购物车
@@ -218,13 +217,14 @@ public class CartController{
 	}
 
 	@RequestMapping("/chgChecked")
+	@ResponseBody
 	public void chgChecked(
 			@CookieValue(value = "cart", required = false) String cookieCart,
-			@RequestParam String bsDetails, @RequestParam boolean checked,
+			@RequestParam("bsDetailIds") String bsDetailIds, @RequestParam("checked") boolean checked,
 			HttpServletRequest request, HttpServletResponse response) {
 		Set<Long> setBsDetailsIds = new HashSet<Long>();
-		for (String bsDetail : bsDetails.split(",")) {
-			setBsDetailsIds.add(Long.parseLong(bsDetail));
+		for (String bsDetailId : bsDetailIds.split(",")) {
+			setBsDetailsIds.add(Long.parseLong(bsDetailId));
 		}
 		List<CartItem> cartItems = this.cartService.chgChecked(cookieCart, setBsDetailsIds, checked);
 		this.saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems),

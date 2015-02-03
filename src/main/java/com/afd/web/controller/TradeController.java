@@ -90,7 +90,7 @@ public class TradeController{
 		RequestUtils.setCookie(request, response, OrderConstants.COOKIE_CART_CONFIRM, 
 				JSON.toJSONString(cartItems), OrderConstants.COOKIE_CART_PERIOD);
 
-		return "trade";
+		return "/cart/trade";
 	}
 
 	/**
@@ -267,22 +267,63 @@ public class TradeController{
 
 		modelMap.addAttribute("carts", selectedCarts);
 
-		return "tradeGoods";
-
+		return "/cart/tradeGoods";
 	}
 
 	/**
-	 * address operations
+	 * get address
 	 */
-	@RequestMapping(value = "/addr")
+	@RequestMapping(value = "/getAddr")
 	@ResponseBody
-	public ResponseEntity<?> getAddrinfo(HttpServletRequest request, HttpServletResponse response) {
-		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
-		if (uid != 0l) {
-			List<UserAddress> addrs = this.addressService.getAddressesByUserId(uid);
-			return new ResponseEntity<List<UserAddress>>(addrs, HttpStatus.OK);
+	public List<UserAddress> getAddrinfo(HttpServletRequest request, HttpServletResponse response) {
+		Long uid = 0l;
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)){
+			uid = Long.parseLong(userId);	
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		List<UserAddress> addrs = new ArrayList<UserAddress>();
+		if (uid != 0l) {
+			addrs = this.addressService.getAddressesByUserId(uid);
+		}
+		return addrs;
+	}
+	
+	/**
+	 * add address
+	 */
+	@RequestMapping(value = "/addAddr")
+	@ResponseBody
+	public int addAddr(UserAddress addr, HttpServletRequest request, HttpServletResponse response) {
+		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		int res = 0;
+		if (uid != 0l) {
+			res = this.addressService.addAddress(addr);
+		}
+		return res;
+	}
+	
+	/**
+	 * update address
+	 */
+	@RequestMapping(value = "/updateAddr")
+	@ResponseBody
+	public int updateAddr(UserAddress addr, HttpServletRequest request, HttpServletResponse response) {
+		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		int res = 0;
+		res = this.addressService.updateAddress(addr);
+		return res;
+	}
+	
+	/**
+	 * delete address
+	 */
+	@RequestMapping(value = "/deleteAddr")
+	@ResponseBody
+	public int deleteAddr(int addrId, HttpServletRequest request, HttpServletResponse response) {
+		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		int res = 0;
+		res = this.addressService.delAddress(addrId);
+		return res;
 	}
 
 	/**
