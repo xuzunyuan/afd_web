@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.afd.constants.order.OrderConstants;
+import com.afd.constants.user.UserConstants;
 import com.afd.model.order.Order;
 import com.afd.model.user.Geo;
 import com.afd.model.user.User;
@@ -44,6 +45,7 @@ import com.afd.service.order.IOrderService;
 import com.afd.service.payment.IPaymentServices;
 import com.afd.service.product.IProductService;
 import com.afd.service.user.IAddressService;
+import com.afd.service.user.IGeoService;
 import com.afd.service.user.IUserService;
 import com.afd.common.util.CartTransferUtils;
 import com.afd.common.util.RequestUtils;
@@ -58,6 +60,8 @@ public class TradeController{
 
 	@Autowired
 	private IAddressService addressService;
+	@Autowired
+	private IGeoService geoService;
 	@Autowired
 	private ICartService cartService;
 	@Autowired
@@ -82,7 +86,7 @@ public class TradeController{
 		this.saveCart(CartTransferUtils.cartToCookieCartItems(carts_confirm), request, response);
 		List<Cart> selectedCarts = this.getGoods(carts_confirm);
 		if (selectedCarts == null || selectedCarts.size() == 0) {
-			return "redirect:/cart.jsp";
+			return "redirect:/cart/cart.action";
 		}
 		
 		List<CookieCartItem> cartItems = CartTransferUtils.cartToCookieCartItems(carts_confirm);
@@ -99,7 +103,11 @@ public class TradeController{
 	@RequestMapping(value = "/tradecomfirm")
 	public String tradeConfirm(TradesInfo tradesInfo, ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 		boolean isLogin = LoginServiceImpl.isLogin(request, response);
-		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		Long uid = 0l;
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)) {
+			uid = Long.parseLong(userId);
+		}
 		if(!isLogin) {
 			//TODO
 			return "";
@@ -218,7 +226,11 @@ public class TradeController{
 	public String tradesucceed(HttpServletRequest request, ModelMap modelMap,
 			HttpServletResponse response) {
 		String orderids = request.getParameter("orderids");
-		Long userId = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		Long uid = 0l;
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)) {
+			uid = Long.parseLong(userId);
+		}
 		if (StringUtils.isBlank(orderids)||userId.equals(0l)) {
 			return "redirect:/cart.jsp";
 		}
@@ -238,13 +250,10 @@ public class TradeController{
 	/**
 	 * area operations
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/geo")
+	@RequestMapping(value = "/geo")
 	@ResponseBody
-	public ResponseEntity<?> viewGeo(@RequestParam(value = "fid") Long fid) {
-		//TODO
-//		List<Geo> geoList = this.addressService.getGeoByFid(fid);
-		List<Geo> geoList = new ArrayList<Geo>();
-		return new ResponseEntity<List<Geo>>(geoList, HttpStatus.OK);
+	public List<Geo> viewGeo(@RequestParam(value = "fid") Long fid) {
+		return this.geoService.getGeoByFId(fid);
 	}
 
 	@RequestMapping(value = "/tradeGoods")
@@ -278,6 +287,9 @@ public class TradeController{
 	public List<UserAddress> getAddrinfo(HttpServletRequest request, HttpServletResponse response) {
 		Long uid = 0l;
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)) {
+			uid = Long.parseLong(userId);
+		}
 		if(!StringUtils.isEmpty(userId)){
 			uid = Long.parseLong(userId);	
 		}
@@ -294,9 +306,15 @@ public class TradeController{
 	@RequestMapping(value = "/addAddr")
 	@ResponseBody
 	public int addAddr(UserAddress addr, HttpServletRequest request, HttpServletResponse response) {
-		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		Long uid = 0l;
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)) {
+			uid = Long.parseLong(userId);
+		}
 		int res = 0;
 		if (uid != 0l) {
+			addr.setUserId(uid.intValue());
+			addr.setStatus(UserConstants.ADDRESS_STATUS_VALID);
 			res = this.addressService.addAddress(addr);
 		}
 		return res;
@@ -308,7 +326,12 @@ public class TradeController{
 	@RequestMapping(value = "/updateAddr")
 	@ResponseBody
 	public int updateAddr(UserAddress addr, HttpServletRequest request, HttpServletResponse response) {
-		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		//TODO uid效验
+		Long uid = 0l;
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)) {
+			uid = Long.parseLong(userId);
+		}
 		int res = 0;
 		res = this.addressService.updateAddress(addr);
 		return res;
@@ -320,7 +343,12 @@ public class TradeController{
 	@RequestMapping(value = "/deleteAddr")
 	@ResponseBody
 	public int deleteAddr(int addrId, HttpServletRequest request, HttpServletResponse response) {
-		Long uid = Long.parseLong(LoginServiceImpl.getUserIdByCookie(request));
+		//TODO uid效验
+		Long uid = 0l;
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if(!StringUtils.isEmpty(userId)) {
+			uid = Long.parseLong(userId);
+		}
 		int res = 0;
 		res = this.addressService.delAddress(addrId);
 		return res;

@@ -26,6 +26,163 @@
 				}
 			);
 			$("div.pro-mod").load("${ctx}/tradeGoods.action");
+			
+			$(document).on("mouseover","dl.mod-banks",function(){
+				$("dl.mod-banks").addClass("hover");
+			});
+			$(document).on("mouseout","dl.mod-banks",function(){
+				$("dl.mod-banks").removeClass("hover");
+			});
+			$(document).on("mouseover","div.selectArea",function(e){
+				e.stopPropagation();
+				$("div.selectArea").addClass("open");
+			});
+			$(document).on("mouseout","div.selectArea",function(){
+				$("div.selectArea").removeClass("open");
+			});
+			$(document).on("click","div.selectArea li",function(){
+				if($(this).hasClass("curr")) {
+					return;
+				} else {
+					var name = $(this).attr("name");
+					$("div.selectArea li.curr").removeClass("curr");
+					$(this).addClass("curr");
+					$("div.selectArea div.tabGroup").removeClass("show");
+					$("div.selectArea div[name=" + name + "]").addClass("show");
+				}
+			});
+			$(document).on("click","div.tabGroup a",function(){
+				$("#addrForm div.inputArea").removeClass("errIpt");
+				$("#addrForm span[name=geoErr]").text("");
+				var geoId = $(this).attr("geoid");
+				var level = $(this).parents("div.tabGroup").attr("name");
+				var node = $(this);
+				$.post(
+						"${ctx}/geo.action",
+						{
+							fid:geoId
+						},
+						function(data){
+							var geos = $.parseJSON(data);
+							showGeo(node,level,geos);
+						}
+					);
+			});
+			$(document).on("change","#addrForm textarea[name=addr]",function(){
+				//TODO
+				$("#addrForm textarea[name=addr]").removeClass("errIpt");
+				$("#addrForm span[name=addrErr]").text("");
+			});
+			$(document).on("change","#addrForm input[name=zipCode]",function(){
+				$("#addrForm input[name=zipCode]").removeClass("errIpt");
+				$("#addrForm span[name=zipCodeErr]").text("");
+			});
+			$(document).on("change","#addrForm input[name=receiver]",function(){
+				$("#addrForm input[name=receiver]").removeClass("errIpt");
+				$("#addrForm span[name=receiverErr]").text("");
+			});
+			$(document).on("change","#addrForm input[name=mobile]",function(){
+				$("#addrForm input[name=mobile]").removeClass("errIpt");
+				$("#addrForm span[name=mobileErr]").text("");
+			});
+			$(document).on("change","#addrForm input[name=tel1]",function(){
+				$("#addrForm input[name=mobile]").removeClass("errIpt");
+				$("#addrForm input[name=tel1]").removeClass("errIpt");
+				$("#addrForm span[name=mobileErr]").text("");
+			});
+			$(document).on("change","#addrForm input[name=tel2]",function(){
+				$("#addrForm input[name=mobile]").removeClass("errIpt");
+				$("#addrForm input[name=tel2]").removeClass("errIpt");
+				$("#addrForm span[name=mobileErr]").text("");
+			});
+			$(document).on("change","#addrForm input[name=tel3]",function(){
+				$("#addrForm input[name=mobile]").removeClass("errIpt");
+				$("#addrForm input[name=tel3]").removeClass("errIpt");
+				$("#addrForm span[name=mobileErr]").text("");
+			});
+			
+			$(document).on("click","input[name=saveAddr]",function(){
+				var province = $("#addrForm input[name=province]").val();
+				var provinceName = $("#addrForm input[name=provinceName]").val();
+				var city = $("#addrForm input[name=city]").val();
+				var cityName = $("#addrForm input[name=cityName]").val();
+				var district = $("#addrForm input[name=district]").val();
+				var districtName = $("#addrForm input[name=districtName]").val();
+				var town = $("#addrForm input[name=town]").val();
+				var townName = $("#addrForm input[name=townName]").val();
+				
+				var addr = $("#addrForm textarea[name=addr]").val().trim();
+				var zipCode = $("#addrForm input[name=zipCode]").val().trim();
+				var receiver = $("#addrForm input[name=receiver]").val().trim();
+				var mobile = $("#addrForm input[name=mobile]").val().trim();
+				var tel1 = $("#addrForm input[name=tel1]").val().trim();
+				var tel2 = $("#addrForm input[name=tel2]").val().trim();
+				var tel3 = $("#addrForm input[name=tel3]").val().trim();
+				var tel = tel1 + "-" + tel2;
+				if(!!tel3) {
+					tel = tel + "-" + tel3;
+				}
+				var isDefault = "0";
+				if($("#addrForm input[name=isDefault]").prop("checked")){
+					isDefault = "1";
+				}
+				/**去前后空格**/
+				$("#addrForm textarea[name=addr]").val(addr);
+				$("#addrForm input[name=zipCode]").val(zipCode);
+				$("#addrForm input[name=receiver]").val(receiver);
+				$("#addrForm input[name=mobile]").val(mobile);
+				$("#addrForm input[name=tel1]").val(tel1);
+				$("#addrForm input[name=tel2]").val(tel2);
+				$("#addrForm input[name=tel3]").val(tel3);
+				
+				if(!checkArea(province,city,district, town)){
+					return false;
+				}
+				if(!checkAddr(addr)) {
+					return false;
+				}
+				if(!checkZipCode(zipCode)) {
+					return false;
+				}
+				if(!checkReceiver(receiver)) {
+					return false;
+				}
+				/**手机电话check**/
+				if(!mobile && !tel1 && !tel2 && !tel3) {
+					$("#addrForm input[name=mobile]").focus();
+					$("#addrForm input[name=mobile]").addClass("errIpt");
+					$("#addrForm span[name=mobileErr]").text("请填写收货人的联系方式。");
+					return false;
+				}
+				if(!checkMobile(mobile)) {
+					return false;
+				}
+				if(!checkTel(tel1,tel2,tel3)) {
+					return false;
+				}
+				$.post(
+					"${ctx}/addAddr.action",
+					{
+						province: province,
+						provinceName: provinceName,
+						city: city,
+						cityName: cityName,
+						district: district,
+						districtName: districtName,
+						town: town,
+						townName: townName,
+						addr: addr,
+						zipCode: zipCode,
+						receiver: receiver,
+						mobile: mobile,
+						tel: tel,
+						isDefault: isDefault 
+					},
+					function(res){
+						
+					}
+				);
+			});
 		});
 		function displayAddrs(addrs) {
 			var htmlStr = "";
@@ -50,6 +207,189 @@
 				"<span class='setlink'><a href='#'>修改</a><a href='#'>删除</a></span>" +
 			"</li>";
 			return str;
+		}
+		function showGeo(node,level,geos) {
+			if(level=="province") {
+				$("div.selectArea input[name=province]").val($(node).attr("geoid"));
+				$("div.selectArea input[name=provinceName]").val($(node).text());
+				$("div.selectArea input[name=city]").val("");
+				$("div.selectArea input[name=cityName]").val("");
+				$("div.selectArea input[name=district]").val("");
+				$("div.selectArea input[name=districtName]").val("");
+				$("div.selectArea input[name=town]").val("");
+				$("div.selectArea input[name=townName]").val("");
+				
+				$("div.selectArea li.curr").removeClass("curr");
+				$("div.selectArea li[name=city]").addClass("curr");
+				$("div.selectArea div.tabGroup").removeClass("show");
+				$("div.selectArea li[name=town]").addClass("hidden");
+				$("div.selectArea div[name=city]").addClass("show");
+				var obj = $("div.selectArea div[name=city] dl dd");
+				showGeoList(obj,geos);
+			} else if(level=="city") {
+				$("div.selectArea input[name=city]").val($(node).attr("geoid"));
+				$("div.selectArea input[name=cityName]").val($(node).text());
+				$("div.selectArea input[name=district]").val("");
+				$("div.selectArea input[name=districtName]").val("");
+				$("div.selectArea input[name=town]").val("");
+				$("div.selectArea input[name=townName]").val("");
+				
+				$("div.selectArea li.curr").removeClass("curr");
+				$("div.selectArea li[name=district]").addClass("curr");
+				$("div.selectArea div.tabGroup").removeClass("show");
+				$("div.selectArea li[name=town]").addClass("hidden");
+				$("div.selectArea div[name=district]").addClass("show");
+				var obj = $("div.selectArea div[name=district] dl dd");
+				showGeoList(obj,geos);
+			} else if(level=="district") {
+				$("div.selectArea input[name=district]").val($(node).attr("geoid"));
+				$("div.selectArea input[name=districtName]").val($(node).text());
+				$("div.selectArea input[name=town]").val("");
+				$("div.selectArea input[name=townName]").val("");
+				if(geos.length > 0){
+					$("div.selectArea li.curr").removeClass("curr");
+					$("div.selectArea li[name=town]").addClass("curr");
+					$("div.selectArea li[name=town]").removeClass("hidden");
+					$("div.selectArea div.tabGroup").removeClass("show");
+					$("div.selectArea div[name=town]").addClass("show");
+					var obj = $("div.selectArea div[name=town] dl dd");
+					showGeoList(obj,geos);
+				} else {
+					$("div.selectArea").removeClass("open");
+					$("div.selectArea li[name=town]").addClass("hidden");
+				}
+			} else if(level=="town") {
+				$("div.selectArea input[name=town]").val($(node).attr("geoid"));
+				$("div.selectArea input[name=townName]").val($(node).text());
+				$("div.selectArea").removeClass("open");
+			}
+			showGeoText();
+		}
+		function showGeoText() {
+			var province = $("div.selectArea input[name=provinceName]").val();
+			var city = $("div.selectArea input[name=cityName]").val();
+			var district = $("div.selectArea input[name=districtName]").val();
+			var town = $("div.selectArea input[name=townName]").val();
+ 			
+			var txtNode = $("div.selectArea div.inputArea");
+			txtNode.empty();
+ 			if(!!province) {
+ 				txtNode.append("<span class='option'>" + province + "</span>")
+ 			}
+ 			if(!!city) {
+ 				txtNode.append("<em>/</em><span class='option'>" + city + "</span>")
+ 			}
+ 			if(!!district) {
+ 				txtNode.append("<em>/</em><span class='option'>" + district + "</span>")
+ 			}
+ 			if(!!town) {
+ 				txtNode.append("<em>/</em><span class='option'>" + town + "</span>")
+ 			}
+		}
+		function showGeoList(obj,geos){
+			var html = "";
+			for(var index in geos) {
+				html += "<span><a geoid='" + geos[index].geoId + "' href='javascript:;'>" + geos[index].geoName + "</a></span>";
+			}
+			$(obj).html(html);
+		}
+		function checkArea(province,city,district, town) {
+			/**区域check**/
+			if(!province || !city || !district) {
+				$("#addrForm div.inputArea").addClass("errIpt");
+				$("#addrForm span[name=geoErr]").text("请选择收货地区。");
+				return false;
+			}
+			if(!$("div.selectArea li[name=town]").hasClass("hidden")){
+				if(!town){
+					$("#addrForm div.inputArea").addClass("errIpt");
+					$("#addrForm span[name=geoErr]").text("请选择收货地区。");
+					return false;
+				}
+			}
+			return true;
+		}
+		function checkAddr(addr) {
+			/**地址check**/
+			if(!addr) {
+				$("#addrForm textarea[name=addr]").focus();
+				$("#addrForm textarea[name=addr]").addClass("errIpt");
+				$("#addrForm span[name=addrErr]").text("请填写收货详细地址。");
+				return false;
+			} else {
+				if(addr.length > 50) {
+					$("#addrForm textarea[name=addr]").focus();
+					$("#addrForm textarea[name=addr]").addClass("errIpt");
+					$("#addrForm span[name=addrErr]").text("收货地址过长。");
+					return false;
+				}
+			}
+			return true;
+		}
+		function checkZipCode(zipCode) {
+			var pattern = /^\d{6}$/;
+			if(!!zipCode && !pattern.exec(zipCode)) {
+				$("#addrForm input[name=zipCode]").focus();
+				$("#addrForm input[name=zipCode]").addClass("errIpt");
+				$("#addrForm span[name=zipCodeErr]").text("请填写6位数字邮政编码。");
+				return false;
+			}
+			return true;
+		}
+		function checkReceiver(receiver) {
+			/**收货人check**/
+			if(!receiver){
+				$("#addrForm input[name=receiver]").focus();
+				$("#addrForm input[name=receiver]").addClass("errIpt");
+				$("#addrForm span[name=receiverErr]").text("请填写收货人姓名。");
+				return false;
+			} else {
+				if(receiver.length > 15) {
+					$("#addrForm input[name=receiver]").focus();
+					$("#addrForm input[name=receiver]").addClass("errIpt");
+					$("#addrForm span[name=receiverErr]").text("收货人姓名过长。");
+					return false;
+				}
+			}
+			return true;
+		}
+		function checkMobile(mobile) {
+			var pattern = /^1\d{10}$/;
+			if(!!mobile && !pattern.exec(mobile)) {
+				$("#addrForm input[name=mobile]").focus();
+				$("#addrForm input[name=mobile]").addClass("errIpt");
+				$("#addrForm span[name=mobileErr]").text("请正确填写11位手机号。");
+				return false;
+			}
+			return true;
+		}
+		function checkTel(tel1,tel2,tel3) {
+			if(!tel1 && !tel2 && !tel3) {
+				return true;
+			} else {
+				var patternTel1 = /^\d{3,4}$/;
+				var patternTel2 = /^\d{7,8}$/;
+				var patternTel3 = /^\d{4}$/;
+				if(!patternTel1.exec(tel1)){
+					$("#addrForm input[name=tel1]").focus();
+					$("#addrForm input[name=tel1]").addClass("errIpt");
+					$("#addrForm span[name=mobileErr]").text("请正确填写电话号码。");
+					return false;
+				}
+				if(!patternTel2.exec(tel2)){
+					$("#addrForm input[name=tel2]").focus();
+					$("#addrForm input[name=tel2]").addClass("errIpt");
+					$("#addrForm span[name=mobileErr]").text("请正确填写电话号码。");
+					return false;
+				}
+				if(!!tel3 && !patternTel3.exec(tel3)){
+					$("#addrForm input[name=tel3]").focus();
+					$("#addrForm input[name=tel3]").addClass("errIpt");
+					$("#addrForm span[name=mobileErr]").text("请正确填写电话号码。");
+					return false;
+				}
+				return true;
+			}
 		}
 	</script>
 </head>
@@ -94,50 +434,158 @@
 								<div class="hd"><h3>收货地址</h3><span>新增收货地址</span></div>
 								<div class="bd">
 									<div class="shippingForm">
-										<form class="form">
+										<form autocomplete="off" id="addrForm" class="form">
 											<fieldset>
 												<div class="lenged">收货人信息</div>
 												<div class="formGroup">
 													<div class="form-item">
-														<div class="item-label"><label><em>*</em>收货地址：</label></div>
+														<div class="item-label"><label><em>*</em>收货地区：</label></div>
 														<div class="item-cont">
-															<input type="text" class="txt lg w-xl"><span class="note errTxt">错误信息</span>
+															<div class="selectArea">
+																<div class="inputArea"><span class="arrow bottom-hollow"><i></i><b></b></span></div>
+																<input name="province" type="hidden"/>
+																<input name="provinceName" type="hidden"/>
+																<input name="city" type="hidden"/>
+																<input name="cityName" type="hidden"/>
+																<input name="district" type="hidden"/>
+																<input name="districtName" type="hidden"/>
+																<input name="town" type="hidden"/>
+																<input name="townName" type="hidden"/>
+																<div class="selectArea-list">
+																	<div class="tab">
+																		<div class="tabs">
+																			<ul>
+																				<li name="province" class="curr">省份</li>
+																				<li name="city">城市</li>
+																				<li name="district">区县</li>
+																				<li name="town" class="hidden">街道</li>
+																			</ul>
+																		</div>
+																		<div class="tabbed">
+																			<div name="province" class="tabGroup show">
+																				<dl class="areaList">
+																					<dt>A<em>-</em>G</dt>
+																					<dd>
+																						<span><a geoid="1219" href="javascript:;">安徽</a></span>
+																						<span><a geoid="1" href="javascript:;">北京</a></span>
+																						<span><a geoid="2843" href="javascript:;">重庆</a></span>
+																						<span><a geoid="1341" href="javascript:;">福建</a></span>
+																						<span><a geoid="4552" href="javascript:;">甘肃</a></span>
+																						<span><a geoid="2224" href="javascript:;">广东</a></span>
+																						<span><a geoid="2425" href="javascript:;">广西</a></span>
+																						<span><a geoid="4109" href="javascript:;">贵州</a></span>
+																					</dd>
+																				</dl>
+																				<dl class="areaList">
+																					<dt>H<em>-</em>K</dt>
+																					<dd>
+																						<span><a geoid="2549" href="javascript:;">海南</a></span>
+																						<span><a geoid="150" href="javascript:;">河北</a></span>
+																						<span><a geoid="764" href="javascript:;">黑龙江</a></span>
+																						<span><a geoid="1706" href="javascript:;">河南</a></span>
+																						<span><a geoid="1884" href="javascript:;">湖北</a></span>
+																						<span><a geoid="2087" href="javascript:;">湖南</a></span>
+																						<span><a geoid="999" href="javascript:;">江苏</a></span>
+																						<span><a geoid="1436" href="javascript:;">江西</a></span>
+																						<span><a geoid="694" href="javascript:;">吉林</a></span>
+																					</dd>
+																				</dl>
+																				<dl class="areaList">
+																					<dt>L<em>-</em>S</dt>
+																					<dd>
+																						<span><a geoid="579" href="javascript:;">辽宁</a></span>
+																						<span><a geoid="465" href="javascript:;">内蒙古</a></span>
+																						<span><a geoid="4708" href="javascript:;">宁夏</a></span>
+																						<span><a geoid="4656" href="javascript:;">青海</a></span>
+																						<span><a geoid="1548" href="javascript:;">山东</a></span>
+																						<span><a geoid="906" href="javascript:;">上海</a></span>
+																						<span><a geoid="334" href="javascript:;">山西</a></span>
+																						<span><a geoid="4434" href="javascript:;">陕西</a></span>
+																						<span><a geoid="3906" href="javascript:;">四川</a></span>
+																					</dd>
+																				</dl>
+																				<dl class="areaList">
+																					<dt>T<em>-</em>Z</dt>
+																					<dd>
+																						<span><a geoid="99" href="javascript:;">天津</a></span>
+																						<span><a geoid="4736" href="javascript:;">新疆</a></span>
+																						<span><a geoid="4353" href="javascript:;">西藏</a></span>
+																						<span><a geoid="4207" href="javascript:;">云南</a></span>
+																						<span><a geoid="1117" href="javascript:;">浙江</a></span>
+																					</dd>
+																				</dl>
+																			</div>
+																			<div name="city" class="tabGroup city">
+																				<dl class="areaList">
+																					<dd>
+																					</dd>
+																				</dl>
+																			</div>
+																			<div name="district" class="tabGroup city">
+																				<dl class="areaList">
+																					<dd>
+																					</dd>
+																				</dl>
+																			</div>
+																			<div name="town" class="tabGroup city">
+																				<dl class="areaList">
+																					<dd>
+																					</dd>
+																				</dl>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<span name="geoErr" class="note errTxt"></span>
 														</div>
 													</div>
 													<div class="form-item">
 														<div class="item-label"><label><em>*</em>详细地址：</label></div>
 														<div class="item-cont">
-															<textarea name="" id="" style="width: 288px;height: 72px" class="resize-none" placeholder="不用重复填写省市区，不超过60个字"></textarea>
+															<textarea name="addr" id="" style="width: 288px;height: 72px" class="resize-none" placeholder="不用重复填写省市区，不超过50个字"></textarea>
+															<span name="addrErr" class="note errTxt"></span>
 														</div>
 													</div>
 													<div class="form-item">
 														<div class="item-label"><label>邮政编码：</label></div>
 														<div class="item-cont">
-															<input type="text" class="txt lg w-xl">
+															<input name="zipCode" type="text" class="txt lg w-xl">
+															<span name="zipCodeErr" class="note errTxt"></span>
 														</div>
 													</div>
 													<div class="form-item">
 														<div class="item-label"><label><em>*</em>收货人：</label></div>
 														<div class="item-cont">
-															<input type="text" class="txt lg w-xl" placeholder="不超过15个字">
+															<input name="receiver" type="text" class="txt lg w-xl" placeholder="不超过15个字">
+															<span name="receiverErr" class="note errTxt"></span>
 														</div>
 													</div>
 													<div class="form-item">
 														<div class="item-label"><label><em>*</em>手机号码：</label></div>
 														<div class="item-cont">
-															<input type="text" class="txt lg w-xl" placeholder="11位手机号码"><label class="or">或</label><label class="fixedTel">固定电话：</label><div class="txt-tel"><input type="text" class="txt telArea"><i>-</i><input type="text" class="txt telNum"><i>-</i><input type="text" class="txt telExt"></div>
+															<input name="mobile" type="text" class="txt lg w-xl" placeholder="11位手机号码">
+															<label class="or">或</label><label class="fixedTel">固定电话：</label>
+															<div class="txt-tel">
+																<input name="tel1" type="text" class="txt telArea lg">
+																<i>-</i><input name="tel2" type="text" class="txt telNum lg">
+																<i>-</i><input name="tel3" type="text" class="txt telExt lg">
+															</div>
+															<div>
+																<span name="mobileErr" class="note errTxt"></span>
+															</div>
 														</div>
 													</div>
 												</div>
 												<div class="formGroup">
 													<div class="form-item">
 														<div class="item-cont">
-															<label><input type="checkbox" class="chk">设置为默认发货地址</label>
+															<label><input name="isDefault" type="checkbox" class="chk">设置为默认发货地址</label>
 														</div>
 													</div>
 													<div class="form-item">
 														<div class="item-cont">
-															<input type="button" class="btn btn-primary" value="保存收货人信息">
+															<input name="saveAddr" type="button" class="btn btn-primary" value="保存收货人信息">
 														</div>
 													</div>
 												</div>
@@ -159,31 +607,32 @@
 								<div class="bd">
 									<dl class="pay-item">
 										<dt><label><input type="radio" class="radio" disabled="disabled" name="payMode" />支付宝在线付款</label></dt>
-										<dd><span class="ico alipay"><img src="img/pay/alipay.jpg" alt="" /></span>使用支付宝账号在线付款。</dd>
+										<dd><span class="ico alipay"><img src="${imgDomain }/pay/alipay.jpg" alt="" /></span>使用支付宝账号在线付款。</dd>
 									</dl>
 									<dl class="pay-item selected">
 										<dt><label><input type="radio" class="radio" name="payMode" />网上银行在线付款</label></dt>
 										<dd>
-											<span class="ico checkedBank"><img src="img/pay/jinlin.jpg"/></span><dl class="mod-banks"><!-- 鼠标移上加class=hover -->
+											<span class="ico checkedBank"><img src="${imgDomain }/pay/jinlin.jpg"/></span>
+											<dl class="mod-banks"><!-- 鼠标移上加class=hover -->
 												<dt><span class="btn btn-def">选择支付银行<i class="arrow bottom-solid sm muted"></i></span></dt>
 												<dd>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/icbc.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/abc.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/boc.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/cbc.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/ctb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/cmb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/ceb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/citic.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/cmbc.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/sdb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/hxb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/cgb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/spdb.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/cib.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/psbc.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="img/pay/bea.jpg" alt="" /></label></div>
-													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" checked="checked" /><img src="img/pay/jinlin.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/icbc.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/abc.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/boc.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/cbc.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/ctb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/cmb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/ceb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/citic.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/cmbc.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/sdb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/hxb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/cgb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/spdb.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/cib.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/psbc.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" /><img src="${imgDomain }/pay/bea.jpg" alt="" /></label></div>
+													<div class="bank-item"><label><input type="radio" class="radio" name="banks" id="" value="" checked="checked" /><img src="${imgDomain }/pay/jinlin.jpg" alt="" /></label></div>
 												</dd>
 											</dl>使用您的网上银行借记卡及部分银行信用卡进行支付。
 										</dd>
