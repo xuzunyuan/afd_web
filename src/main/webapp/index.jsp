@@ -1,26 +1,99 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <%@include file="/common/common.jsp" %>
-
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Welcome</title>
-		<script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
-		<script type="text/javascript" src="${jsDomain}/jquery.cookie.js"></script>
-		<link rel="stylesheet" type="text/css" href="http://css.web.afdimg.com/allstyle.css"/>
-		<link rel="stylesheet" type="text/css" href="http://css.web.afdimg.com/order.css"/>
-	</head> 
-	<body id="shopCart">
-		<div class="wrapper">
-			<jsp:include page="/common/head.html" />
-			afasdfa
-			fadsf
-			asfd
-			asdf
-			asdf
-			adsf
-			
-			<jsp:include page="/common/foot.html" />
+<head>
+	<meta charset="utf-8">
+	<title>首页</title>
+	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/allstyle.css"/>
+	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/show.css"/>
+</head>
+<body id="index">
+<div class="wrapper">
+
+<jsp:include page="/common/head.html" />
+
+	<div class="crossnav">
+		<ul>
+			<li class="on"><a href="#">首&nbsp;&nbsp;页 </a></li>
+		</ul>
+	</div>
+	<!-- banner -->
+	<div id="mainBanner">
+		<div class="wrap">
+			<a href="#"><img src="${imgDomain}/temp/banner1.jpg"/></a>
 		</div>
-	</body>
+	</div>
+	<!-- banner -->
+	<!-- container -->
+	<div id="container">
+		<div class="wrap mainL">
+			<!-- main -->
+			<div id="main">
+				<div class="hotlists">
+					<div class="hd">
+						<h2><img src="${imgDomain}/temp/caption1.png"/></h2>
+					</div>
+					<div class="bd">
+
+
+
+						<div class="mod-goodsShow">
+							<a href="#">
+								<div class="g-info">
+									<img src="${imgDomain}/temp/img7.jpg" alt="" />
+									<p class="g-text">费雪品牌特卖，安全实惠甄选</p>
+									<p class="g-price">58 <em>元起</em></p>
+									<p class="g-time">剩余时间：08:17:41:26.1</p>
+								</div>
+								<div class="g-img">
+									<img src="${imgDomain}/temp/img2.jpg" alt="" />
+								</div>
+							</a>
+						</div>
+						<div class="mod-goodsShow">
+							<a href="#">
+								<div class="g-info">
+									<img src="${imgDomain}/temp/img7.jpg" alt="" />
+									<p class="g-text">费雪品牌特卖，安全实惠甄选</p>
+									<p class="g-price">58 <em>元起</em></p>
+									<p class="g-time">剩余时间：08:17:41:26.1</p>
+								</div>
+								<div class="g-img">
+									<img src="${imgDomain}/temp/img2.jpg" alt="" />
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- main end -->
+			<!-- aside -->
+			<div id="aside">
+				<div class="hotlists">
+					<div class="hd">
+						<h2><img src="${imgDomain}/temp/caption2.png"/></h2>
+					</div>
+					<div class="bd">
+						<div class="mod-goods g-def">
+							<a href="#">
+								<img src="${imgDomain}/temp/img1.jpg" alt="">
+								<div class="g-info">热销单品火速去抢</div>
+								<div class="maskBar"></div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- aside end -->
+		</div>
+	</div>
+	<!-- container end -->
+	<!-- serve -->
+	<jsp:include page="/common/service.html" />
+    <!-- serve end -->
+	<!-- footer -->
+    <jsp:include page="/common/foot.html" />
+	<!-- footer end -->
+</div>
+</body>
 </html>
