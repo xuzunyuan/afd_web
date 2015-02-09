@@ -81,7 +81,7 @@
 							<dd class="item-cont"><input type="button" id="login" class="btn btn-primary loginBtn" value="登&nbsp;&nbsp;&nbsp;录" /></dd>
 						</div>
 						<div class="form-item item-forget">
-							<dd class="item-cont"><a href="#">忘记密码？</a></dd>
+							<dd class="item-cont"><a href="${ctx}/findpwd.action">忘记密码？</a></dd>
 						</div>
 						
 					</form>

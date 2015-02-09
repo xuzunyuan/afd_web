@@ -355,7 +355,7 @@
 						<div class="regLogin-wrap">
 							<p>已经注册过？</p>
 							<a href="${ctx}/login.action" class="btn btn-assist">立即登录</a>
-							<p><a href="#">忘记密码</a></p>
+							<p><a href="${ctx}/findpwd.action">忘记密码</a></p>
 						</div>
 					</div>
 				</div>
