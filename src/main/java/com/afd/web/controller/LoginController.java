@@ -46,26 +46,20 @@ public class LoginController {
 	private RedisTemplate<String, Serializable> redis;
 
 	@RequestMapping("/login")
-	public String login(@RequestParam(required=false,value="rtnUrl") String rtnUrl,ModelMap map){
+	public String login(@RequestParam(required=false,value="rtnUrl") String rtnUrl,
+			@RequestParam(required=false,value="tip") String tip,
+			ModelMap map){
 		map.addAttribute("rtnUrl", rtnUrl);
 		return "login";
 	}
 	
+	@ResponseBody
 	@RequestMapping("/formLogin")
 	public String login(HttpServletRequest req,HttpServletResponse resp){
 		boolean success = this.loginService.login(req, resp);
-		if(success){
-			String rtnUrl = req.getParameter("rtnUrl");
-			if(StringUtils.isNotBlank(rtnUrl)){
-				try {
-					resp.sendRedirect(rtnUrl);
-				} catch (IOException e) {
-					log.error(e.getMessage(), e);
-				}
-			}
-		}
-		
-		return "success";
+		Map<String,Boolean> map = new HashMap<String, Boolean>();
+		map.put("status", success);
+		return JSON.toJSONString(map);
 	}
 	
 	@RequestMapping("/register")
