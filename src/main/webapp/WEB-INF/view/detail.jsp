@@ -20,18 +20,37 @@
 		<!-- crossnav -->
 		<!-- container -->
 		<div id="container">
-		<script type="text/javascript" src="http://js.web.afdimg.com/jquery.jqzoom-core.js"></script>
+		<script type="text/javascript" src="${jsDomain}/jquery.jqzoom-core.js"></script>
+		<script type="text/javascript" src="${jsDomain}/timecount.js"></script>
 			<div class="wrap">
 				<div class="headSyn">
 					<div class="countDown">
-						<p>距特卖介绍还剩：<img src="${imgDomain}/clok.png" alt=""><span>06:07:51:41.3</span></p>
+						<p>距特卖介绍还剩：<img src="${imgDomain}/clok.png" alt="">
+						<span id="day">29</span>天
+                        <span id="hour">21</span>时
+                        <span id="mini">27</span>分
+                        <span id="sec">31</span>秒</p>
+<script type="text/javascript">
+    var timestr="${show.endDate}";
+    var time=Date.parse(timestr.replace(/-/g,"/"));
+    var timehtml={
+        sec:$("#sec")[0],
+        mini:$("#mini")[0],
+        hour:$("#hour")[0],
+        day:$("#day")[0],
+        month:$("#month")[0],
+        year:$("#year")[0]
+    };
+    fnTimeCountDown(time,timehtml);
+ 
+ </script>
 					</div>
 					<!-- breadnav  -->
 					<div class="breadnav">
-						<span class="index"><a href="">首页</a></span>
+						<span class="index"><a href="${ctx}/index.jsp">首页</a></span>
 						<ul class="nav">
-							<li><span>&gt;</span><a href="">Ponie Conie 元旦特辑</a></li>
-							<li><span>&gt;</span><a href="#">Ponie Conie婴儿衣服夏季短袖连衣裙套装女宝宝夏装纯棉套装淑女</a></li>
+							<li><span>&gt;</span><a href="${ctx}/brandshow.action?bsid=${brandshow.brandShowId}">${brandshow.title}</a></li>
+							<li><span>&gt;</span><a href="javascript:void(0)">111<c:out value="${product.title}"/></a></li>
 						</ul>
 					</div>
 				</div>
@@ -41,8 +60,8 @@
 					<div class="article">
 						<div class="g-preview">
 						<div class="clearfix">
-						   <a id="picbig" href="http://hplus.sinaapp.com/static/images/2013/imgProd/1.png" class="jqzoom" rel="gal1">
-							<img  id="picsmall" src="http://hplus.sinaapp.com/static/images/2013/imgProd/1show.png"   title="triumph"  style="border: 1px solid #a2a0a0;">
+						   <a id="picbig" href="" class="jqzoom" rel="gal1">
+							<img  id="picsmall" src=""   title="triumph"  style="border: 1px solid #a2a0a0;">
 						  </a>
 							<div class="ico"><i></i></div>
 						</div>
@@ -62,14 +81,14 @@
 					</div>
 					<!-- g-buy -->
 					<div class="g-buy">
-						<h2 class="mainTitle">krazy2013性感女装优雅三种穿法吊带裙夜店修身包身包臀连衣裙117</h2>
-						<h3 class="subTitle">新品推广促销，全场满100元送神秘礼物！</h3>
+						<h2 class="mainTitle"><c:out value="${product.title}"/></h2>
+						<h3 class="subTitle"><c:out value="${product.subtitle}"/></h3>
 						<!-- g-items -->
 						<div class="g-items active">
 							<div class="prices">
-								<dl class="g-item barginPrice"><dt>促销价</dt><dd><span>¥<em>398.00</em></span></dd></dl>
+								<dl class="g-item barginPrice"><dt>促销价</dt><dd><span>¥<em><fmt:formatNumber value="${bsdetail.showPrice}" pattern="0.00" /></em></span></dd></dl>
 							</div>
-								<dl class="g-item"><dt>市场价</dt><dd><span><del>¥1380.00</del></span></dd></dl>
+								<dl class="g-item"><dt>市场价</dt><dd><span><del>¥<fmt:formatNumber value="${product.marketPrice}" pattern="0.00" /></del></span></dd></dl>
 							<dl class="g-item">
 								<dt>快递费</dt>
 								<dd><div class="g-tag">包邮</div>
@@ -99,10 +118,10 @@
 								<dt>数量</dt>
 								<dd>
 									<div class="mod-modified">
-										<div class="minus disabled">-</div>
-										<input type="text" class="txt sm" value="1">
-										<div class="plus">+</div>
-									</div><span>件</span><span>库存<em>828</em>件</span>
+										<div id="minusid" onclick="changenums(-1)" class="minus disabled">-</div>
+										<input type="text" id="numsid" readonly="readonly" class="txt sm" value="1">
+										<div id="plusid" onclick="changenums(+1)" class="plus">+</div>
+									</div><span>件</span><span>库存<em id="stack">${sku.stockBalance}</em>件</span>
 								</dd>
 							</dl>
 						</div>
@@ -119,7 +138,7 @@
 				<div class="goodRec">
 					<!-- goodsDetails -->
 					<div class="goodsDetails">
-						
+					${product.detail}
 					</div>
 					<!-- goodsDetails -->
 					<!-- goodsRecommend -->
@@ -140,8 +159,7 @@
 		<!-- float end -->
 	</div>
 	<script type="text/javascript">
-	//var skuList = ${skusjson} ;
-	  var skuList = {"4:::18":{"createByName":"一网开发","createDate":1423124312000,"lastUpdateDate":1423124312000,"marketPrice":2.00,"prodId":3,"salePrice":11.00,"skuId":1,"skuImgUrl":"IMG_2015_02_05_7aa8b905f37e4d39937b4e6945f87148.jpg","skuSpecId":"4:::18","skuSpecName":"颜色分类:::军绿色","skuStatus":"1","stockBalance":3,"updateByName":"一网开发"}} ;
+	  var skuList = ${skusjson} ;
 	  var defaultSku = ${skujson}; 
 	  var selecSku=defaultSku;
 	var prductspecs=${pspecsjson};
@@ -168,7 +186,9 @@
 		exclude_sku();
 		if(check_spec_finish()){
 			selecSku=skuList[get_sku()];
-		}
+			load_imgs();
+			initnums();
+		};
 	};
 	function check_spec_finish(){
 		var flag=true;
@@ -181,6 +201,31 @@
 		
 		return flag;
 	};
+	
+	function initnums(){
+		$("#stack").val(selecSku.stockBalance);
+		$("#numsid").val(1);
+		$("#plusid").addClass("disabled");
+		var stock_str=$("#stack").val();
+		var stock=parseInt(stock_str);
+		if(stock==0||stock==1){				
+			$("#minusid").addClass("disabled");
+			$("#plusid").addClass("disabled");
+			$("#numsid").val(stock);
+			return;
+		}else{
+			$("#minusid").addClass("disabled");
+			$("#plusid").removeClass("disabled");				
+			var select_nums_str=$("#numsid").val();
+			var select_nums=parseInt(select_nums_str);
+			if(select_nums>stock){
+				$("#numsid").val(stock);
+				$("#minusid").removeClass("disabled");
+				$("#plusid").addClass("disabled");
+			};
+		};
+	}
+	
 	function get_sku(){
 		var spec_str_arr=new Array();
 		$("dl[tagname=spid]").each(function(){
@@ -212,9 +257,9 @@
     			     if(typeof(skuList[new_spcs_str])=='undefined'){    			    	    			    	
     			    	 var target_obj=$("span[tagname=spvid][spvid="+one_attrvalids[j]+"]")[0];
     			    	 $(target_obj).parent().parent().addClass("disabled");
-    			     }
-    		}
-    	}
+    			     };
+    		};
+    	};
 	};
 	function load_imgs(){
 		var imgurls=selecSku.skuImgUrl;
@@ -234,7 +279,7 @@
 		html_str+='<li>';
 		html_str+='<div class="img on">';
 		html_str+='<a href="#">';
-		html_str+='<a class="zoomThumbActive" href="javascript:void(0);" rel="{gallery: \'gal1\',smallimage:\'${my:random(imgGetUrl)}?rid='+imgurl+'&op=s0_w418_h418\'}\',largeimage: \'${my:random(imgGetUrl)}?rid='+imgurl+'&op=s0_w900_h900\'}">';
+		html_str+='<a class="zoomThumbActive" href="javascript:void(0);" rel="{gallery: \'gal1\',smallimage:\'${my:random(imgGetUrl)}?rid='+imgurl+'&op=s0_w418_h418\'}\',largeimage: \'${my:random(imgGetUrl)}?rid='+imgurl+'\'}">';
 		html_str+='<img src="${my:random(imgGetUrl)}?rid='+imgurl+'&op=s0_w55_h55" alt="">';
 		html_str+='</a>';
 		html_str+='</a>';
@@ -242,8 +287,37 @@
 		html_str+='</li>';
 		return html_str;
 	}
+	
+	function changenums(nums){
+		var stock_str=$("#stack").val();
+		var stock=parseInt(stock_str);
+		var stock_sel_str=$("#numsid").val();
+		var stock_sel=parseInt(stock_sel_str);
+		if(stock_sel+nums<1||stock_sel+nums>stock){
+			return;
+		}
+		if(stock_sel+nums==stock){
+			$("#plusid").addClass("disabled");	
+			$("#minusid").removeClass("disabled");
+		}else{
+			$("#plusid").removeClass("disabled");
+		}
+		if(stock_sel+nums==1){
+			$("#minusid").addClass("disabled");	
+			$("#plusid").removeClass("disabled");	
+		}else{
+			$("#minusid").removeClass("disabled");
+		}
+		var select_nums_str=$("#numsid").val();
+		var select_nums=parseInt(select_nums_str);
+		$("#numsid").val(select_nums+nums);
+		
+		
+		
+	}
 	$(function(){
 		load_imgs();
+		initnums();
 		var specs=defaultSku.skuSpecId;
 		var list=specs.split("|||");
 		for(var i in prductspecs){ 
@@ -295,18 +369,6 @@
                     alwaysOn:false
                 });
             });
-        </script>
-        <script type="text/javascript">
-            $(function(){
-
-                document.onclick=function(e){
-                    var e=e?e:window.event;
-                    var tar = e.srcElement||e.target;
-                    if(tar.id!="prod_price1"){
-                        $('#prod_price1').css('z-index',-1);$('#prod_price').show();
-                    }
-                }
-            })
         </script>
 </body>
 </html>

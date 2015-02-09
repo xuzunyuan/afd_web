@@ -15,7 +15,7 @@
 <jsp:include page="/common/head.html"/>
 	<div class="crossnav">
 		<ul>
-			<li class="on"><a href="#">首&nbsp;&nbsp;页</a></li>
+			<li class="on"><a href="${ctx}/index.jsp">首&nbsp;&nbsp;页</a></li>
 		</ul>
 	</div>
 	<!-- banner -->
@@ -26,8 +26,8 @@
 	</div>
 	<!-- banner -->
 	<!-- container -->
-	<script type="text/javascript" src="http://js.web.afdimg.com/timecount.js"></script>
-	<script type="text/javascript" src="http://js.web.afdimg.com/scrollpagination.js"></script>
+	<script type="text/javascript" src="${jsDomain}/timecount.js"></script>
+	<script type="text/javascript" src="${jsDomain}/scrollpagination.js"></script>
 
 	<script type="text/javascript">
 	var  currpage=1;
@@ -35,7 +35,7 @@
 	var  totalpages=0;
 $(function(){
 	$('#content').scrollPagination({
-		'contentPage': 'bsdetail.action?bsid=${brandShow.brandShowId}', // the url you are fetching the results
+		'contentPage': '${ctx}/bsdetails.action?bsid=${brandShow.brandShowId}', // the url you are fetching the results
 		'contentData': {pageno:currpage}, // these are the variables you can pass to the request, for example: children().size() to know which page you are
 		'scrollTarget': $(window), // who gonna scroll? in this example, the full window
 		'heightOffset': 50, // it gonna request when scroll is 10 pixels before the page ends
