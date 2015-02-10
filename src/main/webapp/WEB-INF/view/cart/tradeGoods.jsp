@@ -10,6 +10,11 @@
 	<script type="text/javascript" src="${jsDomain}/jquery.cookie.js"></script>
 	<link rel="stylesheet" type="text/css" href="${cssDomain }/css/allstyle.css"/>
 	<link rel="stylesheet" type="text/css" href="${cssDomain }/css/order.css"/>
+	<script type="text/javascript">
+		$(function(){
+			showTradePrice();
+		});
+	</script>
 </head>
 <body>
 	<div class="cartList-caption">
@@ -34,7 +39,7 @@
 				<span>订单<c:out value="${var.count }"/>：<c:out value="${cart.brandShowTitle }" /></span>
 			</div>
 			<c:forEach items="${cart.cartItems}" var="cartItem">
-				<div class="row">
+				<div name="item" class="row">
 					<table>
 						<colgroup>
 							<col width="34">
@@ -89,7 +94,7 @@
 					<tbody>
 						<tr>
 							<td colspan="1" class="storeTotal">
-								<p><span>快递费：0.00元</span><span>此订单合计：714.00元</span></p>
+								<p><span>快递费：0.00元</span><span name="storeTotal">此订单合计：714.00元</span></p>
 							</td>
 						</tr>
 					</tbody>

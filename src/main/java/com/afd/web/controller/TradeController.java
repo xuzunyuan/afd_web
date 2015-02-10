@@ -80,6 +80,7 @@ public class TradeController{
 	public String tradeinfo(
 			@CookieValue(value = "cart", required = true, defaultValue = "") String cookieCart,
 			Model model, HttpServletRequest request, HttpServletResponse response) {
+System.out.println(cookieCart);
 		List<Cart> carts_confirm=new ArrayList<Cart>();
 		carts_confirm = this.cartService.showCart(cookieCart);
 		//保存购物车
@@ -101,7 +102,8 @@ public class TradeController{
 	 * create order
 	 */
 	@RequestMapping(value = "/tradecomfirm")
-	public String tradeConfirm(TradesInfo tradesInfo, ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+	public String tradeConfirm(@CookieValue(value = "cartconfirm", required = true, defaultValue = "") String cookieCart_confirm, 
+			TradesInfo tradesInfo, ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 		boolean isLogin = LoginServiceImpl.isLogin(request, response);
 		Long uid = 0l;
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
@@ -110,20 +112,18 @@ public class TradeController{
 		}
 		if(!isLogin) {
 			//TODO
-			return "";
+			return "redirect:/trade.action";
 		}
 		String submitcookie = RequestUtils.getCookieValue(request, "tradesubmit");
 		if(StringUtils.isNumeric(submitcookie) && NumberUtils.toInt(submitcookie)>1){
-			return "redirect:/cart.jsp";
+			return "redirect:/cart/cart.action";
 		}
 		String ip = request.getRemoteAddr();//返回发出请求的IP地址
-		String cookieCart_confirm = RequestUtils.getCookieValue(request, OrderConstants.COOKIE_CART_CONFIRM);// 确认购买的商品
 		if (StringUtils.isEmpty(cookieCart_confirm)) {//no cart_confirm cookie
 			log.error("---------------create oreder info:cookie_null------------");
 			cookieCart_confirm = "";
 			return "tradefail";
 		}
-		
 		List<Cart> carts_confirm = this.cartService.showCart(cookieCart_confirm);
 		
 		if (carts_confirm == null || carts_confirm.size() == 0) {
@@ -131,9 +131,9 @@ public class TradeController{
 		}
 		List<CartItem> cartItems = this.getNoChoosedCartItem(carts_confirm);
 		carts_confirm = this.getGoods(carts_confirm);
-		UserAddress address = this.addressService.getAddressById(tradesInfo.getAddressId());		
+		UserAddress address = this.addressService.getAddressById(tradesInfo.getPayAddrId());		
 		if(null == address){
-			log.error("---------------address is null------------addressId:"+tradesInfo.getAddressId());
+			log.error("---------------address is null------------addressId:"+tradesInfo.getPayAddrId());
 			return "tradefail";
 		}
 
@@ -200,7 +200,7 @@ public class TradeController{
 		String[] ids = orderids_str.split("_");			
 		List<Long> orderids_list =new ArrayList<Long>();
 		
-		for (int i = 0; i < ids.length; i++) {				
+		for (int i = 0; i < ids.length; i++) {			
 			orderids_list.add(new Long(ids[i]));
 		}			
 		String paymentType="1";
@@ -208,10 +208,10 @@ public class TradeController{
 			paymentType="2";
 		}
 		String paymode=tradesInfo.getPayMode();
-		if(tradesInfo.getPayMode().substring(0, 1).equals("1")){
+		if(tradesInfo.getPayMode().substring(0, 1).equals("2")){
 			paymode=OrderConstants.PAY_MODE_APIPAY;
 		}
-		if(tradesInfo.getPayMode().substring(0, 1).equals("2")){
+		if(tradesInfo.getPayMode().substring(0, 1).equals("1")){
 			paymode=OrderConstants.PAY_MODE_CHINAPAY;
 		}
 		Long paymentId=this.paymentServices.getPaymentId(orderids_list, "1", ip, uid, paymode, paymentType);
@@ -241,8 +241,7 @@ public class TradeController{
 			ids_list[i] = (new Long(ids[i]));
 		}
 		//TODO
-//		List<Order> orderlist = this.orderService.getOrdersByIdsAndUserIdNodelay(ids_list, userId);
-		List<Order> orderlist = new ArrayList<Order>();
+		List<Order> orderlist = this.orderService.getOrdersByIdsAndUserId(ids_list, uid);
 		modelMap.addAttribute("orderlist", orderlist);
 		return "tradesucceed_n";
 	}
@@ -311,7 +310,7 @@ public class TradeController{
 		if(!StringUtils.isEmpty(userId)) {
 			uid = Long.parseLong(userId);
 		}
-		int res = 0;
+		int res = -10;
 		if (uid != 0l) {
 			addr.setUserId(uid.intValue());
 			addr.setStatus(UserConstants.ADDRESS_STATUS_VALID);
@@ -375,7 +374,7 @@ public class TradeController{
 			trade.setUserId(userId);
 			trade.setSellerId(cartTemp.getSellerId());
 			trade.setTradeItems(tradeItems);
-			trade.setAddressId(tradesInfo.getAddressId());
+			trade.setAddressId(tradesInfo.getPayAddrId());
 			
 			trade.setPayType("1");
 			trade.setPayMode(tradesInfo.getPayMode());

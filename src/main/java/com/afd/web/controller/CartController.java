@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.afd.common.util.CartTransferUtils;
 import com.afd.constants.order.OrderConstants;
 import com.afd.param.cart.Cart;
@@ -44,8 +45,36 @@ public class CartController{
 	@Autowired
 	private ICartService cartService;
 
-	private static final String cookie = "[{\"num\":2,\"selected\":false,\"skuId\":37},{\"num\":2,\"selected\":false,\"skuId\":29},{\"num\":2,\"selected\":false,\"skuId\":1},{\"num\":2,\"selected\":false,\"skuId\":40}]";
-
+	@RequestMapping("addcart")
+	@ResponseBody
+	public void addCart(@CookieValue(value = "cart", required = false) String cookieCart,
+			Long bsdid, Long num, HttpServletResponse response, HttpServletRequest request) {
+		List<CartItem> cartItems = null;
+		if (!StringUtils.isBlank(cookieCart)) {
+			cartItems = CartTransferUtils.cookieCartToCartItem(JSON
+					.parseObject(cookieCart,
+							new TypeReference<List<CookieCartItem>>() {
+							}));
+		}
+		boolean exist = false;
+		for(CartItem cartItem : cartItems) {
+			if(cartItem.getBrandShowDetailId().equals(bsdid)) {
+				exist = true;
+				cartItem.setNum(cartItem.getNum() + num);
+				cartItem.setSelected(true);
+				break;
+			}
+		}
+		if(!exist) {
+			CartItem cartItem = new CartItem();
+			cartItem.setBrandShowDetailId(bsdid);
+			cartItem.setNum(num);
+			cartItem.setSelected(true);
+		}
+		saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems), request, response);
+		return;
+	}
+	
 	@RequestMapping("/cart")
 	public String cart() {
 		return "/cart/cart";
