@@ -47,7 +47,7 @@ public class CartController{
 
 	@RequestMapping("addcart")
 	@ResponseBody
-	public void addCart(@CookieValue(value = "cart", required = false) String cookieCart,
+	public boolean addCart(@CookieValue(value = "cart", required = false) String cookieCart,
 			Long bsdid, Long num, HttpServletResponse response, HttpServletRequest request) {
 		List<CartItem> cartItems = null;
 		if (!StringUtils.isBlank(cookieCart)) {
@@ -72,7 +72,7 @@ public class CartController{
 			cartItem.setSelected(true);
 		}
 		saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems), request, response);
-		return;
+		return true;
 	}
 	
 	@RequestMapping("/cart")
