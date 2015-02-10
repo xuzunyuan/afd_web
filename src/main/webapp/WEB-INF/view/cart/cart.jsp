@@ -313,7 +313,7 @@
 							<div class="cartLoading">
 								<img src="${imgDomain }/load.gif" alt="" />
 								<h3>加载中...若页面长时间不显示商品</h3>
-								<p><a href="#">点击刷新 </a></p>
+								<p><a href="${ctx}/cart/cart.action">点击刷新 </a></p>
 							</div>
 							<!-- cart loading end -->
 						</div>

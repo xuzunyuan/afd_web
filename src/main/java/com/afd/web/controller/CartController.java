@@ -49,7 +49,7 @@ public class CartController{
 	@ResponseBody
 	public boolean addCart(@CookieValue(value = "cart", required = false) String cookieCart,
 			Long bsdid, Long num, HttpServletResponse response, HttpServletRequest request) {
-		List<CartItem> cartItems = null;
+		List<CartItem> cartItems = new ArrayList<CartItem>();
 		if (!StringUtils.isBlank(cookieCart)) {
 			cartItems = CartTransferUtils.cookieCartToCartItem(JSON
 					.parseObject(cookieCart,
@@ -57,6 +57,9 @@ public class CartController{
 							}));
 		}
 		boolean exist = false;
+		if(null == cartItems){
+			cartItems = new ArrayList<CartItem>();
+		}
 		for(CartItem cartItem : cartItems) {
 			if(cartItem.getBrandShowDetailId().equals(bsdid)) {
 				exist = true;
@@ -70,6 +73,7 @@ public class CartController{
 			cartItem.setBrandShowDetailId(bsdid);
 			cartItem.setNum(num);
 			cartItem.setSelected(true);
+			cartItems.add(cartItem);
 		}
 		saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems), request, response);
 		return true;
