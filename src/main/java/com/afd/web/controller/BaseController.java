@@ -119,7 +119,7 @@ public class BaseController {
 		}
 		
 		Map<String,Object> map=new HashMap<String,Object>();
-		map.put("bsid", bsdid);
+		model.addAttribute("bsdid", bsdid);
 		BrandShowDetail bsd = this.brandShowService.getBrandShowDetailById(bsdid);
 		if(bsd==null){
 			return "redirect:/index.jsp";

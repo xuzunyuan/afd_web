@@ -127,7 +127,7 @@
 						</div>
 						<!-- g-items end -->
 						<div class="btnWrap clearfix">
-							<a href="#" class="btn btn-assist xl btn-addCart"><i class="icon i-cartSM"></i>加入购物车</a>
+							<a href="javascript:void(0);" onclick="addtocart()" class="btn btn-assist xl btn-addCart"><i class="icon i-cartSM"></i>加入购物车</a>
 						</div>
 					</div>
 					<!-- g-buy end -->
@@ -154,7 +154,7 @@
 		<!-- footer end -->
 		<!-- float -->
 		<div id="float" class="float-box">
-			<div id="hometop" class="return-top"><a title="返回顶部" href="javascript:void(0);"></a> </div>
+			<div id="hometop" onclick="pageScroll()" class="return-top"><a title="返回顶部" href="javascript:void(0);"></a> </div>
 		</div>
 		<!-- float end -->
 	</div>
@@ -315,6 +315,35 @@
 		
 		
 	}
+	
+	function addtocart(){
+		var nums=$("#numsid").val();
+		var stock_str=$("#stack").val();
+		var stock=parseInt(stock_str);
+		if(parseInt(nums)<1||parseInt(nums)>stock){
+			return false;
+		}
+				$.ajax({
+					url : "${ctx}/cart/addcart.action",
+					data : {
+						bsdid:${bsdid},
+					    num : nums
+					},
+					async : false,
+					dataType : "json",
+					success : function(data) {
+						//window.location.href='${ctx}/cart/cart.action';	
+						$("#popupdiv").$('#popupdiv').show();
+						setTimeout("$('#popupdiv').hide();",2000);
+					}
+				});
+	}
+	function pageScroll(){
+	    window.scrollBy(0,-100);
+	    scrolldelay = setTimeout('pageScroll()',100); 
+	    var sTop=document.documentElement.scrollTop+document.body.scrollTop;
+	    if(sTop==0) clearTimeout(scrolldelay);
+	}
 	$(function(){
 		load_imgs();
 		initnums();
@@ -370,5 +399,20 @@
                 });
             });
         </script>
+<div id="popupdiv" class="popup popup-info pop-order pop-success" style="display:none">
+			<div class="hd">
+				<i class="close"></i>
+			</div>
+			<div class="bd">
+				<div class="order-delivery">
+					<dl>
+						<dt><i class="icon i-rightXL"></i></dt>
+						<dd>
+							<h2>加入购物车成功！</h2>
+						</dd>
+					</dl>
+				</div>
+			</div>
+</div>
 </body>
 </html>
