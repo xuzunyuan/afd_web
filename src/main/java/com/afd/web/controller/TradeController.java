@@ -80,7 +80,6 @@ public class TradeController{
 	public String tradeinfo(
 			@CookieValue(value = "cart", required = true, defaultValue = "") String cookieCart,
 			Model model, HttpServletRequest request, HttpServletResponse response) {
-System.out.println(cookieCart);
 		List<Cart> carts_confirm=new ArrayList<Cart>();
 		carts_confirm = this.cartService.showCart(cookieCart);
 		//保存购物车
@@ -365,14 +364,15 @@ System.out.println(cookieCart);
 		User user = this.userService.getUserById(userId);
 		while (it.hasNext()) {
 			Cart cartTemp = it.next();
-			List<TradeItem> tradeItems = this.getTradeItem(
-					cartTemp.getCartItems(), cartTemp.getSellerId());
+			List<TradeItem> tradeItems = this.getTradeItem(cartTemp);
 			if (tradeItems.size() == 0) {
 				continue;
 			}
 			Trade trade = new Trade();
 			trade.setUserId(userId);
 			trade.setSellerId(cartTemp.getSellerId());
+			trade.setBrandShowId(cartTemp.getBrandShowId());
+			trade.setBrandShowTitle(cartTemp.getBrandShowTitle());
 			trade.setTradeItems(tradeItems);
 			trade.setAddressId(tradesInfo.getPayAddrId());
 			
@@ -398,9 +398,9 @@ System.out.println(cookieCart);
 	 * @param cartItems
 	 * @return TradeItem Info
 	 */
-	private List<TradeItem> getTradeItem(List<CartItem> cartItems, Long sellerId) {
+	private List<TradeItem> getTradeItem(Cart cart) {
 		List<TradeItem> tradeItems = new ArrayList<TradeItem>();
-		Iterator<CartItem> it = cartItems.iterator();
+		Iterator<CartItem> it = cart.getCartItems().iterator();
 
 		while (it.hasNext()) {
 			CartItem cartItemTemp = it.next();
@@ -410,7 +410,7 @@ System.out.println(cookieCart);
 				tradeItem.setNum(cartItemTemp.getNum());
 				tradeItem.setMarketPrice(cartItemTemp.getMaketPrice());
 				tradeItem.setShowPrice(cartItemTemp.getShowPrice());
-				tradeItem.setSellerId(sellerId);
+				tradeItem.setSellerId(cart.getSellerId());
 				tradeItem.setSkuId(cartItemTemp.getSkuId());
 				tradeItem.setProdSpecId(cartItemTemp.getSpecId());
 				tradeItem.setProdSpecName(cartItemTemp.getSpecName());
@@ -418,7 +418,10 @@ System.out.println(cookieCart);
 				tradeItem.setBcId(cartItemTemp.getBcId().longValue());
 				tradeItem.setProdCode(cartItemTemp.getProdCode());
 				tradeItem.setSkuCode(cartItemTemp.getSkuCode());
-
+				tradeItem.setBrandShowId(cart.getBrandShowId());
+				tradeItem.setBrandShowTitle(cart.getBrandShowTitle());
+				tradeItem.setBrandShowDetailId(cartItemTemp.getBrandShowDetailId());
+				
 				tradeItems.add(tradeItem);
 			}
 		}
