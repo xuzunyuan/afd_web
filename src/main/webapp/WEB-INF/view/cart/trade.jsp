@@ -13,10 +13,15 @@
 	<script type="text/javascript">
 		var choseaddrs = {};
 		$(function(){
+			hasError();
 			getAddr();
 			
 			$("div.pro-mod").load("${ctx}/tradeGoods.action");
 			
+			$(document).on("click","div.pop-order div.hd i.close",function(){
+				$("div.mask").addClass("hidden");
+				$("div.pop-order").addClass("hidden");
+			});
 			$(document).on("mouseover","dl.mod-banks",function(){
 				$("dl.mod-banks").addClass("hover");
 			});
@@ -242,6 +247,16 @@
 				$("#dataForm").submit();
 			});
 		});
+		function hasError() {
+			if("${isEmpty}" == "true" || "${isAddrEmpty}" == "true" || "${hasError}" == "true"){
+				$("div.mask").removeClass("hidden");
+				$("div.pop-order").removeClass("hidden");
+				$("div.pop-order div.bd dd h2").text("您还没有选择商品，请选择您要结算的商品!");
+			} else {
+				$("div.mask").addClass("hidden");
+				$("div.pop-order").addClass("hidden");
+			}
+		}
 		function getAddr() {
 			$.post(
 				"${ctx}/getAddr.action",
@@ -903,6 +918,22 @@
 			</div>
 		</div>
 		<jsp:include page="/common/foot.html" />
+	</div>
+	<div class="popup popup-info pop-order" style="width: 800px;margin-left: -400px">
+		<div class="hd">
+			<i class="close"></i>
+		</div>
+		<div class="bd">
+			<div class="order-delivery">
+				<dl>
+					<dt><i class="icon i-dangerXL"></i></dt>
+					<dd>
+						<h2 style="width: 510px;">订单中的部分商品已经失效或者缺货，本次交易无法正常继续，请返回购物车确认商品后重新提交。</h2>
+						<p><a href="${ctx}/cart/cart.action" class="returnModify">返回购物车修改 <em>&gt;</em></a></p>
+					</dd>
+				</dl>
+			</div>
+		</div>
 	</div>
 	<div class="popup pop-addAddr popup-info hidden" style="width: 998px">
 		<div class="hd">

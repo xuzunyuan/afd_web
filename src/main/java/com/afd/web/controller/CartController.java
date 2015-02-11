@@ -30,9 +30,9 @@ import com.afd.param.cart.Cart;
 import com.afd.param.cart.CartItem;
 import com.afd.service.order.ICartService;
 import com.afd.service.product.IProductService;
-import com.afd.web.service.impl.LoginServiceImpl;
 import com.afd.param.cart.CookieCartItem;
 import com.afd.common.util.RequestUtils;
+import com.afd.param.cart.MiniCart;
 
 @Controller
 @RequestMapping("/cart")
@@ -111,6 +111,34 @@ public class CartController{
 		// 结算商品是否有错误（点击结算按钮）
 		modelMap.addAttribute("hasError", hasError);
 		return "/cart/cartContent";
+	}
+
+	@RequestMapping("/miniCart")
+	@ResponseBody
+	public String showMiniCart(
+			@CookieValue(value = "cart", required = false) String cookieCart,
+			HttpServletRequest request, HttpServletResponse response) {
+		MiniCart miniCart = this.cartService.showMiniCart(cookieCart);
+		response.setContentType("text/plain;charset=UTF-8");
+		return JSON.toJSONString(miniCart);
+	}
+
+	@RequestMapping("/delMiniCart")
+	@ResponseBody
+	public String delMiniCart(
+			@CookieValue(value = "cart", required = false) String cookieCart,
+			@RequestParam Long bsdid,
+			HttpServletRequest request, HttpServletResponse response) {
+		if (bsdid != null && bsdid > 0) {
+			Set<Long> bsdIds = new HashSet<Long>();
+			bsdIds.add(bsdid);
+			// 删除商品
+			List<CartItem> cartItems = this.cartService.deleteCartItems(cookieCart, bsdIds);
+			this.saveCart(
+					CartTransferUtils.cartItemsToCookieCartItems(cartItems),
+					request, response);
+		}
+		return "";
 	}
 
 	/**
