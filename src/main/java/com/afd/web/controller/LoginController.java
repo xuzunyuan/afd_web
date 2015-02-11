@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,7 @@ import com.afd.service.sms.ISmsService;
 import com.afd.service.sms.SmsServiceMock;
 import com.afd.service.user.IUserService;
 import com.afd.web.service.impl.LoginServiceImpl;
+import com.afd.web.util.RandomValidateCode;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 
@@ -246,7 +248,7 @@ public class LoginController {
 	
 	@ResponseBody
 	@RequestMapping("/validFindPwd1")
-	public String validFindPwd1(WebRequest request){
+	public String validFindPwd1(HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String, Object>();
 		//验证用户名
 		String userName = request.getParameter("userName");
@@ -260,6 +262,20 @@ public class LoginController {
 			String k = DigestUtils.md5Hex(user.getMobile()+System.currentTimeMillis());
 			this.redis.opsForValue().set(SystemConstants.CACHE_PREFIX+UserConstants.FIND_PWD_U+k, user.getMobile(), 10, TimeUnit.MINUTES);
 			map.put("k", k);
+		}
+		
+		//校验验证码
+		String sessionId = RequestUtils.getCookieValue(request, "JSESSIONID");
+		String vCode = request.getParameter("vCode");
+		if(StringUtils.isBlank(vCode)){
+			map.put("codeStatus", 1);
+		}else{
+			String validCode = (String)this.redis.opsForValue().get(SystemConstants.CACHE_PREFIX+RandomValidateCode.RANDOMCODEKEY+sessionId);
+			if(!vCode.toUpperCase().equals(validCode)){
+				map.put("codeStatus", 2);
+			}else{
+				map.put("codeStatus", 0);
+			}
 		}
 		
 		return JSON.toJSONString(map);
@@ -358,6 +374,15 @@ public class LoginController {
 			return "redirect:/register.action";
 		}
 		return this.validCode(code, mobile);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/validRandomCode")
+	public String validRandomCode(@RequestParam String vCode, @CookieValue("JSESSIONID") String sessionId){
+		String randomCode = (String)this.redis.opsForValue().get(SystemConstants.CACHE_PREFIX+RandomValidateCode.RANDOMCODEKEY+sessionId);
+		Map<String,Boolean> map = new HashMap<String, Boolean>();
+		map.put("status", vCode.toUpperCase().equals(randomCode));
+		return JSON.toJSONString(map);
 	}
 	
 	public static void main(String[] args) {

@@ -30,10 +30,11 @@
 			
 			$(document).on("click","a[name=next]",function(){
 				var userName = $("input[name=userName]").val();
+				var vCode = $("#vCode").val();
 				$.getJSON("${ctx}/validFindPwd1.action",
-					{userName:userName},
+					{userName:userName,vCode:vCode},
 					function(json){
-						if(json.userStatus ==0){
+						if(json.userStatus ==0&&json.codeStatus==0){
 							location.href="${ctx}/findpwd2.action?k="+json.k;
 						}else{
 							if(json.userStatus ==1){
@@ -41,12 +42,42 @@
 							}else if(json.userStatus ==2){
 								$("#errMsg").html("<span>该用户名不存在！</span>");
 							}
+							
+							if(json.codeStatus==1){
+								$("#errMsg2").html("<span>请输入验证码！</span>");
+							}else if(json.codeStatus==2){
+								$("#errMsg2").html("<span>验证码输入错误！</span>");
+							}
 						}
 					}
 				);
 			});
+			
+			$(document).on("blur","#vCode",function(){
+				var vCode = $(this).val();
+				if(!vCode){
+					$("#errMsg2").html("<span>请输入验证码！</span>");
+					return false;
+				}
+				
+				$.getJSON("${ctx}/validRandomCode.action",
+					{vCode:vCode},
+					function(json){
+						if(json.status){
+							$("#errMsg2").html('<span><i class="icon i-ok"></i></span>');
+						}else{
+							$("#errMsg2").html("<span>验证码输入错误！</span>");
+						}
+					}
+				);
+				
+			});
+			
 		});
 		
+		function refresh() {
+	        $("#code").attr("src","${ctx}/imageServlet?"+Math.random());
+	    }
 	</script>
 </head>
 <body id="regsignin">
@@ -109,11 +140,11 @@
 							<dl class="form-item">
 								<dt class="item-label"><label><em>*</em>验证码：</label></dt>
 								<dd class="item-cont">
-									<div class="item-code">CeDc</div>
-									<p class="changeone"><a href="#">换一张</a></p>
-									<input type="text" class="txt w-lg xl">
+									<div class="item-code"><img id="code" src="${ctx}/imageServlet" /></div>
+									<p class="changeone"><a href="javascript:refresh();">换一张</a></p>
+									<input id="vCode" name="vCode" type="text" class="txt w-lg xl">
 									<div class="checkHint errTxt">
-										<div class="hintBox"><span><i class="icon i-ok"></i>验证码输入错误</span></div>
+										<div id="errMsg2" class="hintBox"></div>
 									</div>
 								</dd>
 							</dl>
