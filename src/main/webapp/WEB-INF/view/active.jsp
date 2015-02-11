@@ -21,7 +21,13 @@
 	<!-- banner -->
 	<div id="mainBanner">
 		<div class="wrap">
-			<a href="#"><img src="${imgDomain}/temp/active.jpg"/></a>
+		<c:set value="${ fn:split(brandShow.bannerImg, ',') }" var="bannerimgs" />
+									<c:if test ="${!empty bannerimgs[1]}">									
+									<img src="${my:random(imgGetUrl)}?${bannerimgs[1]}"/>
+									</c:if>
+									<c:if test ="${empty bannerimgs[1]}">
+									<img src="${imgDomain}/temp/active.jpg"/>
+									</c:if>			
 		</div>
 	</div>
 	<!-- banner -->

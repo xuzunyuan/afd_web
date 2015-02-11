@@ -4,7 +4,15 @@
  <div class="mod-goodsShow">
 							<a href="${ctx}/brandshow.action?bsid=${show.brandShowId}">
 								<div class="g-info">
+									
+									<c:set value="${ fn:split(detail.bannerImg, ',') }" var="bannerimgs" />
+									<c:if test ="${!empty bannerimgs[0]}">
+									
+									<img src="${my:random(imgGetUrl)}?${bannerimgs[0]}" alt="" />
+									</c:if>
+									<c:if test ="${empty bannerimgs[0]}">
 									<img src="${imgDomain}/temp/img7.jpg" alt="" />
+									</c:if>
 									<p class="g-text">${show.title}</p>
 									<p class="g-price">${show.lowestPrice}<em>元起</em></p>
 									<p class="g-time" gtimeid="${status.index + 1}" endtime="${show.endDate}">剩余时间：
