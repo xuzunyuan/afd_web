@@ -24,49 +24,7 @@
 				} else {
 					cartCookie = currCookie;
 				}
-				$.post(
-					"${ctx}/cart/miniCart.action",
-					{},
-					function(data){
-						var cartData = $.parseJSON(data);
-						var obj = $("div#shoppingCart div.bd");
-						if(cartData.totalNum > 0) {
-							var html = "<div class='shoppingList'>" + 
-											"<div class='list'>";
-							var carts = cartData.carts;
-							for(var index in cartData.carts) {
-								var cartItems = carts[index].cartItems;
-								for(var index2 in cartItems) {
-									var cartItem = cartItems[index2];
-									html += "<dl>" + 
-											  "<dt><a href='#'><img src='" + cartItem.prodImgUrl + "' alt='' /></a></dt>" +
-											  "<dd class='goodsTitle'>" +
-											  	"<p><a href='#' title=''>" + cartItem.prodName + "</a></p>" +
-											  "</dd>" +
-											  "<dd class='subtotal'>" +
-											  	"<p><span class='price'>&yen;<strong>" + cartItem.showPrice.toFixed(2) + "</strong></span><em>x</em><span class='number'>" + cartItem.num + "</span></p>" +
-											  	"<p><a href='#'>删除</a></p>" +
-											  "</dd>" +
-											"</dl>";
-								}
-							}
-							html += "<a href='${ctx}/cart/cart.action' class='cart-more'>更多...</a>" + 
-								"</div>" + 
-								"<div class='summation'>" + 
-									"<p class='total'>购物车里共有<em>" + cartData.totalNum + "</em>件商品，总计" +
-										"<span class='priceTotal'>&yen;<strong>" + cartData.totalMoney + "</strong></span></p>" + 
-									"<a href='${ctx}/cart/cart.action' class='btn btn-assist'>查看我的购物车</a>" + 
-								"</div>" + 
-							"</div>";
-							obj.html(html);
-						} else {
-							var html = "<div class='shoppingCart-empty show'>" + 
-											"<p>快去挑选喜欢的商品吧！</p>" +
-										"</div>";
-							obj.html(html);
-						}
-					}
-				);
+				showMiniCart();
 			});
 			$(document).on("mouseout","div#shoppingCart",function(){
 				$(this).removeClass("hover");
@@ -84,6 +42,58 @@
 			}
 			return "";
 	    }
+		function showMiniCart() {
+			$.post(
+				"${ctx}/cart/miniCart.action",
+				{},
+				function(data){
+					var cartData = $.parseJSON(data);
+					var obj = $("div#shoppingCart div.bd");
+					if(cartData.totalNum > 0) {
+						var html = "<div class='shoppingList'>" + 
+										"<div class='list'>";
+						var carts = cartData.carts;
+						for(var index in cartData.carts) {
+							var cartItems = carts[index].cartItems;
+							for(var index2 in cartItems) {
+								var cartItem = cartItems[index2];
+								html += "<dl>" + 
+										  "<dt><a href='#'><img src='" + cartItem.prodImgUrl + "' alt='' /></a></dt>" +
+										  "<dd class='goodsTitle'>" +
+										  	"<p><a href='#' title=''>" + cartItem.prodName + "</a></p>" +
+										  "</dd>" +
+										  "<dd class='subtotal'>" +
+										  	"<p><span class='price'>&yen;<strong>" + cartItem.showPrice.toFixed(2) + "</strong></span><em>x</em><span class='number'>" + cartItem.num + "</span></p>" +
+										  	"<p><a href='javascript:delMiniCart(" + cartItem.brandShowDetailId + ");' >删除</a></p>" +
+										  "</dd>" +
+										"</dl>";
+							}
+						}
+						html += "<a href='${ctx}/cart/cart.action' class='cart-more'>更多...</a>" + 
+							"</div>" + 
+							"<div class='summation'>" + 
+								"<p class='total'>购物车里共有<em>" + cartData.totalNum + "</em>件商品，总计" +
+									"<span class='priceTotal'>&yen;<strong>" + cartData.totalMoney + "</strong></span></p>" + 
+								"<a href='${ctx}/cart/cart.action' class='btn btn-assist'>查看我的购物车</a>" + 
+							"</div>" + 
+						"</div>";
+						obj.html(html);
+					} else {
+						var html = "<div class='shoppingCart-empty show'>" + 
+										"<p>快去挑选喜欢的商品吧！</p>" +
+									"</div>";
+						obj.html(html);
+					}
+				}
+			);
+		}
+		function delMiniCart(bsdid){
+			$.post(
+				"${ctx}/cart/delMiniCart.action",
+				{bsdid:bsdid},
+				showMiniCart
+			);
+		}
 	</script>
 </head>
 <body>
