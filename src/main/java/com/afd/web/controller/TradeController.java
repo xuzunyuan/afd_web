@@ -330,7 +330,7 @@ public class TradeController{
 		}
 		int res = -10;
 		if (uid != 0l) {
-			addr.setUserId(uid.intValue());
+			addr.setUserId(uid);
 			addr.setStatus(UserConstants.ADDRESS_STATUS_VALID);
 			res = this.addressService.addAddress(addr);
 		}
