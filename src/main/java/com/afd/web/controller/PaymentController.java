@@ -51,14 +51,6 @@ public class PaymentController {
 		if (StringUtils.isBlank(orderid)&&StringUtils.isBlank(paymentid)) {
 			return "payfail";
 		}
-		String pay_domain="http://pay.yiwang.com";
-		String active_str=System.getProperty("spring.profiles.active","product");
-		if("test".equalsIgnoreCase(active_str)){
-			pay_domain="http://pay.test.yiwang.com";
-		}
-		if("beta".equalsIgnoreCase(active_str)){
-			pay_domain="http://pay.beta.yiwang.com";
-		}
 		if(!StringUtils.isBlank(paymentid)){
 			
 			Long paymentId=NumberUtils.toLong(paymentid);
@@ -85,14 +77,14 @@ public class PaymentController {
 				}
 				 List<Order> orderlist = this.orderService.getOrdersByIdsAndUserId(ids_list,userid);
 				if(payGw.equals("20")){
-					payurl=pay_domain+"/alipay/pay?a="+paymentId+"&b="+orderFee.toString();
+					payurl="/alipay/pay.action?a="+paymentId+"&b="+orderFee.toString();
 				}
 				if(payGw.equals("1z")){
-					payurl=pay_domain+"/unionpay/pay?a="+paymentId+"&b="+orderFee.toString()+"&c=";
+					payurl="/unionpay/pay.action?a="+paymentId+"&b="+orderFee.toString()+"&c=";
 				}
 				
 				if(payGw.substring(0, 1).equals("1")){
-					payurl=pay_domain+"/unionpay/pay?a="+paymentId+"&b="+orderFee.toString()+"&c="+payGw;
+					payurl="/unionpay/pay.action?a="+paymentId+"&b="+orderFee.toString()+"&c="+payGw;
 				}
 				
 				long ordernums=orderlist.size();
@@ -101,7 +93,6 @@ public class PaymentController {
 				modelMap.addAttribute("payMode", payGw);
 				modelMap.addAttribute("total", orderFee);
 				modelMap.addAttribute("payurl", payurl);
-				modelMap.addAttribute("paydomain", pay_domain);
 				modelMap.addAttribute("orderlist",orderlist);
 				return "payment_n";
 			}
@@ -138,13 +129,13 @@ public class PaymentController {
 			}
 			String payurl="";
 			if(payGw.equals("20")){
-				payurl=pay_domain+"/alipay/pay?a="+paymentId+"&b="+orderFee.toString();
+				payurl="/alipay/pay.action?a="+paymentId+"&b="+orderFee.toString();
 			}
 			if(payGw.equals("1z")){
-				payurl=pay_domain+"/unionpay/pay?a="+paymentId+"&b="+orderFee.toString()+"&c=";
+				payurl="/unionpay/pay.action?a="+paymentId+"&b="+orderFee.toString()+"&c=";
 			}			
 			if(payGw.substring(0, 1).equals("1")){
-				payurl=pay_domain+"/unionpay/pay?a="+paymentId+"&b="+orderFee.toString()+"&c="+payGw;
+				payurl="/unionpay/pay.action?a="+paymentId+"&b="+orderFee.toString()+"&c="+payGw;
 			}			
 			long ordernums=orderlist.size();
 			modelMap.addAttribute("ordernums", ordernums);
@@ -152,10 +143,9 @@ public class PaymentController {
 			modelMap.addAttribute("payMode", payGw);
 			modelMap.addAttribute("total", orderFee);
 			modelMap.addAttribute("payurl", payurl);
-			modelMap.addAttribute("paydomain", pay_domain);
 			modelMap.addAttribute("orderlist",orderlist);
 			return "payment_n";
-		}		
+		}	
 		return "payfail";
 		
 	}

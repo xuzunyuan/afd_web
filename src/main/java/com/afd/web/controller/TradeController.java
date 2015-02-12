@@ -226,12 +226,6 @@ public class TradeController{
 			paymentType="2";
 		}
 		String paymode=tradesInfo.getPayMode();
-		if(tradesInfo.getPayMode().substring(0, 1).equals("2")){
-			paymode=OrderConstants.PAY_MODE_APIPAY;
-		}
-		if(tradesInfo.getPayMode().substring(0, 1).equals("1")){
-			paymode=OrderConstants.PAY_MODE_CHINAPAY;
-		}
 		Long paymentId=this.paymentServices.savePaymentId(orderids_list, "1", ip, uid, paymode, paymentType);
 		if(null==paymentId||paymentId<0l){
 			return "payfail";
