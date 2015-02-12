@@ -39,7 +39,7 @@ public class LoginFilter implements Filter {
 			String query = req.getQueryString();
 			String rtnUrl = StringUtils.isBlank(query)?url.toString():url.toString()+"?"+query;
 			rtnUrl = URLEncoder.encode(rtnUrl,"utf-8");
-			resp.sendRedirect(req.getContextPath()+"/user/login?rtnUrl="+rtnUrl);
+			resp.sendRedirect(req.getContextPath()+"/login.action?rtnUrl="+rtnUrl);
 		}
 	}
 
