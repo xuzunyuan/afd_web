@@ -244,6 +244,7 @@
 				chgTradePayMode();
 			});
 			$(document).on("click","a.submitBtn",function(){
+				//TODO
 				$("#dataForm").submit();
 			});
 		});
