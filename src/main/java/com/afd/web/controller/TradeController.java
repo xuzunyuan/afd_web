@@ -52,7 +52,7 @@ import com.afd.common.util.RequestUtils;
 import com.afd.web.service.impl.LoginServiceImpl;
 
 /**
- * @author xiaotao
+ * @author wxp
  * 
  */
 @Controller
@@ -80,6 +80,11 @@ public class TradeController{
 	public String tradeinfo(
 			@CookieValue(value = "cart", required = true, defaultValue = "") String cookieCart,
 			Model model, HttpServletRequest request, HttpServletResponse response) {
+		boolean isLogin = LoginServiceImpl.isLogin(request, response);
+		if(!isLogin) {
+			String ctx = request.getContextPath();
+			return "redirect:/login.action?rtnUrl=" + ctx + "/trade.action";
+		}
 		List<Cart> carts_confirm=new ArrayList<Cart>();
 		carts_confirm = this.cartService.showCart(cookieCart);
 		//保存购物车
@@ -94,6 +99,13 @@ public class TradeController{
 		RequestUtils.setCookie(request, response, OrderConstants.COOKIE_CART_CONFIRM, 
 				JSON.toJSONString(cartItems), OrderConstants.COOKIE_CART_PERIOD);
 
+		boolean isEmpty = Boolean.parseBoolean(request.getParameter("isEmpty"));
+		boolean isAddrEmpty = Boolean.parseBoolean(request.getParameter("isAddrEmpty"));
+		boolean hasError = Boolean.parseBoolean(request.getParameter("hasError"));
+		model.addAttribute("isEmpty", isEmpty);
+		model.addAttribute("isAddrEmpty", isAddrEmpty);
+		model.addAttribute("hasError", hasError);
+		
 		return "/cart/trade";
 	}
 
@@ -110,8 +122,8 @@ public class TradeController{
 			uid = Long.parseLong(userId);
 		}
 		if(!isLogin) {
-			//TODO
-			return "redirect:/trade.action";
+			String ctx = request.getContextPath();
+			return "redirect:/login.action?rtnUrl=" + ctx + "/trade.action";
 		}
 		String submitcookie = RequestUtils.getCookieValue(request, "tradesubmit");
 		if(StringUtils.isNumeric(submitcookie) && NumberUtils.toInt(submitcookie)>1){
@@ -120,20 +132,22 @@ public class TradeController{
 		String ip = request.getRemoteAddr();//返回发出请求的IP地址
 		if (StringUtils.isEmpty(cookieCart_confirm)) {//no cart_confirm cookie
 			log.error("---------------create oreder info:cookie_null------------");
-			cookieCart_confirm = "";
-			return "tradefail";
+			modelMap.put("isEmpty", true);
+			return "redirect:/trade.action";
 		}
 		List<Cart> carts_confirm = this.cartService.showCart(cookieCart_confirm);
 		
 		if (carts_confirm == null || carts_confirm.size() == 0) {
-			return "tradefail";
+			modelMap.put("isEmpty", true);
+			return "redirect:/trade.action";
 		}
 		List<CartItem> cartItems = this.getNoChoosedCartItem(carts_confirm);
 		carts_confirm = this.getGoods(carts_confirm);
 		UserAddress address = this.addressService.getAddressById(tradesInfo.getPayAddrId());		
 		if(null == address){
 			log.error("---------------address is null------------addressId:"+tradesInfo.getPayAddrId());
-			return "tradefail";
+			modelMap.put("isAddrEmpty", true);
+			return "redirect:/trade.action";
 		}
 
 		Iterator<Cart> it = carts_confirm.iterator();
@@ -147,12 +161,14 @@ public class TradeController{
 		}
 		if (hasError) {
 			log.error("---------------create oreder info:hasError------------");
-			return "tradefail";// to do cart page
+			modelMap.put("hasError", true);
+			return "redirect:/trade.action";
 		}
 		List<Trade> tradelist = this.getTradeInfo(carts_confirm, tradesInfo, uid);
 		if (tradelist == null) {
 			log.error("---------------create oreder info:tradelist==null------------");
-			return "tradefail";// 参数错误
+			modelMap.put("hasError", true);
+			return "redirect:/trade.action";
 		}
 		StringBuffer orderids = new StringBuffer();
 		String orderids_str = "";
@@ -160,7 +176,8 @@ public class TradeController{
 			List<OrderInfo> orderlist = this.orderService.batchSaveOrders(tradelist);
 			if (orderlist == null || orderlist.size() < 1) {
 				log.error("---------------orderlist == null------------");
-				return "tradefail";
+				modelMap.put("hasError", true);
+				return "redirect:/trade.action";
 			}
 			List<CookieCartItem> combimeCartItems = CartTransferUtils
 					.cartItemsToCookieCartItems(cartItems);
@@ -184,7 +201,8 @@ public class TradeController{
 			log.error("orderids:"+orderids);
 			if("".equals(orderids.toString())){
 				log.error("---------------create oreder orderids_str empty-------- ");
-				return "tradefail";
+				modelMap.put("hasError", true);
+				return "redirect:/trade.action";
 			}
 			
 			orderids_str = orderids.substring(0, orderids.length() - 1);
@@ -193,7 +211,8 @@ public class TradeController{
 			log.error("---------------create oreder error"
 					+ JSON.toJSONString(tradelist) + "------------");
 			log.error(e.getMessage(),e);
-			return "tradefail";
+			modelMap.put("hasError", true);
+			return "redirect:/trade.action";
 		}
 		
 		String[] ids = orderids_str.split("_");			
@@ -213,7 +232,7 @@ public class TradeController{
 		if(tradesInfo.getPayMode().substring(0, 1).equals("1")){
 			paymode=OrderConstants.PAY_MODE_CHINAPAY;
 		}
-		Long paymentId=this.paymentServices.getPaymentId(orderids_list, "1", ip, uid, paymode, paymentType);
+		Long paymentId=this.paymentServices.savePaymentId(orderids_list, "1", ip, uid, paymode, paymentType);
 		if(null==paymentId||paymentId<0l){
 			return "payfail";
 		}
@@ -415,6 +434,7 @@ public class TradeController{
 				tradeItem.setProdSpecId(cartItemTemp.getSpecId());
 				tradeItem.setProdSpecName(cartItemTemp.getSpecName());
 				tradeItem.setProdTitle(cartItemTemp.getProdName());
+				tradeItem.setProdImg(cartItemTemp.getProdImgUrl());
 				tradeItem.setBcId(cartItemTemp.getBcId().longValue());
 				tradeItem.setProdCode(cartItemTemp.getProdCode());
 				tradeItem.setSkuCode(cartItemTemp.getSkuCode());

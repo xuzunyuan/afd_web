@@ -13,6 +13,22 @@
 	<script type="text/javascript">
 		$(function(){
 			initContent();
+			if("${isEmpty}" == "true"){
+				$("div.mask").removeClass("hidden");
+				$("div.pop-order").removeClass("hidden");
+				$("div.pop-order div.bd dd h2").text("您还没有选择商品，请选择您要结算的商品!");
+			} else if("${hasError}" == "true"){
+				$("div.mask").removeClass("hidden");
+				$("div.pop-order").removeClass("hidden");
+				$("div.pop-order div.bd dd h2").text("抱歉，您购物车中的部分商品已经失效或者缺货，请结算其他商品!");
+			} else {
+				$("div.mask").addClass("hidden");
+				$("div.pop-order").addClass("hidden");
+			}
+			$(document).on("click","div.pop-order div.hd i.close",function(){
+				$("div.mask").addClass("hidden");
+				$("div.pop-order").addClass("hidden");
+			});
 		});
 	</script>
 </head>
@@ -148,5 +164,21 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
+	<div class="popup popup-info pop-order hidden" style="width: 800px;margin-left: -400px">
+		<div class="hd">
+			<i class="close"></i>
+		</div>
+		<div class="bd">
+			<div class="order-delivery">
+				<dl>
+					<dt><i class="icon i-dangerXL"></i></dt>
+					<dd>
+						<h2 style="width: 510px;">订单中的部分商品已经失效或者缺货，本次交易无法正常继续。</h2>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="mask hidden"></div>
 </body>
 </html>
