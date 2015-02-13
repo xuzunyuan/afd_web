@@ -6,12 +6,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
+import com.afd.constants.SystemConstants;
 import com.afd.constants.user.UserConstants;
 import com.afd.model.user.Geo;
 import com.afd.model.user.User;
@@ -30,6 +35,7 @@ import com.afd.service.user.IGeoService;
 import com.afd.service.user.IUserService;
 import com.afd.web.service.impl.LoginServiceImpl;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 
 @Controller
 @RequestMapping("/user")
@@ -48,6 +54,8 @@ public class UserController {
 	private IAddressService addrService;
 	@Autowired
 	private IGeoService geoService;
+	@Autowired
+	private RedisTemplate<String, Object> redis;
 	
 	@RequestMapping("/userInfo")
 	public String userInfo(HttpServletRequest request,ModelMap map){
@@ -163,5 +171,135 @@ public class UserController {
 			map.put("status", true);
 		}
 		return JSON.toJSONString(map);
+	}
+	
+	@RequestMapping("/safeSet")
+	public String safeSet(HttpServletRequest request,ModelMap map){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		User user = this.userService.getUserInfoById(Long.parseLong(userId));
+		map.addAttribute("user", user);
+		return "/user/safe";
+	}
+	
+	@RequestMapping("/modifyPwd1")
+	public String modifyPwd1(HttpServletRequest request,ModelMap map){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		User user = this.userService.getUserById(Long.parseLong(userId));
+		if(user == null){
+			return "redirect:/register.action";
+		}
+		String mobile = user.getMobile();
+		mobile = mobile.substring(0, 3)+"****"+mobile.substring(7);
+		map.addAttribute("mobile", mobile);
+		String k = DigestUtils.md5Hex(user.getMobile()+System.currentTimeMillis());
+		this.redis.opsForValue().set(SystemConstants.CACHE_PREFIX+UserConstants.FIND_PWD_U+k, user.getMobile(), 10, TimeUnit.MINUTES);
+		map.addAttribute("k", k);
+		return "user/modifyPwd1";
+	}
+	
+	@RequestMapping("/modifyPwd2")
+	public String modifyPwd2(@RequestParam String k,ModelMap map){
+		String mobile=(String)this.redis.opsForValue().get(SystemConstants.CACHE_PREFIX+UserConstants.FIND_PWD_U+k);
+		User user = this.userService.getUserByMobile(mobile);
+		if(user == null){
+			return "redirect:/register.action";
+		}
+		mobile = mobile.substring(0, 3)+"****"+mobile.substring(7);
+		map.addAttribute("userName", user.getUserName());
+		map.addAttribute("mobile", mobile);
+		map.addAttribute("k", k);
+		
+		return "user/modifyPwd2";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/validModifyPwd1")
+	public String validModifyPwd1(WebRequest request){
+		Map<String,Object> map = new HashMap<String, Object>();
+		String k = request.getParameter("k");
+		map.put("k", k);
+		String code = request.getParameter("code");
+		String mobile = (String)this.redis.opsForValue().get(SystemConstants.CACHE_PREFIX+UserConstants.FIND_PWD_U+k);
+		if(StringUtils.isBlank(mobile)){
+			map.put("mobileStatus", 1);
+		}else{
+			map.put("mobileStatus", 0);
+		}
+		
+		if(StringUtils.isBlank(code)){
+			map.put("codeStatus", 1);
+		}else{
+			String temp = this.validCode(code, mobile);
+			Map<String,Boolean> mapTemp = JSON.parseObject(temp, new TypeReference<Map<String,Boolean>>(){});
+			boolean status = mapTemp.get("status");
+			if(!status){
+				map.put("codeStatus", 2);
+			}else{
+				map.put("codeStatus", 0);
+			}
+		}
+		
+		return JSON.toJSONString(map);
+	}
+	
+	private String validCode(String code,String mobile){
+		String validCode = (String)this.redis.opsForValue().get(SystemConstants.CACHE_PREFIX+UserConstants.VALID_CODE+mobile);
+		Map<String,Boolean> map = new HashMap<String, Boolean>();
+		if(code.equals(validCode)){
+			map.put("status", true);
+		}else{
+			map.put("status", false);
+		}
+		
+		return JSON.toJSONString(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/validModifyPwd2")
+	public String validModifyPwd2(WebRequest request){
+		Map<String,Object> map = new HashMap<String, Object>();
+		boolean mobileOk = false;
+		boolean pwdOk = false;
+		boolean repwdOk = false;
+		String k = request.getParameter("k");
+		map.put("k", k);
+		String pwd = request.getParameter("pwd");
+		String repwd = request.getParameter("repwd");
+		String mobile = (String)this.redis.opsForValue().get(SystemConstants.CACHE_PREFIX+UserConstants.FIND_PWD_U+k);
+		if(StringUtils.isBlank(mobile)){
+			map.put("mobileStatus", 1);
+		}else{
+			map.put("mobileStatus", 0);
+			mobileOk = true;
+		}
+		
+		if(StringUtils.isBlank(pwd)){
+			map.put("pwdStatus", 1);
+		}else if(pwd.length()>20||pwd.length()<6){
+			map.put("pwdStatus", 2);
+		}else{
+			map.put("pwdStatus", 0);
+			pwdOk = true;
+		}
+		
+		if(StringUtils.isBlank(repwd)){
+			map.put("repwdStatus", 1);
+		}else if(!repwd.equals(pwd)){
+			map.put("repwdStatus", 2);
+		}else{
+			map.put("repwdStatus", 0);
+			repwdOk = true;
+		}
+		
+		if(mobileOk&&repwdOk&&pwdOk){
+			this.userService.chgPwd(mobile, pwd);
+		}
+		
+		return JSON.toJSONString(map);
+	}
+	
+	@RequestMapping("/modifyPwd3")
+	public String modifyPwd3(){
+		return "user/modifyPwd3";
 	}
 }

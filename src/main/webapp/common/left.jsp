@@ -13,7 +13,7 @@
 		<ul>
 			<li><a href="${ctx}/user/userInfo.action"><span class="arrow right-hollow xs"><b></b><i></i></span>个人资料</a></li>
 			<li><a href="${ctx}/user/userAddress.action"><span class="arrow right-hollow xs"><b></b><i></i></span>收货地址</a></li>
-			<li><a href=""><span class="arrow right-hollow xs"><b></b><i></i></span>安全设置</a></li>
+			<li><a href="${ctx}/user/safeSet.action"><span class="arrow right-hollow xs"><b></b><i></i></span>安全设置</a></li>
 		</ul>
 	</div>		
 </div>
