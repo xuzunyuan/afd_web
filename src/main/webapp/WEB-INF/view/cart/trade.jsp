@@ -64,7 +64,6 @@
 				);
 			});
 			$(document).on("change","#addrForm textarea[name=addr]",function(){
-				//TODO
 				$("#addrForm textarea[name=addr]").removeClass("errIpt");
 				$("#addrForm span[name=addrErr]").text("");
 			});
@@ -197,9 +196,8 @@
 					}
 				);
 			});
-			$(document).on("click","div.addressList input[name=payAddrId]",function(){
-				var addrid = $(this).val();
-				chgTradeAddr(choseaddrs["a"+addrid]);
+			$(document).on("click","div.addressList input[name=userAddr]",function(){
+				chgTradeAddr();
 			});
 			$(document).on("click","div.addressList a[name=update]",function(){
 				var addrid = $(this).attr("addrid");
@@ -223,10 +221,15 @@
 				cleardata();
 			});
 			$(document).on("click","a[name=newAddr]",function(){
-				var shippingForm = $("div.shippingForm");
-				$("div.mask").removeClass("hidden");
-				$("div.pop-addAddr").removeClass("hidden");
-				$("div.pop-addAddr div.bd").append(shippingForm);
+				if(!$(this).hasClass("disabled")) {
+					var shippingForm = $("div.shippingForm");
+					$("div.mask").removeClass("hidden");
+					$("div.pop-addAddr").removeClass("hidden");
+					$("div.pop-addAddr div.bd").append(shippingForm);
+				}
+			});
+			$(document).on("click","div.addrMore",function(){
+				$("div.shippingAddr").addClass("unfold");
 			});
 			$(document).on("click","div.payMode input[name=payType]",function(){
 				$("div.payMode input[name=payMode]").prop("checked",false);
@@ -244,7 +247,20 @@
 				chgTradePayMode();
 			});
 			$(document).on("click","a.submitBtn",function(){
-				//TODO
+				if(!$("div.addressList input[name=userAddr]:checked").val()) {
+					$("div.mask").removeClass("hidden");
+					$("div.pop-order").removeClass("hidden");
+					$("div.pop-order div.bd dd h2").text("请选择收货地址!");
+					return false;
+				} else {
+					$("#dataForm input[name=payAddrId]").val($("div.addressList input[name=userAddr]:checked").val());
+				}
+				if(!$("div.payMode input[name=payMode]:checked").val()) {
+					$("div.mask").removeClass("hidden");
+					$("div.pop-order").removeClass("hidden");
+					$("div.pop-order div.bd dd h2").text("请选择支付方式!");
+					return false;
+				}
 				$("#dataForm").submit();
 			});
 		});
@@ -271,6 +287,7 @@
 						var shippingForm = $("div.shippingForm");
 						$("div.shippingAddr div.bd").append(shippingForm);
 						$("div.shippingAddr").addClass("noAddress");
+						displayAddrs(addrs);
 					}
 				}
 			);
@@ -283,28 +300,35 @@
 				choseaddrs["a"+addrs[index].addrId] = addrs[index];
 				if(addrs[index].isDefault == "1") {
 					defaultId = addrs[index].addrId;
-					chgTradeAddr(addrs[index]);
 				}
 			}
 			$("div.addressList ul").html(htmlStr);
 			if(!!defaultId) {
 				var defaultAddr = $("div.addressList ul li input[value=" + defaultId + "]").parents("li");
 				 $("div.addressList ul").children().first().before(defaultAddr);
+			} else {
+				$("div.addressList ul").children().first().find("input:radio").prop("checked",true);
 			}
 			if(addrs.length > 4) {
 				$("div.shippingAddr").removeClass("unfold");
 			} else {
 				$("div.shippingAddr").addClass("unfold");
 			}
+			if(addrs.length > 19) {
+				$("div.shippingAddr a[name=newAddr]").addClass("disabled");
+			} else {
+				$("div.shippingAddr a[name=newAddr]").removeClass("disabled");
+			}
+			chgTradeAddr();
 		}
 		function getaddrhtml(addr){
 			var str = "<li class='addr-item'>" + 
 				"<label>";
 			if("1" == addr.isDefault) {
-				str += "<input value='" + addr.addrId + "' type='radio' class='radio' name='payAddrId' checked>" +
+				str += "<input value='" + addr.addrId + "' type='radio' class='radio' name='userAddr' checked>" +
 				"<span class='defAddr'>默认地址</span>";
 			} else {
-				str += "<input value='" + addr.addrId + "' type='radio' class='radio' name='payAddrId'>";
+				str += "<input value='" + addr.addrId + "' type='radio' class='radio' name='userAddr'>";
 			}
 			str += "<span>" + addr.receiver + "</span>" +
 					"<span>" + addr.provinceName + addr.cityName + addr.districtName + addr.townName + addr.addr + "</span>" +
@@ -604,16 +628,21 @@
 				$("#addrForm div.tabGroup[name=district]").addClass("show");
 			}
 		}
-		function chgTradeAddr(addr) {
-			//TODO
-			var html = "<b>收货信息：</b>";
-			html += "<span>" + addr.receiver + "</span><span class='address'>" + 
-					addr.provinceName + addr.cityName + addr.districtName + addr.townName + addr.addr + "</span><span>" + 
-					(addr.mobile ? addr.mobile : addr.tel) + "</span>";
+		function chgTradeAddr() {
+			var selAddrId = $("div.addressList input[name=userAddr]:checked").val();
+			var html = "";
+			if(!!selAddrId) {
+				var addr = choseaddrs["a" + selAddrId];
+				html = "<b>收货信息：</b>";
+				html += "<span>" + addr.receiver + "</span><span class='address'>" + 
+						addr.provinceName + addr.cityName + addr.districtName + addr.townName + addr.addr + "</span><span>" + 
+						(addr.mobile ? addr.mobile : addr.tel) + "</span>";
+			} else {
+				html = "<b>收货信息：</b><span class='warnColor'>尚未选择收货信息</span>";
+			}
 			$("div.orderSubmit div.shippingInfo").html(html);
 		}
 		function chgTradePayMode() {
-			//TODO
 			var html = "";
 			if("1" == $("div.payMode input[name=payType]:checked").val()) {
 				html += "<b>支付方式：</b><span>网上银行</span>";
@@ -687,180 +716,181 @@
 							</li>
 						</ul>
 					</div>
-					<form id="dataForm" action="${ctx}/tradecomfirm.action" method="post">
-						<div class="bd">
-							<div class="shippingAddr noAddress"><!--给shippingAddr添加class 'unfold'以展开全部地址,第一次添加地址class加 'noAddress'-->
-								<div class="wrap">
-									<div class="hd"><h3>收货地址</h3><span>新增收货地址</span></div>
-									<div class="bd">
-										<div class="shippingForm">
-											<form autocomplete="off" id="addrForm" class="form">
-												<fieldset>
-													<div class="lenged">收货人信息</div>
-													<div class="formGroup">
-														<input name="addrid" type="hidden" />
-														<div class="form-item">
-															<div class="item-label"><label><em>*</em>收货地区：</label></div>
-															<div class="item-cont">
-																<div class="selectArea">
-																	<div class="inputArea"><span class="arrow bottom-hollow"><i></i><b></b></span></div>
-																	<input name="province" type="hidden"/>
-																	<input name="provinceName" type="hidden"/>
-																	<input name="city" type="hidden"/>
-																	<input name="cityName" type="hidden"/>
-																	<input name="district" type="hidden"/>
-																	<input name="districtName" type="hidden"/>
-																	<input name="town" type="hidden"/>
-																	<input name="townName" type="hidden"/>
-																	<div class="selectArea-list">
-																		<div class="tab">
-																			<div class="tabs">
-																				<ul>
-																					<li name="province" class="curr">省份</li>
-																					<li name="city">城市</li>
-																					<li name="district">区县</li>
-																					<li name="town" class="hidden">街道</li>
-																				</ul>
+					<div class="bd">
+						<div class="shippingAddr noAddress"><!--给shippingAddr添加class 'unfold'以展开全部地址,第一次添加地址class加 'noAddress'-->
+							<div class="wrap">
+								<div class="hd"><h3>收货地址</h3><span>新增收货地址</span></div>
+								<div class="bd">
+									<div class="shippingForm">
+<!-- 											TODO -->
+										<form autocomplete="off" id="addrForm" class="form">
+											<fieldset>
+												<div class="lenged">收货人信息</div>
+												<div class="formGroup">
+													<input name="addrid" type="hidden" />
+													<div class="form-item">
+														<div class="item-label"><label><em>*</em>收货地区：</label></div>
+														<div class="item-cont">
+															<div class="selectArea">
+																<div class="inputArea"><span class="arrow bottom-hollow"><i></i><b></b></span></div>
+																<input name="province" type="hidden"/>
+																<input name="provinceName" type="hidden"/>
+																<input name="city" type="hidden"/>
+																<input name="cityName" type="hidden"/>
+																<input name="district" type="hidden"/>
+																<input name="districtName" type="hidden"/>
+																<input name="town" type="hidden"/>
+																<input name="townName" type="hidden"/>
+																<div class="selectArea-list">
+																	<div class="tab">
+																		<div class="tabs">
+																			<ul>
+																				<li name="province" class="curr">省份</li>
+																				<li name="city">城市</li>
+																				<li name="district">区县</li>
+																				<li name="town" class="hidden">街道</li>
+																			</ul>
+																		</div>
+																		<div class="tabbed">
+																			<div name="province" class="tabGroup show">
+																				<dl class="areaList">
+																					<dt>A<em>-</em>G</dt>
+																					<dd>
+																						<span><a geoid="1219" href="javascript:;">安徽</a></span>
+																						<span><a geoid="1" href="javascript:;">北京</a></span>
+																						<span><a geoid="2843" href="javascript:;">重庆</a></span>
+																						<span><a geoid="1341" href="javascript:;">福建</a></span>
+																						<span><a geoid="4552" href="javascript:;">甘肃</a></span>
+																						<span><a geoid="2224" href="javascript:;">广东</a></span>
+																						<span><a geoid="2425" href="javascript:;">广西</a></span>
+																						<span><a geoid="4109" href="javascript:;">贵州</a></span>
+																					</dd>
+																				</dl>
+																				<dl class="areaList">
+																					<dt>H<em>-</em>K</dt>
+																					<dd>
+																						<span><a geoid="2549" href="javascript:;">海南</a></span>
+																						<span><a geoid="150" href="javascript:;">河北</a></span>
+																						<span><a geoid="764" href="javascript:;">黑龙江</a></span>
+																						<span><a geoid="1706" href="javascript:;">河南</a></span>
+																						<span><a geoid="1884" href="javascript:;">湖北</a></span>
+																						<span><a geoid="2087" href="javascript:;">湖南</a></span>
+																						<span><a geoid="999" href="javascript:;">江苏</a></span>
+																						<span><a geoid="1436" href="javascript:;">江西</a></span>
+																						<span><a geoid="694" href="javascript:;">吉林</a></span>
+																					</dd>
+																				</dl>
+																				<dl class="areaList">
+																					<dt>L<em>-</em>S</dt>
+																					<dd>
+																						<span><a geoid="579" href="javascript:;">辽宁</a></span>
+																						<span><a geoid="465" href="javascript:;">内蒙古</a></span>
+																						<span><a geoid="4708" href="javascript:;">宁夏</a></span>
+																						<span><a geoid="4656" href="javascript:;">青海</a></span>
+																						<span><a geoid="1548" href="javascript:;">山东</a></span>
+																						<span><a geoid="906" href="javascript:;">上海</a></span>
+																						<span><a geoid="334" href="javascript:;">山西</a></span>
+																						<span><a geoid="4434" href="javascript:;">陕西</a></span>
+																						<span><a geoid="3906" href="javascript:;">四川</a></span>
+																					</dd>
+																				</dl>
+																				<dl class="areaList">
+																					<dt>T<em>-</em>Z</dt>
+																					<dd>
+																						<span><a geoid="99" href="javascript:;">天津</a></span>
+																						<span><a geoid="4736" href="javascript:;">新疆</a></span>
+																						<span><a geoid="4353" href="javascript:;">西藏</a></span>
+																						<span><a geoid="4207" href="javascript:;">云南</a></span>
+																						<span><a geoid="1117" href="javascript:;">浙江</a></span>
+																					</dd>
+																				</dl>
 																			</div>
-																			<div class="tabbed">
-																				<div name="province" class="tabGroup show">
-																					<dl class="areaList">
-																						<dt>A<em>-</em>G</dt>
-																						<dd>
-																							<span><a geoid="1219" href="javascript:;">安徽</a></span>
-																							<span><a geoid="1" href="javascript:;">北京</a></span>
-																							<span><a geoid="2843" href="javascript:;">重庆</a></span>
-																							<span><a geoid="1341" href="javascript:;">福建</a></span>
-																							<span><a geoid="4552" href="javascript:;">甘肃</a></span>
-																							<span><a geoid="2224" href="javascript:;">广东</a></span>
-																							<span><a geoid="2425" href="javascript:;">广西</a></span>
-																							<span><a geoid="4109" href="javascript:;">贵州</a></span>
-																						</dd>
-																					</dl>
-																					<dl class="areaList">
-																						<dt>H<em>-</em>K</dt>
-																						<dd>
-																							<span><a geoid="2549" href="javascript:;">海南</a></span>
-																							<span><a geoid="150" href="javascript:;">河北</a></span>
-																							<span><a geoid="764" href="javascript:;">黑龙江</a></span>
-																							<span><a geoid="1706" href="javascript:;">河南</a></span>
-																							<span><a geoid="1884" href="javascript:;">湖北</a></span>
-																							<span><a geoid="2087" href="javascript:;">湖南</a></span>
-																							<span><a geoid="999" href="javascript:;">江苏</a></span>
-																							<span><a geoid="1436" href="javascript:;">江西</a></span>
-																							<span><a geoid="694" href="javascript:;">吉林</a></span>
-																						</dd>
-																					</dl>
-																					<dl class="areaList">
-																						<dt>L<em>-</em>S</dt>
-																						<dd>
-																							<span><a geoid="579" href="javascript:;">辽宁</a></span>
-																							<span><a geoid="465" href="javascript:;">内蒙古</a></span>
-																							<span><a geoid="4708" href="javascript:;">宁夏</a></span>
-																							<span><a geoid="4656" href="javascript:;">青海</a></span>
-																							<span><a geoid="1548" href="javascript:;">山东</a></span>
-																							<span><a geoid="906" href="javascript:;">上海</a></span>
-																							<span><a geoid="334" href="javascript:;">山西</a></span>
-																							<span><a geoid="4434" href="javascript:;">陕西</a></span>
-																							<span><a geoid="3906" href="javascript:;">四川</a></span>
-																						</dd>
-																					</dl>
-																					<dl class="areaList">
-																						<dt>T<em>-</em>Z</dt>
-																						<dd>
-																							<span><a geoid="99" href="javascript:;">天津</a></span>
-																							<span><a geoid="4736" href="javascript:;">新疆</a></span>
-																							<span><a geoid="4353" href="javascript:;">西藏</a></span>
-																							<span><a geoid="4207" href="javascript:;">云南</a></span>
-																							<span><a geoid="1117" href="javascript:;">浙江</a></span>
-																						</dd>
-																					</dl>
-																				</div>
-																				<div name="city" class="tabGroup city">
-																					<dl class="areaList">
-																						<dd>
-																						</dd>
-																					</dl>
-																				</div>
-																				<div name="district" class="tabGroup city">
-																					<dl class="areaList">
-																						<dd>
-																						</dd>
-																					</dl>
-																				</div>
-																				<div name="town" class="tabGroup city">
-																					<dl class="areaList">
-																						<dd>
-																						</dd>
-																					</dl>
-																				</div>
+																			<div name="city" class="tabGroup city">
+																				<dl class="areaList">
+																					<dd>
+																					</dd>
+																				</dl>
+																			</div>
+																			<div name="district" class="tabGroup city">
+																				<dl class="areaList">
+																					<dd>
+																					</dd>
+																				</dl>
+																			</div>
+																			<div name="town" class="tabGroup city">
+																				<dl class="areaList">
+																					<dd>
+																					</dd>
+																				</dl>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-																<span name="geoErr" class="note errTxt"></span>
 															</div>
+															<span name="geoErr" class="note errTxt"></span>
 														</div>
-														<div class="form-item">
-															<div class="item-label"><label><em>*</em>详细地址：</label></div>
-															<div class="item-cont">
-																<textarea name="addr" id="" style="width: 288px;height: 72px" class="resize-none" placeholder="不用重复填写省市区，不超过50个字"></textarea>
-																<span name="addrErr" class="note errTxt"></span>
+													</div>
+													<div class="form-item">
+														<div class="item-label"><label><em>*</em>详细地址：</label></div>
+														<div class="item-cont">
+															<textarea name="addr" id="" style="width: 288px;height: 72px" class="resize-none" placeholder="不用重复填写省市区，不超过50个字"></textarea>
+															<span name="addrErr" class="note errTxt"></span>
+														</div>
+													</div>
+													<div class="form-item">
+														<div class="item-label"><label>邮政编码：</label></div>
+														<div class="item-cont">
+															<input name="zipCode" type="text" class="txt lg w-xl">
+															<span name="zipCodeErr" class="note errTxt"></span>
+														</div>
+													</div>
+													<div class="form-item">
+														<div class="item-label"><label><em>*</em>收货人：</label></div>
+														<div class="item-cont">
+															<input name="receiver" type="text" class="txt lg w-xl" placeholder="不超过15个字">
+															<span name="receiverErr" class="note errTxt"></span>
+														</div>
+													</div>
+													<div class="form-item">
+														<div class="item-label"><label><em>*</em>手机号码：</label></div>
+														<div class="item-cont">
+															<input name="mobile" type="text" class="txt lg w-xl" placeholder="11位手机号码">
+															<label class="or">或</label><label class="fixedTel">固定电话：</label>
+															<div class="txt-tel">
+																<input name="tel1" type="text" class="txt telArea lg">
+																<i>-</i><input name="tel2" type="text" class="txt telNum lg">
+																<i>-</i><input name="tel3" type="text" class="txt telExt lg">
 															</div>
-														</div>
-														<div class="form-item">
-															<div class="item-label"><label>邮政编码：</label></div>
-															<div class="item-cont">
-																<input name="zipCode" type="text" class="txt lg w-xl">
-																<span name="zipCodeErr" class="note errTxt"></span>
-															</div>
-														</div>
-														<div class="form-item">
-															<div class="item-label"><label><em>*</em>收货人：</label></div>
-															<div class="item-cont">
-																<input name="receiver" type="text" class="txt lg w-xl" placeholder="不超过15个字">
-																<span name="receiverErr" class="note errTxt"></span>
-															</div>
-														</div>
-														<div class="form-item">
-															<div class="item-label"><label><em>*</em>手机号码：</label></div>
-															<div class="item-cont">
-																<input name="mobile" type="text" class="txt lg w-xl" placeholder="11位手机号码">
-																<label class="or">或</label><label class="fixedTel">固定电话：</label>
-																<div class="txt-tel">
-																	<input name="tel1" type="text" class="txt telArea lg">
-																	<i>-</i><input name="tel2" type="text" class="txt telNum lg">
-																	<i>-</i><input name="tel3" type="text" class="txt telExt lg">
-																</div>
-																<div>
-																	<span name="mobileErr" class="note errTxt"></span>
-																</div>
+															<div>
+																<span name="mobileErr" class="note errTxt"></span>
 															</div>
 														</div>
 													</div>
-													<div class="formGroup">
-														<div class="form-item">
-															<div class="item-cont">
-																<label><input name="isDefault" type="checkbox" class="chk">设置为默认发货地址</label>
-															</div>
-														</div>
-														<div class="form-item">
-															<div class="item-cont">
-																<input name="saveAddr" type="button" class="btn btn-primary" value="保存收货人信息">
-															</div>
+												</div>
+												<div class="formGroup">
+													<div class="form-item">
+														<div class="item-cont">
+															<label><input name="isDefault" type="checkbox" class="chk">设置为默认发货地址</label>
 														</div>
 													</div>
-												</fieldset>
-											</form>
-										</div>
-										<div class="addressList">
-											<ul> </ul>
-										</div>
-										<div class="addrMore"><span class="btn btn-def more">其他收货地址<span class="arrow bottom-hollow"><b></b><i></i></span></span></div>
-										<div class="btnWrap"><a name="newAddr" href="javascript:;" class="btn btn-assist p-lg">+ 使用新地址</a></div>
+													<div class="form-item">
+														<div class="item-cont">
+															<input name="saveAddr" type="button" class="btn btn-primary" value="保存收货人信息">
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</form>
 									</div>
+									<div class="addressList">
+										<ul> </ul>
+									</div>
+									<div class="addrMore"><span class="btn btn-def more">其他收货地址<span class="arrow bottom-hollow"><b></b><i></i></span></span></div>
+									<div class="btnWrap"><a name="newAddr" href="javascript:;" class="btn btn-assist p-lg">+ 使用新地址</a></div>
 								</div>
 							</div>
+						</div>
+						<form id="dataForm" action="${ctx}/tradecomfirm.action" method="post">
 							<!-- pay mode -->
 							<div class="payMode">
 								<div class="wrap">
@@ -905,15 +935,16 @@
 							<!-- order submit -->
 							<div class="orderSubmit">
 								<div class="submit-box">
-									<div class="shippingInfo"><b>收货信息：</b><span class="warnColor">尚未选择收获信息</span></div>
+									<div class="shippingInfo"><b>收货信息：</b><span class="warnColor">尚未选择收货信息</span></div>
 									<div class="priceTotal payTotal"><b>实付金额：</b><span>&yen;<em name="priceTotal">3184.00</em></span></div>
 									<div class="checkedPay"><b>支付方式：</b><span>支付宝</span></div>
 								</div>
-								<a href="javascript:void(0)" class="btn btn-primary submitBtn">提交订单</a>
+								<a href="#" class="btn btn-primary submitBtn">提交订单</a>
 							</div>
 							<!-- order submit end -->
-						</div>
-					</form>
+							<input type="hidden" name="payAddrId" />
+						</form>
+					</div>
 				</div>
 				<!-- cartList end -->
 			</div>
