@@ -273,7 +273,7 @@
 </head>
 <body id="shopCart">
 	<div class="wrapper">
-		<jsp:include page="/common/head.jsp" />
+		<jsp:include page="/common/head.html" />
 		<!-- container -->
 		<div id="container">
 			<div class="wrap">
