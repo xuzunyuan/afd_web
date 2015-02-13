@@ -89,10 +89,12 @@ public class UserController {
 	}
 	
 	@RequestMapping("/addAddress")
-	public String addAddress(UserAddress address){
+	public String addAddress(UserAddress address,HttpServletRequest request){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
 		if(address.getAddrId()!=null){
 			this.addrService.updateAddress(address);
 		}else{
+			address.setUserId(Long.parseLong(userId));
 			this.addrService.addAddress(address);
 		}
 		return "redirect:/user/userAddress.action";
