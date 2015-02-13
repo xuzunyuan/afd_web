@@ -10,23 +10,17 @@
 	<script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			$(document).on("click","input[name=newAddr]",function(){
-				$("#mask").removeClass("hide");
-				$("#pop").removeClass("hide");
-				var width = $(window).width();
-				var height = $(window).height();
-				var docWidth = $("#pop").width();
-				var docHeight = $("#pop").height();
-				var top = (height - docHeight)/2;
-				if(top<0){
-					top = 0;
-				}
-				$("#pop").css("top",top);
-				var left = (width - docWidth)/2;
-				if(left<0){
-					left = 0;
-				}
-				$("#pop").css("left",left);
+			$(document).on("click","input[name=newAddr]",function(json){
+				$.getJSON("${ctx}/user/canAdd.action",
+					function(json){
+						if(!json.status){
+							alert("最多添加20个地址！");
+							return;
+						}else{
+							openPop();
+						}
+					}
+				);
 			});
 			
 			$(document).on("change","select[name=province]",function(){
@@ -239,10 +233,12 @@
 						telFlg = false;
 					}
 					
-					if(!/^\d{3,4}$/.test(telExt)){
-						$("#errMsg5").html("请输入正确分机号码！");
-						$("input[name=telExt]").addClass("errIpt");
-						telFlg = false;
+					if(!!telExt){
+						if(!/^\d{3,4}$/.test(telExt)){
+							$("#errMsg5").html("请输入正确分机号码！");
+							$("input[name=telExt]").addClass("errIpt");
+							telFlg = false;
+						}
 					}
 				}
 				
@@ -252,12 +248,133 @@
 				
 			});
 			
+			$(document).on("click","a[name=setDefault]",function(){
+				var addrId = $(this).attr("addrId");
+				location.href = "${ctx}/user/setDefault.action?addrId="+addrId;
+			});
+			
+			$(document).on("click","a[name=del]",function(){
+				var addrId = $(this).attr("addrId");
+				location.href = "${ctx}/user/delAddr.action?addrId="+addrId;
+			});
+			
+			$(document).on("click","a[name=modify]",function(){
+				var addrId = $(this).attr("addrId");
+				$.getJSON(
+					"${ctx}/user/getAddr.action",
+					{addrId:addrId},
+					function(json){
+						if(!!json){
+							openPop();
+							$("input[name=addrId]").val(json.addrId);
+							$("textarea[name=addr]").val(json.addr);
+							$("input[name=zipCode]").val(json.zipCode);
+							$("input[name=receiver]").val(json.receiver);
+							$("input[name=mobile]").val(json.mobile);
+							$("input[name=provinceName]").val(json.provinceName);
+							$("input[name=cityName]").val(json.cityName);
+							$("input[name=districtName]").val(json.districtName);
+							$("input[name=townName]").val(json.townName);
+							var tel = json.tel;
+							if(!!tel){
+								var telTemp = tel.split("-");
+								if(telTemp.length>1){
+									$("input[name=telArea]").val(telTemp[0]);
+									$("input[name=telNum]").val(telTemp[1]);
+									if(!!telTemp[2]){
+										$("input[name=telExt]").val(telTemp[2]);
+									}
+								}
+							}
+							if(json.isDefault == '1'){
+								$("input[name=isDefault]").prop("checked",true);
+							}
+							$("select[name=province]").children("option[value="+json.province+"]").attr("selected",true);
+							$.getJSON(
+								"${ctx}/user/getNextGeo.action",
+								{geoId:json.province},
+								function(jsonCity){
+									if(!!jsonCity){
+										var cityOptions = [];
+										cityOptions.push("<option value='-1'>请选择</option>");
+										for(var i in jsonCity){
+											var geo = jsonCity[i];
+											cityOptions.push("<option value='"+geo.geoId+"'>"+geo.geoName+"</option>");
+										}
+										$("select[name=city]").html(cityOptions.join(''));
+										$("select[name=city]").children("option[value="+json.city+"]").attr("selected",true);
+										$.getJSON(
+											"${ctx}/user/getNextGeo.action",
+											{geoId:json.city},
+											function(jsonDistrict){
+												if(!!jsonDistrict){
+													var districtOptions = [];
+													districtOptions.push("<option value='-1'>请选择</option>");
+													for(var i in jsonDistrict){
+														var geo = jsonDistrict[i];
+														districtOptions.push("<option value='"+geo.geoId+"'>"+geo.geoName+"</option>");
+													}
+													$("select[name=district]").html(districtOptions.join(''));
+													$("select[name=district]").children("option[value="+json.district+"]").attr("selected",true);
+													$.getJSON(
+														"${ctx}/user/getNextGeo.action",
+														{geoId:json.district},
+														function(jsonTown){
+															if(!!jsonTown){
+																var districtOptions = [];
+																districtOptions.push("<option value='-1'>请选择</option>");
+																if(jsonTown.length ==0){
+																	return;
+																}
+																for(var i in jsonTown){
+																	var geo = jsonTown[i];
+																	districtOptions.push("<option value='"+geo.geoId+"'>"+geo.geoName+"</option>");
+																}
+																var append = "<select name='town'>" + districtOptions.join('') + "</select>";
+																$("#append").html(append);
+																$("select[name=town]").children("option[value="+json.town+"]").attr("selected",true);
+															}
+														}
+													);
+												
+												
+												}
+											}
+										);
+									}
+								}
+							);
+						}
+					}
+				);
+				
+				
+			});
 			
 			$(document).on("click","#close",function(){
 				$("#pop").addClass("hide");
 				$("#mask").addClass("hide");
 			});
 		});
+		
+		function openPop(){
+			$("#mask").removeClass("hide");
+			$("#pop").removeClass("hide");
+			var width = $(window).width();
+			var height = $(window).height();
+			var docWidth = $("#pop").width();
+			var docHeight = $("#pop").height();
+			var top = (height - docHeight)/2;
+			if(top<0){
+				top = 0;
+			}
+			$("#pop").css("top",top);
+			var left = (width - docWidth)/2;
+			if(left<0){
+				left = 0;
+			}
+			$("#pop").css("left",left);
+		}
 	</script>
 </head>
 <body class="" id="shopCart">
@@ -290,12 +407,20 @@
 									<input name="newAddr" type="button" value="创建新地址" class="btn btn-assist">
 									<p>您已经创建<span>${addrCount}</span>个收货地址，还可以创建<span>${20-addrCount}</span>个。</p>
 								</div>
-								<c:forEach items="${addrs}" var="addr">
+								<c:forEach items="${addrs}" var="addr" varStatus="var">
 									<div class="address-mod">
 										<div class="address-title">
-											<h5>地址1：<a href="" class="default">默认地址</a></h5>
+											<c:choose>
+												<c:when test="${addr.isDefault == '1'}">
+													<h5>地址${var.count}：<a href="javascript:;" class="default">默认地址</a></h5>
+												</c:when>
+												<c:otherwise>
+													<h5>地址${var.count}：<a addrId="${addr.addrId}" name="setDefault" href="javascript:;" class="">设为默认地址</a></h5>
+												</c:otherwise>
+											</c:choose>
 											<div class="operation">
-												<a href="">修改</a><a href="">删除</a>
+												<a name="modify" addrId="${addr.addrId}" href="javascript:;">修改</a>
+												<a addrId="${addr.addrId}" href="javascript:;" name="del">删除</a>
 											</div>
 										</div>
 										<table>

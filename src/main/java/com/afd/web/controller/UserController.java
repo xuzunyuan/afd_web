@@ -3,10 +3,13 @@ package com.afd.web.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.afd.constants.user.UserConstants;
 import com.afd.model.user.Geo;
 import com.afd.model.user.User;
 import com.afd.model.user.UserAddress;
@@ -91,6 +95,26 @@ public class UserController {
 	@RequestMapping("/addAddress")
 	public String addAddress(UserAddress address,HttpServletRequest request){
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		if("on".equals(address.getIsDefault())){
+			address.setIsDefault(UserConstants.ADDRESS_IS_DEFAULT);
+		}else{
+			address.setIsDefault(UserConstants.ADDRESS_IS_NOT_DEFAULT);
+		}
+		
+		String telArea = request.getParameter("telArea");
+		String telNum = request.getParameter("telNum");
+		String telExt = request.getParameter("telExt");
+		
+		StringBuilder sb = new StringBuilder();
+		if(StringUtils.isNotBlank(telArea)){
+			sb.append(telArea).append("-");
+		}
+		sb.append(telNum);
+		if(StringUtils.isNotBlank(telExt)){
+			sb.append("-").append(telExt);
+		}
+		address.setTel(sb.toString());
+		
 		if(address.getAddrId()!=null){
 			this.addrService.updateAddress(address);
 		}else{
@@ -98,5 +122,46 @@ public class UserController {
 			this.addrService.addAddress(address);
 		}
 		return "redirect:/user/userAddress.action";
+	}
+	
+	@RequestMapping("/setDefault")
+	public String setDefault(@RequestParam String addrId,HttpServletRequest request){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		this.addrService.setDefault(addrId,userId);
+		
+		return "redirect:/user/userAddress.action";
+	}
+	
+	@RequestMapping("/delAddr")
+	public String delAddr(@RequestParam Long addrId,HttpServletRequest request){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		this.addrService.delAddr(addrId,Long.parseLong(userId));
+		
+		return "redirect:/user/userAddress.action";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getAddr")
+	public String getAddr(@RequestParam Long addrId,HttpServletRequest request){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		UserAddress addr = this.addrService.getAddressByIdUid(addrId,Long.parseLong(userId));
+		if(addr!=null){
+			return JSON.toJSONString(addr);
+		}
+		return null;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/canAdd")
+	public String canAdd(HttpServletRequest request){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		List<UserAddress> addrs = this.addrService.getAddressesByUserId(Long.parseLong(userId));
+		Map<String,Boolean> map = new HashMap<String,Boolean>();
+		if(addrs!=null&&addrs.size()>=20){
+			map.put("status", false);
+		}else{
+			map.put("status", true);
+		}
+		return JSON.toJSONString(map);
 	}
 }
