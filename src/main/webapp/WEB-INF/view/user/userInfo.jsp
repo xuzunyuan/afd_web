@@ -61,14 +61,15 @@
 
 		$("#uploadify").uploadify({
             //指定swf文件
-			'swf': 'http://js.web.afdimg.com/uploadify/uploadify.swf',
+			'swf': '${ctx}/uploadify/uploadify.swf',
             //后台处理的页面
-            'uploader': '${ctx}/uploadImg.action',
+            'uploader': '${imgUploadUrl}',
             //按钮显示的文字
-            'buttonImage': '${imgDomain}/upload.jpg',
+            "buttonText":'添加头像',
+            "buttonClass":"btn-primary xl",
             //显示的高度和宽度，默认 height 30；width 120
-            'height': 80,
-            'width': 80,
+            'height': 20,
+            'width': 50,
             //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
             //在浏览窗口底部的文件类型下拉菜单中显示的文本
             'fileTypeDesc': 'Image Files',
@@ -80,14 +81,20 @@
             //'queueID': 'fileQueue',
             //选择文件后自动上传
             'auto': true,
-            'debug': true,
             //设置为true将允许多文件上传
             'multi': false,
-            
+            overrideEvents : ['onUploadProgress', 'onSelect'],
+            onUploadSuccess : function(file, data, response) {
+				if(response) {
+					var d = $.parseJSON(data);
+					$("img[name=file]").attr("src","${imgUrl}?rid="+d.rid+"&op=s1_w80_h80_e1-c3_w80_h80");
+					$("input[name='userExt.headerPic']").val(d.rid);
+				}
+			}
         });
 
-		$(document).on("click", "#pic", function() {
-
+		$(document).on("click", "#aa", function() {
+			$('#uploadify').uploadify('upload');
 		});
 	});
 
@@ -204,20 +211,28 @@
 								<div class="info-main">
 									<dl>
 										<dt>
-											<img id="uploadify" src="${imgDomain}/upload.jpg" alt=""></img>
+											<c:choose>
+												<c:when test="${empty(user.userExt.headerPic)}">
+													<img name="file" src="${imgDomain}/upload.jpg" alt="" />
+												</c:when>
+												<c:otherwise>
+													<img name="file" src="${imgUrl}?rid=${user.userExt.headerPic}&op=s1_w80_h80_e1-c3_w80_h80" alt="" />
+												</c:otherwise>
+											</c:choose>
 										</dt>
 										<dd>
 											<h2>
 												<c:out value="${user.userName}" />
 												，您好
 											</h2>
-											<p>完善您的资料可以帮助我们为您提供更贴心的服务。</p>
+											<p>完善您的资料可以帮助我们为您提供更贴心的服务。<input type="button" id="uploadify" /></p>
 										</dd>
 									</dl>
 								</div>
 								<div class="editdata">
 									<form class="form" id="form"
 										action="${ctx}/user/saveUserInfo.action" method="post">
+										<input type="hidden" name="userExt.headerPic" value="${user.userExt.headerPic}" />
 										<input type="hidden" name="userId" value="${user.userId}" />
 										<fieldset>
 											<div class="formGroup">

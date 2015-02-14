@@ -10,6 +10,8 @@
 <%request.setAttribute("cssDomain", "http://css.web.afdimg.com"); %>
 <%request.setAttribute("jsDomain", "http://js.web.afdimg.com"); %>
 <%request.setAttribute("imgDomain", "http://img.web.afdimg.com"); %>
+<%request.setAttribute("imgUploadUrl", "http://192.168.1.18:18080/afd_img/rc/upload"); %>
+<%request.setAttribute("imgUrl", "http://192.168.1.18:18080/afd_img/rc/getimg"); %>
 <%request.setAttribute("prefixImgUrl", "http://img"); %>
 <%request.setAttribute("suffixImgUrl", ".yiwangimg.com/rc/getimg"); 
 	PropertyUtils.setRequestProperties(request);
