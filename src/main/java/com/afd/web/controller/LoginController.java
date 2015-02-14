@@ -1,10 +1,12 @@
 package com.afd.web.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -383,6 +385,17 @@ public class LoginController {
 		Map<String,Boolean> map = new HashMap<String, Boolean>();
 		map.put("status", vCode.toUpperCase().equals(randomCode));
 		return JSON.toJSONString(map);
+	}
+	@SuppressWarnings("unused")
+	@RequestMapping("/uploadImg")
+	public String uploadImg(HttpServletRequest req){
+		try {
+			ServletInputStream inputStream = req.getInputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 	public static void main(String[] args) {

@@ -12,7 +12,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<param-value>develop</param-value>
 	</context-param>
     <welcome-file-list> 
-    <welcome-file>index.jsp</welcome-file> 
+    	<welcome-file>index.jsp</welcome-file> 
     </welcome-file-list>   
    <!--
 		- Location of the XML file that defines the root application context.

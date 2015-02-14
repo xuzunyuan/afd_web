@@ -8,7 +8,6 @@
 <title>个人中心-个人资料</title>
 <link rel="stylesheet" type="text/css" href="${cssDomain}/css/allstyle.css" />
 <link rel="stylesheet" type="text/css" href="${cssDomain}/css/member.css" />
-<link rel="stylesheet" type="text/css" href="${jsDomain}/uploadify/uploadify.css" />
 <script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
 <script type="text/javascript" src="${jsDomain}/datePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${jsDomain}/uploadify/jquery.uploadify.js"></script>
@@ -59,13 +58,33 @@
 				$("#form").submit();
 			}
 		});
-		
-		$('#aa').uploadify({
-	        'swf'      : 'uploadify.swf',
-	        'uploader' : 'uploadify.php'
-	        // Put your options here
-	    });
 
+		$("#uploadify").uploadify({
+            //指定swf文件
+			'swf': 'http://js.web.afdimg.com/uploadify/uploadify.swf',
+            //后台处理的页面
+            'uploader': '${ctx}/uploadImg.action',
+            //按钮显示的文字
+            'buttonImage': '${imgDomain}/upload.jpg',
+            //显示的高度和宽度，默认 height 30；width 120
+            'height': 80,
+            'width': 80,
+            //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+            //在浏览窗口底部的文件类型下拉菜单中显示的文本
+            'fileTypeDesc': 'Image Files',
+            //允许上传的文件后缀
+            'fileTypeExts': '*.gif; *.jpg; *.png',
+            //发送给后台的其他参数通过formData指定
+            //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
+            //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+            //'queueID': 'fileQueue',
+            //选择文件后自动上传
+            'auto': true,
+            'debug': true,
+            //设置为true将允许多文件上传
+            'multi': false,
+            
+        });
 
 		$(document).on("click", "#pic", function() {
 
@@ -185,7 +204,7 @@
 								<div class="info-main">
 									<dl>
 										<dt>
-											<img id="aa" src="${imgDomain}/upload.jpg" alt=""></img>
+											<img id="uploadify" src="${imgDomain}/upload.jpg" alt=""></img>
 										</dt>
 										<dd>
 											<h2>
