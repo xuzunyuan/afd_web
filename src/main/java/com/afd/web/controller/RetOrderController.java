@@ -69,15 +69,28 @@ public class RetOrderController {
 		return "retOrder/retOrderApply";
 	}
 	
-	public String formApply(ReturnOrder retOrder,HttpServletRequest request){
+	@RequestMapping("/formApply")
+	public String formApply(ReturnOrder retOrder,HttpServletRequest request,@RequestParam List<String> imgs){
 		String uid = LoginServiceImpl.getUserIdByCookie(request);
 		String ip = RequestUtils.getRemoteAddr(request);
 		retOrder.setCreateIp(ip);
 		retOrder.setStatus(OrderConstants.order_return_wait);
 		retOrder.setUserId(Long.parseLong(uid));
+		retOrder.setReturnType(OrderConstants.ORDER_RETURN_TYPE_PART);
+		if(imgs!=null&&imgs.size()>0){
+			StringBuilder imgUrl = new StringBuilder();
+			int i = 0;
+			for(String img : imgs){
+				if(i==0){
+					imgUrl.append(img);
+				}else{
+					imgUrl.append(",").append(img);
+				}
+				i++;
+			}
+			retOrder.setEvidencePicUrl(imgUrl.toString());
+		}
 		this.retOrderService.addRetOrder(retOrder);
-		
-		
 		
 		return "redirect:/retOrder/myRetOrders.action";
 	}

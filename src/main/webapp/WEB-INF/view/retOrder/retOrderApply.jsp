@@ -56,10 +56,10 @@
 					if(response) {
 						var d = $.parseJSON(data);
 						var html = '<li><a href="javascript:;"><img src="${imgUrl}?rid='+d.rid+'&op=s1_w80_h80_e1-c3_w80_h80" alt="">'
-								+'<input type="hidden" value="'+d.rid+'"></a><p class=""><a name="del" href="javascript:;">删除</a></p></li>';
+								+'<input type="hidden" name="imgs" value="'+d.rid+'"></a><p class=""><a name="del" href="javascript:;">删除</a></p></li>';
 						$("#img").prepend(html);
 						var imgs = $("#img").children("li");
-						if(imgs.length >=2){
+						if(imgs.length >=6){
 							$('#uploadify').uploadify('disable', true);
 							return false;
 						}
@@ -70,7 +70,7 @@
 			$(document).on("click","a[name=del]",function(){
 				$(this).parent("p").parent("li").remove();
 				var imgs = $("#img").children("li");
-				if(imgs.length <2){
+				if(imgs.length <7){
 					$('#uploadify').uploadify('disable', false);
 					return false;
 				}
@@ -120,6 +120,7 @@
 				if(err||err2||err3){
 					return false;
 				}
+				$("#form").submit();
 			});
 		});
 	</script>
@@ -167,7 +168,7 @@
 								</dl>
 							</div>
 							<div class="sale-goods">
-								<form class="form" action="${ctx}/retOrder/formApply.action" method="post">
+								<form id="form" class="form" action="${ctx}/retOrder/formApply.action" method="post">
 									<fieldset>
 										<div class="formGroup">
 											<div class="form-item">
@@ -193,7 +194,7 @@
 														<option value="商品质量问题">商品质量问题</option>
 														<option value="收到商品少件、破损或污渍">收到商品少件、破损或污渍</option>
 														<option value="不喜欢">不喜欢</option>
-														<option value="认为是假">认为是假货</option>
+														<option value="认为是假货">认为是假货</option>
 														<option value="买错了">买错了</option>
 														<option value="其他原因">其他原因</option>
 													</select>
