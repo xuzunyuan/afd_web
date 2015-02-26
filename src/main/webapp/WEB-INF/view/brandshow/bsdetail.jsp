@@ -7,7 +7,7 @@ totalpages=${pagetotal};
 <c:if test="${!empty showdetails}">
 <c:forEach items="${showdetails}" var="detail" varStatus="status">
 <div class="mod-activegoods">
-						<a href="detail.action?bsdid=${detail.bSDId}">
+						<a href="${ctx}/detail.action?bsdid=${detail.bsdId}">
 						<div class="g-m">
 							<div class="g-img">
 								<img src="${imgDomain}/temp/active-good.jpg" alt="">

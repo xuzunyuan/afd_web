@@ -1,7 +1,6 @@
 package com.afd.web.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class BaseController {
 	private IBrandShowService brandShowService;
 	
 	@Autowired
-	private IProductService   ProductService;
+	private IProductService   productService;
 	
 	@RequestMapping(value = "/create")
 	@ResponseBody
@@ -131,19 +130,19 @@ public class BaseController {
 		model.addAttribute("bsdetail", bsd);
 		model.addAttribute("brandshow", brandshow);
 		Integer skuId = bsd.getSkuId();
-		Sku sku = this.ProductService.getSkuById(skuId);
+		Sku sku = this.productService.getSkuById(skuId);
 		if(sku==null){
 			return "redirect:/index.jsp";
 		}
 		model.addAttribute("sku", sku);
 		model.addAttribute("skujson",JSON.toJSONString(sku));
 	    Integer prodId = sku.getProdId();
-	    Product product = this.ProductService.getProductById(prodId);
+	    Product product = this.productService.getProductById(prodId);
 	    if(product==null){
 			return "redirect:/index.jsp";
 		}
 	    model.addAttribute("product", product);
-	    List<Sku> skus = this.ProductService.getSkusByProdId(prodId);
+	    List<Sku> skus = this.productService.getSkusByProdId(prodId);
 	    if(skus==null||skus.size()==0){
 			return "redirect:/index.jsp";
 		}
