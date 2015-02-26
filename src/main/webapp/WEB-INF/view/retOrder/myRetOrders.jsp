@@ -91,12 +91,13 @@
 															<div>
 																<dl class="mod-orderGoods">
 																	<dt>
-																		<a href="#" class="thumbnail"><img
-																			src="img/temp/img4.jpg" alt=""></a>
+																		<a href="javascript:;" class="thumbnail">
+																			<img src="${imgUrl}?rid=${retOrderItem.sku.skuImgUrl}&op=s1_w50_h50_e1-c3_w50_h50" alt="">
+																		</a>
 																	</dt>
 																	<dd>
 																		<p class="title">
-																			<a href="#"><c:out value="${retOrderItem.prodId}" /></a>
+																			<a href="javascript:;"><c:out value="${retOrderItem.sku.product.title}" /></a>
 																		</p>
 																	</dd>
 																</dl>
