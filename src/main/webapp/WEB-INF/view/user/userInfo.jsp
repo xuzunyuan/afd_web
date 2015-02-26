@@ -92,10 +92,6 @@
 				}
 			}
         });
-
-		$(document).on("click", "#aa", function() {
-			$('#uploadify').uploadify('upload');
-		});
 	});
 
 	function xingzuo(date) {
