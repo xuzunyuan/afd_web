@@ -114,7 +114,7 @@
 				</dl>
 			</div>
 			<div class="signin">
-				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a href="#">登录</a><em>/</em><a href="#">免费注册</a></span><span id="login" ><a id="logout" href="#" class="quit">[退出]</a></span>
+				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a href="${ctx}/login.action">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
 			</div>
 		</div>
 	</div>
