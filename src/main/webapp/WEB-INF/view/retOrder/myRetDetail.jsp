@@ -110,9 +110,9 @@
 										<li><b>退货单号：</b><span><c:out value="${returnOrder.retOrderCode}"/></span></li>
 										<li>
 											<p>申请时间：<span><fmt:formatDate value="${${returnOrder.createDate}}" pattern="yyyy-MM-dd HH:mm"/></span></p>
-											<p>受理时间：<span><c:if test="${returnOrder.status=='2'||returnOrder.status=='3'||returnOrder.status=='4'}"><fmt:formatDate value="${${returnOrder.auditDate}}" pattern="yyyy-MM-dd HH:mm"/></c:if></span></p>
-											<p>确认时间：<span><c:if test="${returnOrder.status=='3'||returnOrder.status=='4'}"><fmt:formatDate value="${${returnOrder.confirmDate}}" pattern="yyyy-MM-dd HH:mm"/></c:if></span></p>
-											<p>退款时间：<span><c:if test="${returnOrder.status=='4'}"><fmt:formatDate value="${${returnOrder.refundDate}}" pattern="yyyy-MM-dd HH:mm"/></c:if></span></p>
+											<p>受理时间：<span><c:if test="${!empty returnOrder.auditDate}"><fmt:formatDate value="${${returnOrder.auditDate}}" pattern="yyyy-MM-dd HH:mm"/></c:if></span></p>
+											<p>确认时间：<span><c:if test="${!empty returnOrder.confirmDate}"><fmt:formatDate value="${${returnOrder.confirmDate}}" pattern="yyyy-MM-dd HH:mm"/></c:if></span></p>
+											<p>退款时间：<span><c:if test="${!empty returnOrder.refundDate}"><fmt:formatDate value="${${returnOrder.refundDate}}" pattern="yyyy-MM-dd HH:mm"/></c:if></span></p>
 										</li>
 									</ul>
 								</div>
@@ -164,11 +164,11 @@
 												</div>
 											</td>
 											<td>
-												<p class="nowPrice">¥<fmt:formatNumber value="${sku.marketPrice}" pattern="0.00" /></p>
+												<p class="nowPrice">¥<fmt:formatNumber value="${orderItem.salePrice}" pattern="0.00" /></p>
 											</td>
-											<td>2</td>
+											<td><c:out value="${orderItem.number}"/></td>
 											<td>
-												<p class="subtotal">¥<fmt:formatNumber value="${sku.salePrice}" pattern="0.00" /></p>
+												<p class="subtotal">¥<fmt:formatNumber value="${orderItem.transPrice}" pattern="0.00" /></p>
 											</td>
 										</tr>
 									</tbody>

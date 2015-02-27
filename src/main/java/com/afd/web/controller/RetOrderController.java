@@ -1,6 +1,9 @@
 package com.afd.web.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +22,6 @@ import com.afd.model.order.ReturnOrder;
 import com.afd.model.order.ReturnOrderItem;
 import com.afd.model.product.BrandShow;
 import com.afd.model.product.Product;
-import com.afd.model.product.Sku;
 import com.afd.model.seller.Seller;
 import com.afd.model.seller.SellerLogin;
 import com.afd.model.seller.SellerRetAddress;
@@ -30,7 +32,6 @@ import com.afd.service.product.IProductService;
 import com.afd.service.seller.ISellerLoginService;
 import com.afd.service.seller.ISellerService;
 import com.afd.web.service.impl.LoginServiceImpl;
-import com.alibaba.dubbo.common.utils.StringUtils;
 
 @Controller
 @RequestMapping("/retOrder")
@@ -99,7 +100,7 @@ public class RetOrderController {
 	}
 	
 	@RequestMapping("/myRetDetail")
-	public String myRetDetail(@RequestParam Integer myRetId,HttpServletRequest request,ModelMap map){
+	public String myRetDetail(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
 		if(returnOrder==null){
 			return "redirect:http://www.afd.com";
@@ -112,18 +113,26 @@ public class RetOrderController {
 		if(retOrderItem==null){
 			return "redirect:http://www.afd.com";
 		}
+		List<OrderItem> orderItems = order.getOrderItems();
 		Long skuId = retOrderItem.getSkuId();
-		Sku sku = this.productService.getSkuById(skuId.intValue());
-		if(sku==null){
+		OrderItem orderItemCopy = null;
+		for(OrderItem oi : orderItems ){
+			if(oi.getSkuId().compareTo(skuId)==0){
+				orderItemCopy=oi;
+				break;
+			}
+		}
+		if(orderItemCopy==null){
 			return "redirect:http://www.afd.com";
 		}
-		String specNames = sku.getSkuSpecName();
-		String specHtml=this.getSpecStr(specNames);
+		Map<String, String> specMap = orderItemCopy.getSpecNames();		
+		String specHtml=this.getSpecStr(specMap);
+		map.addAttribute("specMap", specMap);
 		map.addAttribute("specHtml", specHtml);
-		Integer prodId = sku.getProdId();
-		Product prod = this.productService.getProductById(prodId);
+		Long prodId = orderItemCopy.getProdId();
+		Product prod = this.productService.getProductById(prodId.intValue());
+		map.addAttribute("orderItem", orderItemCopy);
 		map.addAttribute("prod", prod);
-		map.addAttribute("sku", sku);
 		Long bsid = order.getBrandShowId();
 		BrandShow brandShow = this.brandShowService.getBrandShowById(bsid.intValue());
 		if(brandShow==null){
@@ -144,16 +153,25 @@ public class RetOrderController {
 		return "retOrder/myRetDetail";
 	}
 	
-	private String getSpecStr(String specNames) {
+	@RequestMapping("/cancelRetOrder")
+	public String cancelRetOrder(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
+		ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
+		if(returnOrder==null||!returnOrder.getStatus().equals("1")){
+			return "redirect:http://www.afd.com";
+		}
+		//this.retOrderService.
+		return "retOrder/myRetDetail";
+	}
+	
+	private String getSpecStr(Map<String, String> specMaps) {
 		String str="";
-		if (!StringUtils.isBlank(specNames)) {
-			String[] names = specNames.split("\\|\\|\\|");			
-				for(int i = 0;i<names.length;i++){
-					String name = names[i];					
-					String[] opt_name = name.split("\\:\\:\\:");
-					str+="<p>"+opt_name[0]+":<span>"+opt_name[1]+"</span>"+"</p>";				
-				}
-			}
+		Iterator<Entry<String, String>> iter = specMaps.entrySet().iterator();
+		while (iter.hasNext()) {
+		Entry<String, String> entry = iter.next();
+		String key = entry.getKey();
+		String val = entry.getValue();
+		str+="<p>"+key+":<span>"+val+"</span>"+"</p>";
+		}	
       return str;
 	}
 }
