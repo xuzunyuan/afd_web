@@ -6,11 +6,41 @@
 <head>
 <meta charset="utf-8">
 <title>个人中心-退货管理</title>
-<link rel="stylesheet" type="text/css"
-	href="${cssDomain}/css/allstyle.css" />
-<link rel="stylesheet" type="text/css"
-	href="${cssDomain}/css/member.css" />
+<link rel="stylesheet" type="text/css" href="${cssDomain}/css/allstyle.css" />
+<link rel="stylesheet" type="text/css" href="${cssDomain}/css/member.css" />
 <script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(document).on("click","input[name=cancel]",function(){
+			var retOrderId = $(this).attr("retOrderId");
+			$("#confirm").attr("retOrderId",retOrderId);
+			$("#mask").removeClass("hide");
+			$("#pop").removeClass("hide");
+		});
+		
+		$(document).on("click","#close",close);
+		$(document).on("click","#closePop",close);
+		
+		$(document).on("click","#confirm",function(){
+			var retOrderId = $(this).attr("retOrderId");
+			if(!retOrderId){
+				return false;
+			}
+			$.getJSON("${ctx}/retOrder/cancelRetOrder.action",
+				{retOrderId:retOrderId},
+				function(json){
+					location.href = "${ctx}/retOrder/myRetOrders.action";
+				}
+			);
+		});
+	});
+	
+	function close(){
+		$("#confirm").attr("retOrderId",'');
+		$("#mask").addClass("hide");
+		$("#pop").addClass("hide");
+	}
+</script>
 </head>
 <body class="" id="shopCart">
 	<div class="wrapper">
@@ -76,11 +106,13 @@
 																	pattern="0.00"
 																	value="${retOrder.retOrderItems[0].retFee}" />元</span>
 														</p>
+														<c:if test="${retOrder.status == '1'}">
+															<p>
+																<input retOrderId="${retOrder.retOrderId}" name="cancel" type="button" value="取消申请" class="btn btn-primary" />
+															</p>
+														</c:if>
 														<p>
-															<input type="button" value="取消申请" class="btn btn-primary">
-														</p>
-														<p>
-															<a href="#">查看详情</a>
+															<a href="${ctx}/retOrder/myRetDetail.action?myRetId=${retOrder.retOrderId}">查看详情</a>
 														</p>
 													</td>
 													<td class="salemeg">
@@ -146,5 +178,22 @@
 		</div>
 		<!-- footer end -->
 	</div>
+	<div id="pop" class="popup popup-info pop-order hide">
+			<div class="hd">
+				<i id="close" class="close"></i>
+			</div>
+			<div class="bd">
+				<div class="order-cancel">
+					<dl>
+						<dt><i class="icon i-dangerXL"></i></dt>
+						<dd>
+							<h2>是否确认取消退货？</h2>
+							<p><input type="button" id="confirm" class="btn btn-primary" value="确认取消"><a href="javascript:void(0)" id="closePop" class="btn btn-def">取 消</a></p>
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	<div id="mask" class="mask hide"></div>
 </body>
 </html>
