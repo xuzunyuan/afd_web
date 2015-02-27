@@ -4,13 +4,11 @@
  <div class="mod-goodsShow">
 							<a href="${ctx}/brandshow.action?bsid=${show.brandShowId}">
 								<div class="g-info">
-									
-									<c:set value="${ fn:split(detail.bannerImg, ',') }" var="bannerimgs" />
-									<c:if test ="${!empty bannerimgs[0]}">
-									
-									<img src="${my:random(imgGetUrl)}?${bannerimgs[0]}" alt="" />
+			
+									<c:if test ="${!empty brandShow.showBannerImg}">									
+									<img src="${my:random(imgGetUrl)}?${brandShow.showBannerImg}" alt="" />
 									</c:if>
-									<c:if test ="${empty bannerimgs[0]}">
+									<c:if test ="${empty brandShow.showBannerImg}">
 									<img src="${imgDomain}/temp/img7.jpg" alt="" />
 									</c:if>
 									<p class="g-text">${show.title}</p>
