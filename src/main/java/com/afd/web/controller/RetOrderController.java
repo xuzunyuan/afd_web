@@ -1,6 +1,8 @@
 package com.afd.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.afd.common.mybatis.Page;
 import com.afd.common.util.RequestUtils;
@@ -31,6 +34,7 @@ import com.afd.service.seller.ISellerLoginService;
 import com.afd.service.seller.ISellerService;
 import com.afd.web.service.impl.LoginServiceImpl;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.fastjson.JSON;
 
 @Controller
 @RequestMapping("/retOrder")
@@ -50,7 +54,7 @@ public class RetOrderController {
 	
 	@RequestMapping("/myRetOrders")
 	public String myRetOrders(HttpServletRequest request,ModelMap map,Page<ReturnOrder> page){
-		page.setPageSize(1);
+		page.setPageSize(10);
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
 		page = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId),page);
 		map.addAttribute("retOrders", page.getResult());
@@ -155,5 +159,15 @@ public class RetOrderController {
 				}
 			}
       return str;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/cancelRetOrder")
+	public String cancelRetOrder(HttpServletRequest request,@RequestParam Long retOrderId){
+		String uid = LoginServiceImpl.getUserIdByCookie(request);
+		this.retOrderService.cancelRetOrderById(retOrderId,Long.parseLong(uid));
+		Map<String,Boolean> map = new HashMap<String,Boolean>();
+		map.put("status", true);
+		return JSON.toJSONString(map);
 	}
 }
