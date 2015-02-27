@@ -24,6 +24,7 @@ import com.afd.model.order.ReturnOrder;
 import com.afd.model.order.ReturnOrderItem;
 import com.afd.model.product.BrandShow;
 import com.afd.model.product.Product;
+import com.afd.model.product.Sku;
 import com.afd.model.seller.Seller;
 import com.afd.model.seller.SellerLogin;
 import com.afd.model.seller.SellerRetAddress;
@@ -104,7 +105,11 @@ public class RetOrderController {
 	
 	@RequestMapping("/myRetDetail")
 	public String myRetDetail(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
-		ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
+		Page<ReturnOrder> page=new Page<ReturnOrder>();
+		page.setPageSize(1);
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		page = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId),page);
+		ReturnOrder returnOrder = page.getResult().get(0);
 		if(returnOrder==null){
 			return "redirect:http://www.afd.com";
 		}
@@ -116,8 +121,10 @@ public class RetOrderController {
 		if(retOrderItem==null){
 			return "redirect:http://www.afd.com";
 		}
-		List<OrderItem> orderItems = order.getOrderItems();
+		List<OrderItem> orderItems= this.orderService.getOrderItemsByOrderId(orderId.intValue());
 		Long skuId = retOrderItem.getSkuId();
+		Sku sku = this.productService.getSkuById(skuId.intValue());
+		map.addAttribute("sku", sku);
 		OrderItem orderItemCopy = null;
 		for(OrderItem oi : orderItems ){
 			if(oi.getSkuId().compareTo(skuId)==0){
@@ -152,7 +159,9 @@ public class RetOrderController {
 		SellerRetAddress sellerRetAddress= new SellerRetAddress();//todo
 		map.addAttribute("retAddress", sellerRetAddress);
 		map.addAttribute("returnOrder", returnOrder);
-		
+		if(returnOrder.getStatus().equals(OrderConstants.order_return_cancel)){
+			//return "retOrder/myRetCancel";
+		}
 		return "retOrder/myRetDetail";
 	}
 	

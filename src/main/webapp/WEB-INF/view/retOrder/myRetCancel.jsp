@@ -7,6 +7,7 @@
 	<title>个人中心-退货详情</title>
 	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/allstyle.css"/>
 	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/member.css"/>
+	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/order.css"/>
 	<script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
 </head>
 <body class="">
@@ -42,7 +43,7 @@
 									<ul>
 										<li><b>退货单号：</b><span><c:out value="${returnOrder.retOrderCode}"/></span></li>
 										<li>
-											<p>申请时间：<span><fmt:formatDate value="${${returnOrder.createDate}}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+											<p>申请时间：<span><fmt:formatDate value="${returnOrder.createDate}" pattern="yyyy-MM-dd HH:mm"/></span></p>
 										</li>
 									</ul>
 								</div>
@@ -80,17 +81,17 @@
 											<td>
 												<dl class="mod-orderGoods">
 													<dt>
-														<a href="${ctx}/detail.action?bsdid=${retOrderItem.bSDId}" class="thumbnail"><img src="${my:random(imgGetUrl)}?rid=<c:out value="${sku.skuImgUrl})"/>&op=s0_w52_h52" alt=""></a>
+														<a href="${ctx}/detail.action?bsdid=${orderItem.bsdId}" class="thumbnail"><img src="${my:random(imgGetUrl)}?rid=<c:out value="${sku.skuImgUrl})"/>&op=s0_w52_h52" alt=""></a>
 													</dt>
 													<dd>
-														<p class="title"><a href="${ctx}/detail.action?bsdid=${retOrderItem.bSDId}"><c:out value="${prod.title}"/></a></p>
+														<p class="title"><a href="${ctx}/detail.action?bsdid=${orderItem.bsdId}"><c:out value="${prod.title}"/></a></p>
 													</dd>
 												</dl>
 											</td>
 											<td class="information">
 												<div class="mod-goodsAttr">
 													<div class="selectedAttr">
-													<c:out value="${specHtml}"/>
+													${specHtml}
 													</div>
 												</div>
 											</td>
@@ -121,10 +122,10 @@
 										<p><c:out value="${returnOrder.remarks}"/></p>
 										<div class="uploadImg">
 											<ul>
-											<c:set value="${ fn:split(returnOrder.evidencePicUrl, ',') }" var="imgs" />
+											<c:set value="${fn:split(returnOrder.evidencePicUrl, ',') }" var="imgs" />
 											<c:forEach items="${imgs}" var="img" varStatus="status">
 												<li>
-													<a href="#"><img src="${my:random(imgGetUrl)}?rid=<c:out value="${img})"/>&op=s0_w78_h78" alt=""></a>
+													<a href="#"><img src="${my:random(imgGetUrl)}?rid=<c:out value="${img}"/>&op=s0_w78_h78" alt=""></a>
 												</li>
 											</c:forEach>	
 											</ul>
