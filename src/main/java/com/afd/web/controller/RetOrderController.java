@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.afd.common.mybatis.Page;
 import com.afd.common.util.RequestUtils;
 import com.afd.constants.order.OrderConstants;
 import com.afd.model.order.Order;
@@ -48,10 +49,12 @@ public class RetOrderController {
 	private IProductService   productService;
 	
 	@RequestMapping("/myRetOrders")
-	public String myRetOrders(HttpServletRequest request,ModelMap map){
+	public String myRetOrders(HttpServletRequest request,ModelMap map,Page<ReturnOrder> page){
+		page.setPageSize(1);
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
-		List<ReturnOrder> retOrders = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId));
-		map.addAttribute("retOrders", retOrders);
+		page = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId),page);
+		map.addAttribute("retOrders", page.getResult());
+		map.addAttribute("page", page);
 		return "retOrder/myRetOrders";
 	}
 	

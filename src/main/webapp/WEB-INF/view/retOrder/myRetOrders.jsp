@@ -107,9 +107,9 @@
 													</td>
 													<td>
 														<ul>
-															<li><p>卖家姓名：潘金莲</p></li>
-															<li><p>联系电话：12589458925</p></li>
-															<li><p>QQ号码：25896148531</p></li>
+															<li><p>卖家姓名：<c:out value="${retOrder.seller.bizManName}" /></p></li>
+															<li><p>联系电话：<c:out value="${retOrder.seller.tel}" /></p></li>
+															<li><p>QQ号码：<c:out value="${retOrder.seller.bizManQq}" /></p></li>
 														</ul>
 													</td>
 												</tr>
@@ -120,22 +120,9 @@
 							</div>
 							<div class="pagingGroup">
 								<!-- paging -->
-								<div class="paging">
-									<span class="pageup disabled"><i>&lt;&nbsp;</i>上一页</span>
-									<ul>
-										<li class="on"><a href="">1</a></li>
-										<li><a href="">2</a></li>
-										<li><a href="">3</a></li>
-										<li><a href="">4</a></li>
-										<li><span>...</span></li>
-										<li><a href="">100</a></li>
-									</ul>
-									<span class="pagedown"><a href="">下一页<i>&nbsp;&gt;</i></a></span>
-									<p class="goto">
-										<span>到第</span><input type="text" name="" id="" class="input"><span>页</span>
-										<button class="btn btn-def sm">确定</button>
-									</p>
-								</div>
+								<form id="form" action="${ctx}/retOrder/myRetOrders.action" method="post">
+								<pg:page name="retOrder" page="${page}" formId="form"></pg:page>
+								</form>
 								<!-- paging end -->
 							</div>
 						</div>

@@ -6,6 +6,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@taglib prefix="my" uri="/WEB-INF/tld/my.tld"%>
+<%@taglib prefix="pg" uri="/tld/page.tld"%>
 <%request.setAttribute("ctx", request.getContextPath()); %>
 <%request.setAttribute("cssDomain", "http://css.web.afdimg.com"); %>
 <%request.setAttribute("jsDomain", "http://js.web.afdimg.com"); %>
