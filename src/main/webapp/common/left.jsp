@@ -7,7 +7,7 @@
 			<li><a href="${ctx}/user/userInfo.action"><span class="arrow right-hollow xs"><b></b><i></i></span>个人中心</a></li>
 			<li><a href="${ctx}/cart/cart.action"><span class="arrow right-hollow xs"><b></b><i></i></span>我的购物车</a></li>
 			<li><a href=""><span class="arrow right-hollow xs"><b></b><i></i></span>我的订单</a></li>
-			<li><a href=""><span class="arrow right-hollow xs"><b></b><i></i></span>退货管理</a></li>
+			<li><a href="${ctx}/retOrder/myRetOrders.action"><span class="arrow right-hollow xs"><b></b><i></i></span>退货管理</a></li>
 		</ul>
 		<h2>个人资料</h2>
 		<ul>
