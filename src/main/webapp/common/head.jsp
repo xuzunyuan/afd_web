@@ -25,6 +25,11 @@
 			$(document).on("mouseout","div#shoppingCart",function(){
 				$(this).removeClass("hover");
 			});
+			
+			$(document).on("click","a[name=logon]",function(){
+				var href = location.href;
+				location.href = "${ctx}/login.action?rtnUrl="+encodeURIComponent(href);
+			});
 		});
 		function getCookie(c_name){
 			if (document.cookie.length>0){
@@ -114,7 +119,7 @@
 				</dl>
 			</div>
 			<div class="signin">
-				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a href="${ctx}/login.action">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
+				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:;">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
 			</div>
 		</div>
 	</div>
