@@ -37,7 +37,7 @@
 							<div class="buyerInfo">
 								<div class="info-main">
 									<dl>
-										<dt><img src="${imgDomain}/temp/memb-img.jpg" alt=""></dt>
+										<dt><img src="${imgUrl}?rid=${user.userExt.headerPic}&op=s1_w80_h80_e1-c3_w80_h80" alt=""></dt>
 										<dd>
 											<h2><c:out value="${user.userName}" />，您好</h2>
 											<p>您上次登录时间：<fmt:formatDate value="${user.lastLoginDate}" pattern="yyyy-MM-dd HH:mm:ss" /></p>

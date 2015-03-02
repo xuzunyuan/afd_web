@@ -112,7 +112,7 @@
 															</p>
 														</c:if>
 														<p>
-															<a href="${ctx}/retOrder/myRetDetail.action?myRetId=${retOrder.retOrderId}">查看详情</a>
+															<a target="_blank" href="${ctx}/retOrder/myRetDetail.action?myRetId=${retOrder.retOrderId}">查看详情</a>
 														</p>
 													</td>
 													<td class="salemeg">
