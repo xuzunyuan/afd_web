@@ -1,8 +1,5 @@
 package com.afd.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,14 +42,20 @@ public class OrderController {
 		}
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
 		Long uid = Long.parseLong(userId);
+		Page<Order> allOrders = this.orderService.getOrdersByUserId(uid, page);
+		Page<Order> waitPayOrders = this.orderService.getOrdersByUserIdAndStatus(uid, OrderConstants.ORDER_STATUS_WAITPAYMENT, page);
+		Page<Order> waitDeliveredOrders = this.orderService.getOrdersByUserIdAndStatus(uid, OrderConstants.ORDER_STATUS_WAITDELIVERED, page);
+		modelMap.addAttribute("allCount", allOrders.getTotalRecord());
+		modelMap.addAttribute("waitPayCount", waitPayOrders.getTotalRecord());
+		modelMap.addAttribute("waitDeliveredCount", waitDeliveredOrders.getTotalRecord());
 		if(!StringUtils.isEmpty(orderStatus) && orderStatus.equals(OrderConstants.ORDER_STATUS_WAITPAYMENT)) {
-			page = this.orderService.getOrdersByUserIdAndStatus(uid, orderStatus, page);
+			page = waitPayOrders;
 			modelMap.addAttribute("status", OrderConstants.ORDER_STATUS_WAITPAYMENT);
 		} else if(!StringUtils.isEmpty(orderStatus) && orderStatus.equals(OrderConstants.ORDER_STATUS_WAITDELIVERED)) {
-			page = this.orderService.getOrdersByUserIdAndStatus(uid, orderStatus, page);
+			page = waitDeliveredOrders;
 			modelMap.addAttribute("status", OrderConstants.ORDER_STATUS_WAITDELIVERED);
 		} else {
-			page = this.orderService.getOrdersByUserId(uid, page);
+			page = allOrders;
 		}
 		modelMap.addAttribute("orders", page);
 		return "/order/orders";

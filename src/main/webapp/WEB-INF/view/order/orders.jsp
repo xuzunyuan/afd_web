@@ -157,9 +157,9 @@
 								<table>
 									<caption>
 										<ul>
-											<li><a href="#">全部订单(<span class="warnColor">0</span>)</a></li>
-											<li><a href="#">待支付订单(<span class="warnColor">0</span>)</a></li>
-											<li><a href="#">待确认收货(<span class="warnColor">0</span>)</a></li>
+											<li><a href="${ctx}/user/orders.action">全部订单(<span class="warnColor"><c:out value="${allCount }"/></span>)</a></li>
+											<li><a href="${ctx}/user/orders.action?status=2">待支付订单(<span class="warnColor"><c:out value="${waitPayCount }"/></span>)</a></li>
+											<li><a href="${ctx}/user/orders.action?status=3">待确认收货(<span class="warnColor"><c:out value="${waitDeliveredCount }"/></span>)</a></li>
 										</ul>
 									</caption>
 									<tbody>
