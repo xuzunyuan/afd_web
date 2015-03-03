@@ -9,7 +9,7 @@ package com.unionpay;
 public class PaymentRequestVO {
     public static final String MER_ID_SUFFIX = "04512";
 
-    public String merId = "808080201304512"; // MerId为ChinaPay统一分配给商户的商户号，15位长度，必填
+    public String merId = "808080201304512"; // MerId为ChinaPay统一分配给商户的商户号，15位长度，必填//TODO
     public String curyId = "156"; // 订单交易币种，3位长度，固定为人民币156，必填
     private String transType = "0001"; // 交易类型，4位长度，取值范围为："0001"和"0002"， 其中"0001"表示消费交易，"0002"表示退货交易，必填
     private String version = "20070129"; // 支付接入版本号，必填

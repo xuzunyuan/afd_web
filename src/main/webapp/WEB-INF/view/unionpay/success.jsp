@@ -51,7 +51,7 @@
 								<dt><i class="icon i-rightXL"></i></dt>
 								<dd>
 									<h2>您的订单已经成功支付，请等待收货。</h2>
-									<p>您可以：<a href="#">查看订单</a><a href="${ctx }">去首页逛逛</a><a href="#">关闭此页</a></p>
+									<p>您可以：<a href="${ctx }/user/orders.action">查看订单</a><a href="${ctx }">去首页逛逛</a><a href="#">关闭此页</a></p>
 								</dd>
 							</dl>
 							<!-- submitState end -->

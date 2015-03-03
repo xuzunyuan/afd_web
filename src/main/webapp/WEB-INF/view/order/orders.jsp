@@ -261,7 +261,7 @@
 																	</td>
 																	<td rowspan="${fn:length(order.orderItems) }" class="border-l">
 																		<c:if test="${order.orderStatus == '2' }">
-																			<p><input orderid="${order.orderId }" type="button" value="去支付" class="btn btn-assist"></p> 
+																			<p><input onclick="location.href='${ctx}/user/payment.action?orderId=${order.orderId}'" type="button" value="去支付" class="btn btn-assist"></p> 
 																			<p><a href="javascript:;" onclick="cancelOrder(${order.orderId })">取消订单</a></p>
 																		</c:if>
 																		<c:if test="${order.orderStatus == '3' }">

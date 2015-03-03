@@ -51,7 +51,7 @@
 								<dt><i class="icon i-dangerXL"></i></dt>
 								<dd>
 									<h2>订单支付失败，请在我的订单中重新支付。</h2>
-									<p><a href="#">去我的订单看看 ></a></p>
+									<p><a href="${ctx }/user/orders.action">去我的订单看看 ></a></p>
 								</dd>
 							</dl>
 							<!-- submitState end -->

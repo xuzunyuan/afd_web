@@ -88,13 +88,13 @@ public class AliPayController {
 	            map.put("result", result.getInfo());
 	            return "alipay/payError";
 	        }
-	        String pay_domain="http://pay.yiwang.com";
+	        String pay_domain="http://pay.yiwang.com";//TODO
 			String active_str=System.getProperty("spring.profiles.active","product");
 			if("test".equalsIgnoreCase(active_str)){
-				pay_domain="http://pay.test.yiwang.com";
+				pay_domain="http://pay.test.yiwang.com";//TODO
 			}
 			if("beta".equalsIgnoreCase(active_str)){
-				pay_domain="http://pay.beta.yiwang.com";
+				pay_domain="http://pay.beta.yiwang.com";//TODO
 			}
 	        map.addAttribute("pyId", pyId);
 	        map.addAttribute("transAmt", transAmt);

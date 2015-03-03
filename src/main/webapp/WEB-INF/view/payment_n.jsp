@@ -186,7 +186,7 @@
 		</div>
 		<div class="bd">
 			<h2>请在新开的网银页面完成付款后选择：</h2>
-			<p><i class="icon i-rightSM"></i><b>付款成功</b><span>您可以：<a href="${ctx }/cart/cart.action">返回购物车继续购物</a><a href="#" >查看订单</a></span></p>
+			<p><i class="icon i-rightSM"></i><b>付款成功</b><span>您可以：<a href="${ctx }/cart/cart.action">返回购物车继续购物</a><a href="${ctx }/user/orders.action" >查看订单</a></span></p>
 			<p><i class="icon i-graveSM"></i><b>付款失败</b><span>建议您：<a href="javascript:;" onclick="$('div.pop-pay').hide();$('div.mask').hide()">重新支付</a>
 				<a href="javascript:;" onclick="$('div.pop-pay').hide();$('div.mask').hide();$('div.pay-ebank').removeClass('selected');">更改支付方式</a></span></p>
 		</div>

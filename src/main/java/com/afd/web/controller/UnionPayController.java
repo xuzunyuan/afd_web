@@ -100,13 +100,13 @@ public class UnionPayController {
        
         vo.setTransDate(DateUtils.formatDate(new Date(), "yyyyMMdd"));
         map.addAttribute("vo", vo);
-        String pay_domain="http://pay.yiwang.com";
+        String pay_domain="http://pay.yiwang.com";//TODO
 		String active_str=System.getProperty("spring.profiles.active","product");
 		if("test".equalsIgnoreCase(active_str)){
-			pay_domain="http://pay.test.yiwang.com";
+			pay_domain="http://pay.test.yiwang.com";//TODO
 		}
 		if("beta".equalsIgnoreCase(active_str)){
-			pay_domain="http://pay.beta.yiwang.com";
+			pay_domain="http://pay.beta.yiwang.com";//TODO
 		}
         map.addAttribute("paydomain", pay_domain);
 
@@ -167,13 +167,13 @@ public class UnionPayController {
         log.error("--------unionpay callbackpage-------"+ JSON.toJSONString(pay)+"------------");
         if(!pay.getResult() || null == pay.getPaymentId()) {
         	log.error("--------unionpay callbackpage fail-------------------");
-            return "unionpay/fail";//todo
+            return "unionpay/fail";//TODO
         }
         
         Payment payment= this.paymentServices.getPaymentInfo(pay.getPaymentId());
         
         if( null == payment) {
-        	 return "redirect:http://www.yiwang.com";//todo
+        	 return "redirect:http://www.yiwang.com";//TODO
         }
        payment.setTradeNo(pay.getOrderno()); 
        payment.setStatus(OrderConstants.PAY_STATUS_PAYING);
@@ -208,7 +208,7 @@ public class UnionPayController {
             chinapay.SecureLink t;
             boolean flag;
 
-            flag = key.buildKey("999999999999999", 0, baseDiskPath + "/WEB-INF/key/PgPubk.key");
+            flag = key.buildKey("999999999999999", 0, baseDiskPath + "/WEB-INF/key/PgPubk.key");//TODO
             if (!flag) {
                 pay.setInfo("response build key error!");
                 return;
