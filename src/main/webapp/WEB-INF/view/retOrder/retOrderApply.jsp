@@ -185,6 +185,7 @@
 												</div>
 												<input type="hidden" name="orderId" value="${orderItem.orderId}" />
 												<input type="hidden" name="sellerId" value="${seller.sellerId}" />
+												<input type="hidden" name="brandShowId" value="${orderItem.order.brandShowId}" />
 											</div>
 											<div class="form-item">
 												<div class="item-label"><label><em>*</em>退货原因：</label></div>
