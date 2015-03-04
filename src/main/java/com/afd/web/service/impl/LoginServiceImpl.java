@@ -102,6 +102,7 @@ public class LoginServiceImpl {
 		String userId = getUserIdByCookie(req);
 		//密码验证
 		String encrypt = DigestUtils.md5Hex(userId + SystemConstants.WEB_KEY + RequestUtils.getUserAgent(req));
+System.out.println(encrypt +"||"+ _um);
 		//密码不正确
 		if(!encrypt.equals(_um)){
 			return false;
@@ -138,7 +139,7 @@ public class LoginServiceImpl {
 			try {
 				_u = URLDecoder.decode(_u,"utf-8");
 				String[] userInfo = _u.split("\\|");
-				if(userInfo.length>2){
+				if(userInfo.length>=2){
 					userId = userInfo[0];
 				}
 			} catch (UnsupportedEncodingException e) {

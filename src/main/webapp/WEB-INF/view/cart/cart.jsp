@@ -12,6 +12,9 @@
 	<link rel="stylesheet" type="text/css" href="${cssDomain }/css/order.css"/>
 	<script type="text/javascript">
 		$(function(){
+			totalTop = 0;
+			$(window).scroll(totalFloat);
+			$(window).resize(totalFloat);
 			$.cookie("tradesubmit", null, {
 				expires : -1
 			});
@@ -155,6 +158,8 @@
 		function initContent() {
 			setChecked();
 			showTotal();
+			totalTop = $("div.orderSubmit").offset().top;
+			totalFloat();
 		}
 		function setChecked(){
 			$("div[name=order]").each(function(){
@@ -254,7 +259,6 @@
 				);
 			}
 		}
-		
 		function validNum(num, obj) {
 			if (!/^\d+$/.exec(num)) {
 				$(obj).parent("div.mod-modified").siblings("div.note").html(
@@ -268,6 +272,19 @@
 				}
 				return true;
 			}
+		}
+		function totalFloat() {
+			if ($("div.cartList-group").length > 1) {
+				var scrollTop = $(document).scrollTop();
+				var screenHeight = $(window).height();
+				if (scrollTop + screenHeight > totalTop + 56) {
+					$("div.orderSubmit").removeClass("fixed");
+				} else {
+					$("div.orderSubmit").addClass("fixed");
+				}
+				return totalTop + 56;
+			}
+			return 0;
 		}
 	</script>
 </head>

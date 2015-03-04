@@ -16,6 +16,12 @@
 			hasError();
 			getAddr();
 			
+			$(window).scroll(function(){
+				$("div.popup").each(function(){
+					console.log($(this).width);
+				});
+			});
+			
 			$("div.pro-mod").load("${ctx}/tradeGoods.action");
 			
 			$(document).on("click","div.pop-order div.hd i.close",function(){
@@ -967,7 +973,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="popup pop-addAddr popup-info hidden" style="width: 998px">
+	<div class="popup pop-addAddr popup-info hidden" style="width: 998px; top: 0px; left: 50%; margin-left: -500px">
 		<div class="hd">
 			<h2>收货地址</h2><i class="close"></i>
 		</div>

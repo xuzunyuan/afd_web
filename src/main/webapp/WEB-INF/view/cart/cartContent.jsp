@@ -45,7 +45,7 @@
 					<dt><img src="${imgDomain }/person.png" alt="" /></dt>
 					<dd>
 						<h3>购物车很空很伤心<br />主人，快点填充我空虚的内心吧...</h3>
-						<p><a href="#">去首页逛逛 <em>&gt;</em></a></p>
+						<p><a href="${ctx }">去首页逛逛 <em>&gt;</em></a></p>
 					</dd>
 				</dl>
 			</div>
@@ -151,7 +151,7 @@
 				</div>
 			</c:forEach>
 			<div class="cartList-group orderClosing">
-				<div class="orderSubmit fixed">
+				<div class="orderSubmit">
 					<div class="submit-box">
 						<div class="func"><label><input type="checkbox" name="allChecked" class="chk">全选</label><span id="delAll">删除</span><span id="clear">消除失效商品</span></div>
 					<a href="javascript:void(0)" class="btn btn-assist submitBtn">结&nbsp;算</a>
