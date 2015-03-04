@@ -102,7 +102,6 @@ public class LoginServiceImpl {
 		String userId = getUserIdByCookie(req);
 		//密码验证
 		String encrypt = DigestUtils.md5Hex(userId + SystemConstants.WEB_KEY + RequestUtils.getUserAgent(req));
-System.out.println(encrypt +"||"+ _um);
 		//密码不正确
 		if(!encrypt.equals(_um)){
 			return false;
