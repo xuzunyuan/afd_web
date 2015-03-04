@@ -49,6 +49,7 @@
 											<c:if test="${returnOrder.status=='2'}">
 											<div class="selleraccept">
 												<p class="errTxt">请将退货商品自行寄回以下地址：</p>
+												<c:if test="${!empty retAddress}">
 												<dl>
 													<dt>详细地址：</dt>
 													<dd><p><c:out value="retAddress.provinceName"/><c:out value="retAddress.cityName"/><c:out value="retAddress.districtName"/><c:out value="retAddress.townName"/><c:out value="retAddress.addr"/></p></dd>
@@ -65,6 +66,7 @@
 													<dt>联系电话：</dt>
 													<dd><p><c:out value="retAddress.mobile"/></p></dd>
 												</dl>
+												</c:if>
 											</div>
 											</c:if>
 											<c:if test="${returnOrder.status=='3'}">

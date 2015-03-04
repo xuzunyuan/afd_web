@@ -156,8 +156,12 @@ public class RetOrderController {
 		}
 		SellerLogin loginInfo = this.sellerLoginService.getLoginById(seller.getSellerLoginId());
 		map.addAttribute("login", loginInfo);
-		SellerRetAddress sellerRetAddress= new SellerRetAddress();//todo
-		map.addAttribute("retAddress", sellerRetAddress);
+		Integer sRAId = brandShow.getsRAId();
+		SellerRetAddress retAddress=null;
+		if(sRAId!=null){
+			retAddress=this.sellerService.getSellerRetAddress(sRAId);
+		}
+		map.addAttribute("retAddress", retAddress);
 		map.addAttribute("returnOrder", returnOrder);
 		if(returnOrder.getStatus().equals(OrderConstants.order_return_cancel)){
 			//return "retOrder/myRetCancel";
