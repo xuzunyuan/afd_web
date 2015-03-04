@@ -13,6 +13,10 @@
 	<script type="text/javascript">
 		$(function(){
 			setInterval("payRestTime()",1000);
+			popupFix();
+			$(window).scroll(popupFix);
+			$(window).resize(popupFix);
+
 			$(document).on("change","#reason",function(){
 				if('0' == $(this).val()) {
 					$("#cancel-confirm").addClass("disabled");
@@ -126,6 +130,22 @@
 				var s = parseInt(restTime % 60);
 				var text = ""+h+":"+m+":"+s+"后订单失败";
 				$(this).html(text);
+			});
+		}
+		function popupFix(){
+			var scrollTop = $(document).scrollTop();
+			var scrollLeft = $(document).scrollLeft();
+			var screenHeight = $(window).height();
+			var screenWidth = $(window).width();
+			$("div.popup").each(function(){
+				var height = $(this).height();
+				var width = $(this).width();
+				var top = scrollTop+(screenHeight-height)/2;
+				var left = scrollLeft+(screenWidth-width)/2;
+				$(this).css("top",top>scrollTop ? top : scrollTop);
+				$(this).css("left",left>scrollLeft ? left : scrollLeft);
+				$(this).css("margin-left", 0);
+				$(this).css("margin-top", 0);
 			});
 		}
 	</script>

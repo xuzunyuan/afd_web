@@ -15,12 +15,9 @@
 		$(function(){
 			hasError();
 			getAddr();
-			
-			$(window).scroll(function(){
-				$("div.popup").each(function(){
-					console.log($(this).width);
-				});
-			});
+			popupFix();
+			$(window).scroll(popupFix);
+			$(window).resize(popupFix);
 			
 			$("div.pro-mod").load("${ctx}/tradeGoods.action");
 			
@@ -212,6 +209,7 @@
 				$("div.mask").removeClass("hidden");
 				$("div.pop-addAddr").removeClass("hidden");
 				$("div.pop-addAddr div.bd").append(shippingForm);
+				popupFix();
 			});
 			$(document).on("click","div.addressList a[name=delete]",function(){
 				var addrid = $(this).attr("addrid");
@@ -232,6 +230,7 @@
 					$("div.mask").removeClass("hidden");
 					$("div.pop-addAddr").removeClass("hidden");
 					$("div.pop-addAddr div.bd").append(shippingForm);
+					popupFix();
 				}
 			});
 			$(document).on("click","div.addrMore",function(){
@@ -685,6 +684,22 @@
 			m = Math.pow(10, Math.max(r1, r2));
 			return (arg1 * m + arg2 * m) / m;
 		}
+		function popupFix(){
+			var scrollTop = $(document).scrollTop();
+			var scrollLeft = $(document).scrollLeft();
+			var screenHeight = $(window).height();
+			var screenWidth = $(window).width();
+			$("div.popup").each(function(){
+				var height = $(this).height();
+				var width = $(this).width();
+				var top = scrollTop+(screenHeight-height)/2;
+				var left = scrollLeft+(screenWidth-width)/2;
+				$(this).css("top",top>scrollTop ? top : scrollTop);
+				$(this).css("left",left>scrollLeft ? left : scrollLeft);
+				$(this).css("margin-left", 0);
+				$(this).css("margin-top", 0);
+			});
+		}
 	</script>
 </head>
 <body>
@@ -957,7 +972,7 @@
 		</div>
 		<jsp:include page="/common/foot.html" />
 	</div>
-	<div class="popup popup-info pop-order" style="width: 800px;margin-left: -400px">
+	<div class="popup popup-info pop-order" style="width: 800px;">
 		<div class="hd">
 			<i class="close"></i>
 		</div>
@@ -973,7 +988,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="popup pop-addAddr popup-info hidden" style="width: 998px; top: 0px; left: 50%; margin-left: -500px">
+	<div class="popup pop-addAddr popup-info hidden" style="width: 998px; top: 0px;">
 		<div class="hd">
 			<h2>收货地址</h2><i class="close"></i>
 		</div>
