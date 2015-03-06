@@ -123,7 +123,7 @@
 								<div class="bd">
 									<div class="pay-ebank"><!--选择支付方式后加class  "selected"-->
 										<div class="whichEbank">
-											<p class="selectedMode"><em>支付方式：</em><span class="ico"><img src="img/pay/cbc.jpg" alt="" /></span>
+											<p class="selectedMode"><em>支付方式：</em><span class="ico"><img src="" alt="" /></span>
 												<a href="javascript:;" class="hint1">修改适合您的在线支付方式</a></p>
 										</div>
 										<div class="ebankList">

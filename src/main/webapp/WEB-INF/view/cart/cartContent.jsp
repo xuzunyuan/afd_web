@@ -99,7 +99,7 @@
 										<td>
 											<dl class="mod-orderGoods">
 												<dt>
-													<a href="#" class="thumbnail"><img src="${imgDomain }/${cartItem.prodImgUrl }" alt="" /></a>
+													<a href="#" class="thumbnail"><img src="${my:random(imgGetUrl)}?rid=${cartItem.prodImgUrl }&op=s0_w52_h52" alt="" /></a>
 												</dt>
 												<dd>
 													<p class="title"><a href="#"><c:out value="${cartItem.prodName }"/></a></p>
