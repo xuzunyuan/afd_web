@@ -333,7 +333,7 @@
 					dataType : "json",
 					success : function(data) {
 						//window.location.href='${ctx}/cart/cart.action';	
-						$("#popupdiv").$('#popupdiv').show();
+						$('#popupdiv').show();
 						setTimeout("$('#popupdiv').hide();",2000);
 					}
 				});
