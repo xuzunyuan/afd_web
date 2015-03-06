@@ -19,7 +19,7 @@
     <script type="text/javascript">
         window.onload = function () {
             var form = document.getElementById('myform');
-//             form.submit();
+//             form.submit(); //TODO
         };
     </script> 
 </head>

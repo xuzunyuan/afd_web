@@ -59,7 +59,7 @@
 							for(var index2 in cartItems) {
 								var cartItem = cartItems[index2];
 								html += "<dl>" + 
-										  "<dt><a href='#'><img src='" + cartItem.prodImgUrl + "' alt='' /></a></dt>" +
+										  "<dt><a href='#'><img src='${my:random(imgGetUrl)}?rid=" + cartItem.prodImgUrl + "&op=s0_w50_h50' alt='' /></a></dt>" +
 										  "<dd class='goodsTitle'>" +
 										  	"<p><a href='#' title=''>" + cartItem.prodName + "</a></p>" +
 										  "</dd>" +

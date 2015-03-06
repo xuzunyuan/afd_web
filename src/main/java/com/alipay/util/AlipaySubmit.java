@@ -97,7 +97,7 @@ public class AlipaySubmit {
 
         //submit按钮控件请不要含有name属性
         sbHtml.append("<input type=\"submit\" value=\"" + strButtonName + "\" style=\"display:none;\"></form>");
-//        sbHtml.append("<script>document.forms['alipaysubmit'].submit();</script>");
+//        sbHtml.append("<script>document.forms['alipaysubmit'].submit();</script>");//TODO
 
         return sbHtml.toString();
     }

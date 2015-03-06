@@ -100,13 +100,13 @@ public class UnionPayController {
        
         vo.setTransDate(DateUtils.formatDate(new Date(), "yyyyMMdd"));
         map.addAttribute("vo", vo);
-        String pay_domain="http://pay.yiwang.com";//TODO
+        String pay_domain="http://localhost:8888/afd_web";//TODO
 		String active_str=System.getProperty("spring.profiles.active","product");
 		if("test".equalsIgnoreCase(active_str)){
-			pay_domain="http://pay.test.yiwang.com";//TODO
+			pay_domain="http://web.test.afd.com";//TODO
 		}
 		if("beta".equalsIgnoreCase(active_str)){
-			pay_domain="http://pay.beta.yiwang.com";//TODO
+			pay_domain="http://web.beta.afd.com";//TODO
 		}
         map.addAttribute("paydomain", pay_domain);
 
