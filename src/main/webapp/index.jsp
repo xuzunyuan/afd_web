@@ -11,7 +11,7 @@
 <body id="index">
 <div class="wrapper">
 
-<jsp:include page="/common/head.html" />
+	<jsp:include page="/common/head.jsp" />
 
 	<div class="crossnav">
 		<ul>

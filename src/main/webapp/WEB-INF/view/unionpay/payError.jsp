@@ -10,7 +10,9 @@
 </head>
 <body> 
 	<div class="wrapper">
-		<jsp:include page="/common/head.html" />
+		<jsp:include page="/common/head.jsp">
+			<jsp:param name="hideMiniCart" value="1"/>   
+		</jsp:include>
 		<!--container begin-->
 		<div class="container">
 			<!--order-warning-->

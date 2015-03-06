@@ -309,10 +309,10 @@
 												<td>
 													<dl class="mod-orderGoods">
 														<dt>
-															<a href="#" class="thumbnail"><img src="${orderItem.prodImg }" alt=""></a>
+															<a href="${ctx}/detail.action?bsdid=${orderItem.bsdId}" class="thumbnail"><img src="${my:random(imgGetUrl)}?rid=${orderItem.prodImg }&op=s0_w52_h52" alt=""></a>
 														</dt>
 														<dd>
-															<p class="title"><a href="#"><c:out value="${orderItem.prodTitle}"/></a></p>
+															<p class="title"><a href="${ctx}/detail.action?bsdid=${orderItem.bsdId}"><c:out value="${orderItem.prodTitle}"/></a></p>
 														</dd>
 													</dl>
 												</td>

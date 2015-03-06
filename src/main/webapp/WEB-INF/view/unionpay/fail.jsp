@@ -11,7 +11,9 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/common/head.html" />
+		<jsp:include page="/common/head.jsp">
+			<jsp:param name="hideMiniCart" value="1"/>   
+		</jsp:include>
 		<!-- container -->
 		<div id="container">
 			<div class="wrap">

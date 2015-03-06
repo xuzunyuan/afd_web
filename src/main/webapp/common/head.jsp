@@ -7,6 +7,13 @@
 	<script type="text/javascript" src="http://js.web.afdimg.com/uploadify/jquery.uploadify.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
+			var hideMiniCart=<%=request.getParameter("hideMiniCart")%>
+			if(!hideMiniCart) {
+				hideMiniCart = 0;
+			}
+			if(hideMiniCart == '1') {
+				$("#shoppingCart").remove();
+			}
 			var cartCookie = "";
 			$(document).on("mouseover","div#shoppingCart",function(){
 				if($(this).hasClass("hover")) {
@@ -95,21 +102,25 @@
 				showMiniCart
 			);
 		}
+		function login() {
+			var path = window.location.href;
+			window.location.href="${ctx}/login.action?rtnUrl=" + path;
+		}
 	</script>
 	<!-- topbar -->
 	<div id="topbar">
 		<div class="wrap">
 			<div id="siteNav">
 				<dl class="noSubmenu">
-					<dt class="hd"><a href="#">我的订单</a></dt>
+					<dt class="hd"><a href="${ctx}/user/orders.action">我的订单</a></dt>
 				</dl>
 				<dl class="myCenter">
-					<dt class="hd"><a href="#">我的AFD<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
+					<dt class="hd"><a href="${ctx}/user/userInfo.action">我的AFD<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
 				  	<dd class="bd">
 				  		<ul>
-				  		  <li><a href="#">已买商品</a></li>
+				  		  <li><a href="${ctx}/user/orders.action">已买商品</a></li>
 				  		  <li><a href="#">我的足迹</a></li>
-				  		  <li><a href="#">我的购物车</a></li>
+				  		  <li><a href="${ctx}/cart/cart.action">我的购物车</a></li>
 				  		</ul>
 				  	</dd>
 				</dl>
@@ -119,7 +130,7 @@
 				</dl>
 			</div>
 			<div class="signin">
-				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:;">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
+				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:login();">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
 			</div>
 		</div>
 	</div>
@@ -128,13 +139,13 @@
 	<div id="header">
 		<div class="wrap">
 			<div id="logo">
-				<div class="logo"><a href="#" title="logo"><img src="http://img.web.afdimg.com/logo.png" alt="logo"></a></div>
+				<div class="logo"><a href="${ctx}" title="logo"><img src="http://img.web.afdimg.com/logo.png" alt="logo"></a></div>
 				<div class="slogan"><img src="http://img.web.afdimg.com/slogan.png"/></div>
 			</div>
 			<!-- shopping cart -->
 			<div id="shoppingCart">
 				<div class="cart">
-					<a href="#">我的购物车<span class="arrow bottom-hollow"><b></b><i></i></span></a>
+					<a href="${ctx}/cart/cart.action">我的购物车<span class="arrow bottom-hollow"><b></b><i></i></span></a>
 				</div>
 				<div class="bd">
 				</div>

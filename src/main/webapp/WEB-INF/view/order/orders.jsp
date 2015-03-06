@@ -249,10 +249,10 @@
 																<td>
 																	<dl class="mod-orderGoods">
 																		<dt>
-																			<a href="#" class="thumbnail"><img src="${orderItem.prodImg }" alt=""></a>
+																			<a href="${ctx}/detail.action?bsdid=${orderItem.bsdId}" class="thumbnail"><img src="${my:random(imgGetUrl)}?rid=${orderItem.prodImg }&op=s0_w52_h52" alt=""></a>
 																		</dt>
 																		<dd>
-																			<p class="title"><a href="#"><c:out value="${orderItem.prodTitle }"></c:out></a></p><p class="property"><span>颜色分类：军绿色</span><span>尺码：XL（175/...</span></p>
+																			<p class="title"><a href="${ctx}/detail.action?bsdid=${orderItem.bsdId}"><c:out value="${orderItem.prodTitle }"></c:out></a></p><p class="property"><span>颜色分类：军绿色</span><span>尺码：XL（175/...</span></p>
 																		</dd>
 																	</dl>
 																</td>
