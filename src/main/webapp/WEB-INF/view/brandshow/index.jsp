@@ -5,10 +5,10 @@
 							<a href="${ctx}/brandshow.action?bsid=${show.brandShowId}">
 								<div class="g-info">
 			
-									<c:if test ="${!empty brandShow.showBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?${brandShow.showBannerImg}" alt="" />
+									<c:if test ="${!empty show.homeBannerImg}">									
+									<img src="${my:random(imgGetUrl)}?rid=${show.homeBannerImg}" alt="" />
 									</c:if>
-									<c:if test ="${empty brandShow.showBannerImg}">
+									<c:if test ="${empty show.homeBannerImg}">
 									<img src="${imgDomain}/temp/img7.jpg" alt="" />
 									</c:if>
 									<p class="g-text">${show.title}</p>
@@ -22,7 +22,12 @@
                                     <span id="sec${status.index + 1}">31</span>秒</p>
 								</div>
 								<div class="g-img">
+								<c:if test ="${!empty show.showBannerImg}">									
+									<img src="${my:random(imgGetUrl)}?rid=${show.showBannerImg}" alt="" />
+									</c:if>
+									<c:if test ="${empty show.showBannerImg}">
 									<img src="${imgDomain}/temp/img2.jpg" alt="" />
+									</c:if>
 								</div>
 							</a>
  </div>

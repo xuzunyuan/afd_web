@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.afd.common.mybatis.Page;
+import com.afd.model.product.Brand;
 import com.afd.model.product.BrandShow;
 import com.afd.model.product.BrandShowDetail;
 import com.afd.model.product.Product;
 import com.afd.model.product.Sku;
 import com.afd.param.product.SkuSpec;
 import com.afd.param.product.SkuSpecVal;
+import com.afd.service.product.IBrandService;
 import com.afd.service.product.IBrandShowService;
 import com.afd.service.product.IProductService;
 import com.afd.web.service.IHtmlService;
@@ -39,6 +41,9 @@ public class BaseController {
 	
 	@Autowired
 	private IProductService   productService;
+	
+	@Autowired
+	private IBrandService   brandService;
 	
 	@RequestMapping(value = "/create")
 	@ResponseBody
@@ -69,6 +74,13 @@ public class BaseController {
 		if(list!=null&&list.size()>0){
 			for(BrandShow item:list){
 				Integer bsid = item.getBrandShowId();
+				if(item.getBrandId()!=null){
+					Integer bradndId = item.getBrandId();
+					Brand brand = this.brandService.getByBrandId(new Long(bradndId));
+					if(brand!=null){
+						item.setHomeBannerImg(brand.getLogoUrl());
+					}
+				}				
 				BigDecimal lowestPrice = this.brandShowService.getLowestPrice(bsid);
 				if(lowestPrice!=null){
 					item.setLowestPrice(lowestPrice);

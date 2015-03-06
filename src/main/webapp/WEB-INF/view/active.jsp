@@ -22,7 +22,7 @@
 	<div id="mainBanner">
 		<div class="wrap">
 									<c:if test ="${!empty brandShow.homeBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?${brandShow.homeBannerImg}"/>
+									<img src="${my:random(imgGetUrl)}?rid=${brandShow.homeBannerImg}"/>
 									</c:if>
 									<c:if test ="${empty brandShow.homeBannerImg}">
 									<img src="${imgDomain}/temp/active.jpg"/>
