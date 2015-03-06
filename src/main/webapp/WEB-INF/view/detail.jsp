@@ -10,7 +10,7 @@
 </head>
 <body class="">
 	<div class="wrapper">
-		<jsp:include page="/common/head.html"/>
+		<jsp:include page="/common/head.jsp"/>
 		<!-- crossnav -->
 		<div class="crossnav">
 			<ul>

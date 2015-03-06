@@ -12,7 +12,7 @@
 </head>
 <body id="index">
 <div class="wrapper actives">
-<jsp:include page="/common/head.html"/>
+<jsp:include page="/common/head.jsp"/>
 	<div class="crossnav">
 		<ul>
 			<li class="on"><a href="${ctx}/index.jsp">首&nbsp;&nbsp;页</a></li>
