@@ -20,6 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alipay.util.AlipayNotify;
 import com.afd.constants.order.OrderConstants;
@@ -106,6 +107,7 @@ public class AliPayController {
 	    public String callback( @RequestParam("out_trade_no")String out_trade_no,  @RequestParam("trade_no")String trade_no,  @RequestParam("trade_status")String trade_status,ModelMap modelMap, HttpServletRequest request) {
 	        // ................................................. 验证交易合法性 ...
 	    	//获取支付宝POST过来反馈信息
+	    	String refund_status =request.getParameter("refund_status");
 	    	Map<String,String> params = new HashMap<String,String>();
 	    	Map requestParams = request.getParameterMap();
 	    	for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -122,7 +124,7 @@ public class AliPayController {
 	        log.error("--------alipay callback-------"+ JSON.toJSONString(params)+"------------");
 	        
 	    	if(AlipayNotify.verify(params)){
-	    		if(trade_status.equals("TRADE_FINISHED") || trade_status.equals("TRADE_SUCCESS")){
+	    		if((trade_status.equals("TRADE_FINISHED") || trade_status.equals("TRADE_SUCCESS"))&&(StringUtils.isBlank(refund_status))){
 	    			
 	    		Long paymentId=new Long(out_trade_no);
 	    		Payment payment= this.paymentServices.getPaymentInfo(paymentId);
@@ -180,7 +182,7 @@ public class AliPayController {
 	    	//支付宝交易号
 
 	    	String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-
+	    	String refund_status =request.getParameter("refund_status");
 	    	//交易状态
 	    	String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
 	    	//计算得出通知验证结果
@@ -189,7 +191,7 @@ public class AliPayController {
 	    	log.error("trade_status:"+trade_status+"----------");
 	    	if(verify_result){
 	    		
-	    		if(trade_status.equals("TRADE_FINISHED") || trade_status.equals("TRADE_SUCCESS")){
+	    		if((trade_status.equals("TRADE_FINISHED") || trade_status.equals("TRADE_SUCCESS"))&&(StringUtils.isBlank(refund_status))){
 
 	    			    Long paymentId=new Long(out_trade_no);
 	    		        Payment payment= this.paymentServices.getPaymentInfo(paymentId);
