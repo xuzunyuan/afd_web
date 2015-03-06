@@ -82,10 +82,10 @@ $(function(){
 					</div>
 				</div>
 				<div class="hd-bot">
-					<span><label><input type="checkbox" class="chk">有货</label></span>
+					<!--span><label><input type="checkbox" class="chk">有货</label></span>
 					<ul>						
 						<li>价格<i class="icon i-goup"></i></li>						
-					</ul>
+					</ul-->
 					<p><i class="icon i-watch"></i>本场剩余:<span id="day">29</span>天
                     <span id="hour">21</span>时
                     <span id="mini">27</span>分
