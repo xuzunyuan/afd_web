@@ -307,7 +307,7 @@
 							<div class="pagingGroup">
 								<!-- paging -->
 								<form id="form" action="${ctx}/user/orders.action?status=${status}" method="post">
-								<pg:page name="retOrder" page="${orders}" formId="form"></pg:page>
+								<pg:page name="orders" page="${orders}" formId="form"></pg:page>
 								</form>
 								<!-- paging end -->
 							</div>
