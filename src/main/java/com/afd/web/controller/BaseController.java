@@ -1,14 +1,21 @@
 package com.afd.web.controller;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +52,9 @@ public class BaseController {
 	@Autowired
 	private IBrandService   brandService;
 	
+	@Autowired
+	private RedisTemplate<String, Serializable> redis;
+	
 	@RequestMapping(value = "/create")
 	@ResponseBody
 	public String all(HttpServletRequest request, HttpServletResponse response) {
@@ -70,13 +80,28 @@ public class BaseController {
 	@RequestMapping(value = "/brandshows")
      public String index(HttpServletRequest request,Model model, HttpServletResponse response){
 		BrandShow record=new BrandShow();
-		java.util.List<BrandShow> list = this.brandShowService.getValidBrandShows(record);
+		DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String s = format1.format(new Date());
+        List<BrandShow> list =new ArrayList<BrandShow>();
+        
+        try{
+        if(this.redis.opsForValue().size("bs"+s)==0){
+        	list = this.brandShowService.getValidBrandShows(record);
+        	this.redis.opsForValue().set("bs"+s, (Serializable)list,3600*24, TimeUnit.SECONDS);
+        }else{
+        	list = (List<BrandShow>)this.redis.opsForValue().get("bs"+s);
+        } 
+        }catch (Exception e){
+        	list = this.brandShowService.getValidBrandShows(record);
+		}
+        
+        
 		if(list!=null&&list.size()>0){
 			for(BrandShow item:list){
 				Integer bsid = item.getBrandShowId();
 				if(item.getBrandId()!=null){
 					Integer bradndId = item.getBrandId();
-					Brand brand = this.brandService.getByBrandId(new Long(bradndId));
+					Brand brand = this.brandService.getByBrandId(new Long(bradndId));//todo
 					if(brand!=null){
 						item.setHomeBannerImg(brand.getLogoUrl());
 					}
@@ -99,11 +124,23 @@ public class BaseController {
 			return "redirect:/index.jsp";
 		}
 		Page<BrandShowDetail> page=new Page<BrandShowDetail>();
+		Page<BrandShowDetail> ret=new Page<BrandShowDetail>();
 		page.setPageSize(20);
 		page.setCurrentPageNo(pageNo);
 		Map<String,Object> map=new HashMap<String,Object>();
-		map.put("bsid", bsid);
-		Page<BrandShowDetail> ret = this.brandShowService.getBrandShowDetailByPage(map, page);
+		 try{
+		        if(this.redis.opsForValue().size("dsd"+bsid+"p"+bsid)==0){
+		        	map.put("bsid", bsid);
+		    		ret = this.brandShowService.getBrandShowDetailByPage(map, page);
+		    		this.redis.opsForValue().set("dsd"+bsid+"p"+bsid, (Serializable)ret,3600*24, TimeUnit.SECONDS);
+		        }else{
+		        	ret = (Page<BrandShowDetail>)this.redis.opsForValue().get("dsd"+bsid+"p"+bsid);
+		        } 
+		        }catch (Exception e){
+		        	map.put("bsid", bsid);
+		    		ret = this.brandShowService.getBrandShowDetailByPage(map, page);
+				}
+		
 		model.addAttribute("showdetails", ret.getResult());
 		model.addAttribute("pageno", ret.getCurrentPageNo());
 		model.addAttribute("pagetotal",ret.getTotalPage());
