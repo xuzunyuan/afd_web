@@ -118,6 +118,7 @@ public class TradeController{
 	 */
 	@RequestMapping(value = "/tradecomfirm")
 	public String tradeConfirm(@CookieValue(value = "cartconfirm", required = true, defaultValue = "") String cookieCart_confirm, 
+			@CookieValue(value = "cart", required = true, defaultValue = "") String cookieCart, 
 			TradesInfo tradesInfo, ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 		boolean isLogin = LoginServiceImpl.isLogin(request, response);
 		Long uid = 0l;
@@ -145,18 +146,18 @@ public class TradeController{
 			modelMap.put("isEmpty", true);
 			return "redirect:/trade.action";
 		}
-		Cookie[] cookies = request.getCookies();
-		String cookieCart = "";
-		try {
-			for(Cookie cookie : cookies) {
-				 if("cart".equals(cookie.getName())) {
-					 cookieCart = URLDecoder.decode(cookie.getValue(),"UTF-8");
-				 }
-			}
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		Cookie[] cookies = request.getCookies();
+//		String cookieCart = "";
+//		try {
+//			for(Cookie cookie : cookies) {
+//				 if("cart".equals(cookie.getName())) {
+//					 cookieCart = URLDecoder.decode(cookie.getValue(),"UTF-8");
+//				 }
+//			}
+//		} catch (UnsupportedEncodingException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		List<Cart> carts = this.cartService.showCart(cookieCart);
 		List<CartItem> cartItems = this.getNoChoosedCartItem(carts);
 		carts_confirm = this.getGoods(carts_confirm);
