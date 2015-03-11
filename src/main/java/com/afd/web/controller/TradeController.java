@@ -1,15 +1,19 @@
 package com.afd.web.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -141,7 +145,20 @@ public class TradeController{
 			modelMap.put("isEmpty", true);
 			return "redirect:/trade.action";
 		}
-		List<CartItem> cartItems = this.getNoChoosedCartItem(carts_confirm);
+		Cookie[] cookies = request.getCookies();
+		String cookieCart = "";
+		try {
+			for(Cookie cookie : cookies) {
+				 if("cart".equals(cookie.getName())) {
+					 cookieCart = URLDecoder.decode(cookie.getValue(),"UTF-8");
+				 }
+			}
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		List<Cart> carts = this.cartService.showCart(cookieCart);
+		List<CartItem> cartItems = this.getNoChoosedCartItem(carts);
 		carts_confirm = this.getGoods(carts_confirm);
 		UserAddress address = this.addressService.getAddressById(tradesInfo.getPayAddrId());		
 		if(null == address){
@@ -226,12 +243,12 @@ public class TradeController{
 			paymentType="2";
 		}
 		String paymode=tradesInfo.getPayMode();
-		if(tradesInfo.getPayMode().substring(0, 1).equals("2")){
-			paymode=OrderConstants.PAY_MODE_APIPAY;
-		}
-		if(tradesInfo.getPayMode().substring(0, 1).equals("1")){
-			paymode=OrderConstants.PAY_MODE_CHINAPAY;
-		}
+//		if(tradesInfo.getPayMode().substring(0, 1).equals("2")){
+//			paymode=OrderConstants.PAY_MODE_APIPAY;
+//		}
+//		if(tradesInfo.getPayMode().substring(0, 1).equals("1")){
+//			paymode=OrderConstants.PAY_MODE_CHINAPAY;
+//		}
 		Long paymentId=this.paymentServices.savePaymentId(orderids_list, "1", ip, uid, paymode, paymentType);
 		if(null==paymentId||paymentId<0l){
 			return "payfail";
