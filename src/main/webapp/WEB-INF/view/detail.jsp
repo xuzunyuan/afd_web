@@ -323,9 +323,10 @@
 		if(parseInt(nums)<1||parseInt(nums)>stock){
 			return false;
 		}
-		var skuid=selecSku.skuId;
-		if(!selecSku.skuId){
-			skuid=defaultSku.skuId;
+		
+		var skuid=defaultSku.skuId;
+		if(selecSku){
+			  skuid=selecSku.skuId;
 			}
 				$.ajax({
 					url : "${ctx}/cart/addcart.action",
