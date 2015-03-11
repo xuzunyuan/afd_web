@@ -192,7 +192,7 @@
 	};
 	function check_spec_finish(){
 		var flag=true;
-		$("span[tagname=spid]").each(function(){
+		$("dl[tagname=spid]").each(function(){
 		    if($(this).find("div.attrElem.selected").length==0){
 		    	flag=false;
 		    	return false;
