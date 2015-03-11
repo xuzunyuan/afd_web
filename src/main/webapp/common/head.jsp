@@ -66,9 +66,9 @@
 							for(var index2 in cartItems) {
 								var cartItem = cartItems[index2];
 								html += "<dl>" + 
-										  "<dt><a href='#'><img src='${my:random(imgGetUrl)}?rid=" + cartItem.prodImgUrl + "&op=s0_w50_h50' alt='' /></a></dt>" +
+										  "<dt><a href='${ctx}/detail.action?bsdid=" + cartItem.brandShowDetailId + "'><img src='${my:random(imgGetUrl)}?rid=" + cartItem.prodImgUrl + "&op=s0_w50_h50' alt='' /></a></dt>" +
 										  "<dd class='goodsTitle'>" +
-										  	"<p><a href='#' title=''>" + cartItem.prodName + "</a></p>" +
+										  	"<p><a href='${ctx}/detail.action?bsdid=" + cartItem.brandShowDetailId + "' title=''>" + cartItem.prodName + "</a></p>" +
 										  "</dd>" +
 										  "<dd class='subtotal'>" +
 										  	"<p><span class='price'>&yen;<strong>" + cartItem.showPrice.toFixed(2) + "</strong></span><em>x</em><span class='number'>" + cartItem.num + "</span></p>" +
