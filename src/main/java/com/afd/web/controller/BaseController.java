@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -196,8 +197,8 @@ public class BaseController {
 			return "redirect:/index.jsp";
 		}
 	    model.addAttribute("skus", skus);
-	    Map<String, SkuSpec> prductSpecs=new HashMap<String, SkuSpec>();
-	    HashMap<String, Sku> skuMapJson = new HashMap<String,Sku>();		
+	    Map<String, SkuSpec> prductSpecs=new TreeMap<String, SkuSpec>();
+	    Map<String, Sku> skuMapJson = new TreeMap<String,Sku>();		
 	    for(Sku sku_tmp :skus){
 	    	String SkuSpecIds = sku_tmp.getSkuSpecId();
 			String skuSpecNames=sku_tmp.getSkuSpecName();

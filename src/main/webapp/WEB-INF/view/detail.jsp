@@ -174,7 +174,7 @@
     	 if(target_div_obj.hasClass("selected")){
     		 return false;
     	 }
-		$("span[tagname=spvid]").each(function(){
+		$("span[tagname=spvid][spvid="+spvid+"]").parents("dl[tagname=spid]").find("span[tagname=spvid]").each(function(){
 		    $(this).next().remove();
 		    $(this).parent().parent().removeClass("selected");
 		  });
