@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.afd.common.mybatis.Page;
+import com.afd.constants.product.ProductConstants;
 import com.afd.model.product.Brand;
 import com.afd.model.product.BrandShow;
 import com.afd.model.product.BrandShowDetail;
@@ -192,19 +193,39 @@ public class BaseController {
 			return "redirect:/index.jsp";
 		}
 	    model.addAttribute("product", product);
-	    List<Sku> skus = this.productService.getSkusByProdId(prodId);
+	    List<Sku> skus = new ArrayList<Sku>();
+	    Map<String, SkuSpec> prductSpecs=new TreeMap<String, SkuSpec>();
+	    Map<String, Sku> skuMapJson = new TreeMap<String,Sku>();
+	    List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	    try{
+	        if(this.redis.opsForValue().size("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId)==0){
+	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*24, TimeUnit.SECONDS);
+	        }else{
+	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	        } 
+	        }catch (Exception e){
+	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+			}
+	    for(BrandShowDetail bsd_loop : bsds){
+	    	BrandShowDetail bsd_temp=this.brandShowService.getBrandShowDetailById(bsd_loop.getbSDId());
+	    	Sku sku_temp = this.productService.getSkuById(bsd_loop.getSkuId());
+	    	String strStock = (String)this.redis.opsForValue().get(ProductConstants.CACHE_PERFIX_INVENTORY + bsd.getbSDId());
+			if (StringUtils.isEmpty(strStock) || "null".equals(strStock)) {
+				sku_temp.setStockBalance(bsd_temp.getShowBalance());
+	        }else{
+	        	sku_temp.setStockBalance(new Integer(strStock));
+	        }
+			String SkuSpecIds = sku_temp.getSkuSpecId();
+			String skuSpecNames=sku_temp.getSkuSpecName();
+			this.getSpecMap(skuSpecNames,SkuSpecIds,prductSpecs);			
+			skuMapJson.put(sku_temp.getSkuSpecId(), sku_temp);
+			skus.add(sku_temp);
+	    }
 	    if(skus==null||skus.size()==0){
 			return "redirect:/index.jsp";
 		}
 	    model.addAttribute("skus", skus);
-	    Map<String, SkuSpec> prductSpecs=new TreeMap<String, SkuSpec>();
-	    Map<String, Sku> skuMapJson = new TreeMap<String,Sku>();		
-	    for(Sku sku_tmp :skus){
-	    	String SkuSpecIds = sku_tmp.getSkuSpecId();
-			String skuSpecNames=sku_tmp.getSkuSpecName();
-			this.getSpecMap(skuSpecNames,SkuSpecIds,prductSpecs);	
-			skuMapJson.put(sku_tmp.getSkuSpecId(), sku_tmp);
-		}
 	    model.addAttribute("skusjson", JSON.toJSONString(skuMapJson));
 	    model.addAttribute("prductSpecs", prductSpecs);
 	    model.addAttribute("pspecsjson", JSON.toJSONString(prductSpecs));
