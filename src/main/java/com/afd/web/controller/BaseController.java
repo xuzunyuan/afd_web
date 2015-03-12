@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -131,12 +132,12 @@ public class BaseController {
 		page.setCurrentPageNo(pageNo);
 		Map<String,Object> map=new HashMap<String,Object>();
 		 try{
-		        if(this.redis.opsForValue().size("dsd"+bsid+"p"+bsid)==0){
+		        if(this.redis.opsForValue().size("bsd"+bsid+"p"+bsid)==0){
 		        	map.put("bsid", bsid);
 		    		ret = this.brandShowService.getBrandShowDetailByPage(map, page);
-		    		this.redis.opsForValue().set("dsd"+bsid+"p"+bsid, (Serializable)ret,3600*24, TimeUnit.SECONDS);
+		    		this.redis.opsForValue().set("bsd"+bsid+"p"+bsid, (Serializable)ret,3600*24, TimeUnit.SECONDS);
 		        }else{
-		        	ret = (Page<BrandShowDetail>)this.redis.opsForValue().get("dsd"+bsid+"p"+bsid);
+		        	ret = (Page<BrandShowDetail>)this.redis.opsForValue().get("bsd"+bsid+"p"+bsid);
 		        } 
 		        }catch (Exception e){
 		        	map.put("bsid", bsid);
@@ -207,14 +208,22 @@ public class BaseController {
 	        }catch (Exception e){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 			}
+	    if(bsds==null||bsds.size()==0){
+	    	return "redirect:/index.jsp";
+	    }
 	    for(BrandShowDetail bsd_loop : bsds){
 	    	BrandShowDetail bsd_temp=this.brandShowService.getBrandShowDetailById(bsd_loop.getbSDId());
 	    	Sku sku_temp = this.productService.getSkuById(bsd_loop.getSkuId());
-	    	String strStock = (String)this.redis.opsForValue().get(ProductConstants.CACHE_PERFIX_INVENTORY + bsd.getbSDId());
-			if (StringUtils.isEmpty(strStock) || "null".equals(strStock)) {
+             
+			if (bsd_temp.getSaleAmount()==null) {
 				sku_temp.setStockBalance(bsd_temp.getShowBalance());
 	        }else{
-	        	sku_temp.setStockBalance(new Integer(strStock));
+	        	if(bsd_temp.getShowBalance()==null){
+	        		return "redirect:/index.jsp";
+	        	}else{
+	        		sku_temp.setStockBalance(bsd_temp.getShowBalance()-bsd_temp.getSaleAmount());
+	        	}
+	        	
 	        }
 			String SkuSpecIds = sku_temp.getSkuSpecId();
 			String skuSpecNames=sku_temp.getSkuSpecName();
