@@ -26,9 +26,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.afd.common.util.CartTransferUtils;
 import com.afd.constants.order.OrderConstants;
+import com.afd.model.product.BrandShowDetail;
 import com.afd.param.cart.Cart;
 import com.afd.param.cart.CartItem;
 import com.afd.service.order.ICartService;
+import com.afd.service.product.IBrandShowService;
 import com.afd.service.product.IProductService;
 import com.afd.param.cart.CookieCartItem;
 import com.afd.common.util.RequestUtils;
@@ -44,11 +46,20 @@ public class CartController{
 	private IProductService productService;
 	@Autowired
 	private ICartService cartService;
+	@Autowired
+	private IBrandShowService brandShowService;
 
 	@RequestMapping("addcart")
 	@ResponseBody
 	public boolean addCart(@CookieValue(value = "cart", required = false) String cookieCart,
-			Long bsdid, Long num, HttpServletResponse response, HttpServletRequest request) {
+			Long bsid, Long skuid, Long num, HttpServletResponse response, HttpServletRequest request) {
+		if(null == bsid || null == skuid || null == num) {
+			return false;
+		}
+		BrandShowDetail bsd = brandShowService.getBrandShowDetailBySkuId(bsid.intValue(), skuid.intValue());
+		if(null == bsd || null == bsd.getbSDId()) {
+			return false;
+		}
 		List<CartItem> cartItems = new ArrayList<CartItem>();
 		if (!StringUtils.isBlank(cookieCart)) {
 			cartItems = CartTransferUtils.cookieCartToCartItem(JSON
@@ -61,7 +72,7 @@ public class CartController{
 			cartItems = new ArrayList<CartItem>();
 		}
 		for(CartItem cartItem : cartItems) {
-			if(cartItem.getBrandShowDetailId().equals(bsdid)) {
+			if(cartItem.getBrandShowDetailId().equals(bsd.getbSDId().longValue())) {
 				exist = true;
 				cartItem.setNum(cartItem.getNum() + num);
 				cartItem.setSelected(true);
@@ -70,7 +81,7 @@ public class CartController{
 		}
 		if(!exist) {
 			CartItem cartItem = new CartItem();
-			cartItem.setBrandShowDetailId(bsdid);
+			cartItem.setBrandShowDetailId(bsd.getbSDId().longValue());
 			cartItem.setNum(num);
 			cartItem.setSelected(true);
 			cartItems.add(cartItem);
