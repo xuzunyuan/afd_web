@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@include file="/common/common.jsp" %>
-	<script type="text/javascript" src="http://js.web.afdimg.com/jquery.min.js"></script>
-	<script type="text/javascript" src="http://js.web.afdimg.com/jquery.cookie.js"></script>
-	<script type="text/javascript" src="http://js.web.afdimg.com/login.js"></script>
-	<script type="text/javascript" src="http://js.web.afdimg.com/uploadify/jquery.uploadify.min.js"></script>
+	<script type="text/javascript" src="http://js.web.joyoro.com/jquery.min.js"></script>
+	<script type="text/javascript" src="http://js.web.joyoro.com/jquery.cookie.js"></script>
+	<script type="text/javascript" src="http://js.web.joyoro.com/login.js"></script>
+	<script type="text/javascript" src="http://js.web.joyoro.com/uploadify/jquery.uploadify.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			var hideMiniCart=<%=request.getParameter("hideMiniCart")%>
@@ -139,8 +139,8 @@
 	<div id="header">
 		<div class="wrap">
 			<div id="logo">
-				<div class="logo"><a href="${ctx}" title="logo"><img src="http://img.web.afdimg.com/logo.png" alt="logo"></a></div>
-				<div class="slogan"><img src="http://img.web.afdimg.com/slogan.png"/></div>
+				<div class="logo"><a href="${ctx}" title="logo"><img src="http://img.web.joyoro.com/logo.png" alt="logo"></a></div>
+				<div class="slogan"><img src="http://img.web.joyoro.com/slogan.png"/></div>
 			</div>
 			<!-- shopping cart -->
 			<div id="shoppingCart">
@@ -150,7 +150,7 @@
 				<div class="bd">
 				</div>
 			</div>
-			<div id="safeguard"><img src="http://img.web.afdimg.com/safeguard.jpg"/></div>
+			<div id="safeguard"><img src="http://img.web.joyoro.com/safeguard.jpg"/></div>
 		</div>
 	</div>
 	<!-- header end -->

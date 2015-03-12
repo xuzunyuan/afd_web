@@ -183,8 +183,9 @@
 		    $(this).parent().parent().addClass("selected");
 		  });
 		$("div.attrElem").removeClass("disabled");
-		exclude_sku();
+		
 		if(check_spec_finish()){
+			exclude_sku();
 			selecSku=skuList[get_sku()];
 			load_imgs();
 			initnums();
