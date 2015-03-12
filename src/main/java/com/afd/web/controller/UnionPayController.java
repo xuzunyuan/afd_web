@@ -100,15 +100,29 @@ public class UnionPayController {
        
         vo.setTransDate(DateUtils.formatDate(new Date(), "yyyyMMdd"));
         map.addAttribute("vo", vo);
-        String pay_domain="http://localhost:8888/afd_web";//TODO
-		String active_str=System.getProperty("spring.profiles.active","product");
-		if("test".equalsIgnoreCase(active_str)){
-			pay_domain="http://web.test.afd.com";//TODO
+        
+        String serverName = request.getServerName();
+		int port = request.getServerPort();
+		String ctx = request.getContextPath();
+		StringBuilder domain = new StringBuilder();
+		if(80 == port){
+			domain = domain.append(serverName).append(ctx);
+		} else {
+			domain = domain.append(serverName).append(":").append(port).append(ctx);
 		}
-		if("beta".equalsIgnoreCase(active_str)){
-			pay_domain="http://web.beta.afd.com";//TODO
-		}
-        map.addAttribute("paydomain", pay_domain);
+		
+		String pay_domain = domain.toString();
+		
+//        String pay_domain="http://localhost:8888/afd_web";//TODO
+//		String active_str=System.getProperty("spring.profiles.active","product");
+//		if("test".equalsIgnoreCase(active_str)){
+//			pay_domain="http://web.test.afd.com";//TODO
+//		}
+//		if("beta".equalsIgnoreCase(active_str)){
+//			pay_domain="http://web.beta.afd.com";//TODO
+//		}
+        
+		map.addAttribute("paydomain", pay_domain);
 
         return "unionpay/pay";
     }

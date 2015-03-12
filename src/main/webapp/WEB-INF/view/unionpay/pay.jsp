@@ -27,8 +27,8 @@
 <%
     PaymentRequestVO vo = (PaymentRequestVO) request.getAttribute("vo");
     String paydomain=(String)request.getAttribute("paydomain");
-    vo.setBgRetUrl(paydomain+"/unionpay/bussCallback");
-    vo.setPageRetUrl(paydomain+"/unionpay/pageCallback");
+    vo.setBgRetUrl(paydomain+"/unionpay/bussCallback.action");
+    vo.setPageRetUrl(paydomain+"/unionpay/pageCallback.action");
 
     String token = SessionTokenGenerator.generateToken(session);
 
