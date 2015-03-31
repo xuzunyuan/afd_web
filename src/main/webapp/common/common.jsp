@@ -11,8 +11,8 @@
 <%request.setAttribute("cssDomain", "http://css.web.joyoro.com"); %>
 <%request.setAttribute("jsDomain", "http://js.web.joyoro.com"); %>
 <%request.setAttribute("imgDomain", "http://img.web.joyoro.com"); %>
-<%request.setAttribute("imgUploadUrl", "http://192.168.1.18:18080/afd_img/rc/upload"); %>
-<%request.setAttribute("imgUrl", "http://192.168.1.18:18080/afd_img/rc/getimg"); %>
+<%request.setAttribute("imgUploadUrl", "http://img.joyoro.com/rc/upload"); %>
+<%request.setAttribute("imgUrl", "http://img.joyoro.com/afd_img/rc/getimg"); %>
 <%request.setAttribute("prefixImgUrl", "http://img"); %>
 <%request.setAttribute("suffixImgUrl", ".joyoro.com/rc/getimg"); 
 	PropertyUtils.setRequestProperties(request);
