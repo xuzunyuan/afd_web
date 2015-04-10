@@ -67,7 +67,7 @@ public class RetOrderController {
 	public String retOrderApply(@RequestParam Long orderItemId,HttpServletRequest request,ModelMap map){
 		OrderItem orderItem = this.orderService.getOrderItemById(orderItemId);
 		if(orderItem==null){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		Long sellerId = orderItem.getOrder().getSellerId();
 		Seller seller = this.sellerService.getSellerById(sellerId.intValue());
@@ -111,7 +111,7 @@ public class RetOrderController {
 		page = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId),page);
 		ReturnOrder returnOrder = page.getResult().get(0);
 		if(returnOrder==null){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		Long orderId = returnOrder.getOrderId();
 		List<ReturnOrderItem> retOrderItems = returnOrder.getRetOrderItems();
@@ -119,7 +119,7 @@ public class RetOrderController {
 		map.addAttribute("retOrderItem", retOrderItem);
 		Order order = this.orderService.getOrderById(orderId);
 		if(retOrderItem==null){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		List<OrderItem> orderItems= this.orderService.getOrderItemsByOrderId(orderId.intValue());
 		Long skuId = retOrderItem.getSkuId();
@@ -133,7 +133,7 @@ public class RetOrderController {
 			}
 		}
 		if(orderItemCopy==null){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		Map<String, String> specMap = orderItemCopy.getSpecNames();		
 		String specHtml=this.getSpecStr(specMap);
@@ -146,13 +146,13 @@ public class RetOrderController {
 		Long bsid = order.getBrandShowId();
 		BrandShow brandShow = this.brandShowService.getBrandShowById(bsid.intValue());
 		if(brandShow==null){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		map.addAttribute("brandShow", brandShow);
 		Long sellerId = returnOrder.getSellerId();
 		Seller seller = this.sellerService.getSellerById(sellerId.intValue());
 		if(seller==null){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		SellerLogin loginInfo = this.sellerLoginService.getLoginById(seller.getSellerLoginId());
 		map.addAttribute("login", loginInfo);
@@ -173,12 +173,12 @@ public class RetOrderController {
 	public String cancelRetOrder(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
 		if(returnOrder==null||!returnOrder.getStatus().equals("1")){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		String uid = LoginServiceImpl.getUserIdByCookie(request);
 		int ret=this.retOrderService.cancelRetOrderById(myRetId,Long.parseLong(uid));
 		if(ret<1){
-			return "redirect:http://www.joyoro.com";
+			return "redirect:http://www.juyouli.com";
 		}
 		return "redirect:/retOrder/myRetDetail.action?myRetId="+myRetId;
 	}

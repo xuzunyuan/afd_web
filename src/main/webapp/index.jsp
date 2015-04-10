@@ -6,7 +6,7 @@
 	<title>首页</title>
 	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/allstyle.css"/>
 	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/show.css"/>
-	<script type="text/javascript" src="http://js.web.joyoro.com/timecount.js"></script>
+	<script type="text/javascript" src="http://js.web.juyouli.com/timecount.js"></script>
 </head>
 <body id="index">
 <div class="wrapper">

@@ -6,15 +6,15 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@taglib prefix="my" uri="/WEB-INF/tld/my.tld"%>
-<%@taglib prefix="pg" uri="/tld/page.tld"%>
+<%@taglib prefix="pg" uri="/WEB-INF//tld/page.tld"%>
 <%request.setAttribute("ctx", request.getContextPath()); %>
-<%request.setAttribute("cssDomain", "http://css.web.joyoro.com"); %>
-<%request.setAttribute("jsDomain", "http://js.web.joyoro.com"); %>
-<%request.setAttribute("imgDomain", "http://img.web.joyoro.com"); %>
+<%request.setAttribute("cssDomain", "http://css.web.juyouli.com"); %>
+<%request.setAttribute("jsDomain", "http://js.web.juyouli.com"); %>
+<%request.setAttribute("imgDomain", "http://img.web.juyouli.com"); %>
 <%request.setAttribute("imgUploadUrl", "http://192.168.1.18:18080/afd_img/rc/upload"); %>
 <%request.setAttribute("imgUrl", "http://192.168.1.18:18080/afd_img/rc/getimg"); %>
 <%request.setAttribute("prefixImgUrl", "http://img"); %>
-<%request.setAttribute("suffixImgUrl", ".joyoro.com/rc/getimg"); 
+<%request.setAttribute("suffixImgUrl", ".juyouli.com/rc/getimg"); 
 	PropertyUtils.setRequestProperties(request);
 %>
 
