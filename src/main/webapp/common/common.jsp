@@ -11,8 +11,8 @@
 <%request.setAttribute("cssDomain", "http://css.web.juyouli.com"); %>
 <%request.setAttribute("jsDomain", "http://js.web.juyouli.com"); %>
 <%request.setAttribute("imgDomain", "http://img.web.juyouli.com"); %>
-<%request.setAttribute("imgUploadUrl", "http://192.168.1.18:18080/afd_img/rc/upload"); %>
-<%request.setAttribute("imgUrl", "http://192.168.1.18:18080/afd_img/rc/getimg"); %>
+<%request.setAttribute("imgUploadUrl", "http://upload.juyouli.com/rc/upload"); %>
+<%request.setAttribute("imgUrl", "http://img.juyouli.com/rc/getimg"); %>
 <%request.setAttribute("prefixImgUrl", "http://img"); %>
 <%request.setAttribute("suffixImgUrl", ".juyouli.com/rc/getimg"); 
 	PropertyUtils.setRequestProperties(request);
