@@ -46,7 +46,8 @@ public class LoginController {
 	private LoginServiceImpl loginService;
 	@Autowired
 	private IUserService userService;
-	private ISmsService smsService = new SmsServiceMock();
+	@Autowired
+	private ISmsService smsService;
 	@Autowired
 	private RedisTemplate<String, Serializable> redis;
 
