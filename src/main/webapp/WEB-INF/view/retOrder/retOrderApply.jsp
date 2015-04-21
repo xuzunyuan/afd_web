@@ -137,10 +137,10 @@
 				<div class="salereturn">
 					<div class="hd">
 						<div class="breadnav">
-							<span class="index"><a href="">首页</a></span>
+							<span class="index"><a href="http://www.juyouli.com">首页</a></span>
 							<ul class="nav">
-								<li><span>&gt;</span><a href="">我的AFD</a></li>
-								<li><span>&gt;</span><a href="">个人中心</a></li>
+								<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的AFD</a></li>
+								<li><span>&gt;</span><a href="${ctx}/retOrder/retOrderApply.action">个人中心</a></li>
 							</ul>
 						</div>
 					</div>
