@@ -139,7 +139,7 @@
 	<div id="header">
 		<div class="wrap">
 			<div id="logo">
-				<div class="logo"><a href="${ctx}" title="logo"><img src="http://img.web.juyouli.com/logo.png" alt="logo"></a></div>
+				<div class="logo"><a href="http://www.juyouli.com" title="logo"><img src="http://img.web.juyouli.com/logo.png" alt="logo"></a></div>
 				<div class="slogan"><img src="http://img.web.juyouli.com/slogan.png"/></div>
 			</div>
 			<!-- shopping cart -->

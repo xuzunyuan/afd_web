@@ -103,7 +103,7 @@
 				
 				$.post("${ctx}/getCode.action",{mobile:mobile});
 				$(this).addClass("disabled");
-				var second = 120;
+				var second = 60;
 				$(this).addClass("run");
 				id = setInterval(function(){
 					$("#getCode").text(second+"秒后，重新获取");
