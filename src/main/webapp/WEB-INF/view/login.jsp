@@ -10,36 +10,42 @@
 	<script type="text/javascript" src="${jsDomain}/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			$(document).on("click","#login",function(){
-				$("#errTip").text("");
-				var userName = $("input[name=userName]").val();
-				if(!userName){
-					$("#errTip").text("请输入用户名！");
-					return false;
-				}
-				
-				var pwd = $("input[name=pwd]").val();
-				if(!pwd){
-					$("#errTip").text("请输入密码！");
-					return false;
-				}
-				$.getJSON("${ctx}/formLogin.action",
-					{userName:userName,pwd:pwd},
-					function(json){
-						if(json.status){
-							var rtnUrl = $("input[name=rtnUrl]").val();
-							if(!rtnUrl){
-								rtnUrl = "http://www.afd.com";
-							}
-							location.href=rtnUrl;
-						}else{
-							$("#errTip").text("用户名或密码有误！");
-						}
-					}
-				);
-			});
+			$(document).on("click","#login",login);
+			$(document).keypress(function(e) {  
+				// 回车键事件  
+				if(e.which == 13) {  
+					login();
+				}  
+			}); 
 		});
-		
+		function login(){
+			$("#errTip").text("");
+			var userName = $("input[name=userName]").val();
+			if(!userName){
+				$("#errTip").text("请输入用户名！");
+				return false;
+			}
+			
+			var pwd = $("input[name=pwd]").val();
+			if(!pwd){
+				$("#errTip").text("请输入密码！");
+				return false;
+			}
+			$.getJSON("${ctx}/formLogin.action",
+				{userName:userName,pwd:pwd},
+				function(json){
+					if(json.status){
+						var rtnUrl = $("input[name=rtnUrl]").val();
+						if(!rtnUrl){
+							rtnUrl = "http://www.juyouli.com";
+						}
+						location.href=rtnUrl;
+					}else{
+						$("#errTip").text("用户名或密码有误！");
+					}
+				}
+			);
+		}
 	</script>
 </head>
 <body id="regsignin">

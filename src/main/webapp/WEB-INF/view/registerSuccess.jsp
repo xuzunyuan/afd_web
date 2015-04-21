@@ -15,7 +15,7 @@
 				$("#tip").html(sec+"s后返回 <em>&gt;</em>");
 				if(sec==0){
 					clearInterval(id);
-					location.href="http://www.afd.com";
+					location.href="http://www.juyouli.com";
 				}
 				sec--;
 			}, 1000);
@@ -29,7 +29,7 @@
 		<div id="header">
 			<div class="wrap">
 				<div id="logo">
-					<div class="logo"><a href="http://www.afd.com" title="logo"><img src="${imgDomain}/logo.png" alt="logo"></a></div>
+					<div class="logo"><a href="http://www.juyouli.com" title="logo"><img src="${imgDomain}/logo.png" alt="logo"></a></div>
 					<div class="slogan"><img src="${imgDomain}/slogan.png"/></div>
 				</div>
 				<div id="safeguard"><img src="${imgDomain}/safeguard.jpg"/></div>
@@ -45,7 +45,7 @@
 						<dt><i class="icon i-rightXLX"></i></dt>
 						<dd>
 							<h3>恭喜您，<c:out value="${userName}" />已经注册成功</h3>
-							<p><a id="tip" href="http://www.afd.com">5s后返回 <em>&gt;</em></a></p>
+							<p><a id="tip" href="http://www.juyouli.com">5s后返回 <em>&gt;</em></a></p>
 						</dd>
 					</dl>
 				</div>
