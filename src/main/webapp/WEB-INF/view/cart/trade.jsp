@@ -650,8 +650,12 @@
 		function chgTradePayMode() {
 			var html = "";
 			if("1" == $("div.payMode input[name=payType]:checked").val()) {
+				$("div.payItem.bank").addClass("selected");
+				$("div.payItem.alipay").removeClass("selected");
 				html += "<b>支付方式：</b><span>网上银行</span>";
 			} else {
+				$("div.pay-item.bank").removeClass("selected");
+				$("div.pay-item.alipay").addClass("selected");
 				html += "<b>支付方式：</b><span>支付宝</span>";
 			}
 			$("div.orderSubmit div.checkedPay").html(html);
@@ -726,13 +730,13 @@
 								<p class="text">确认订单</p>
 							</li>
 							<li class="">
-								<i class="num">2</i>
+								<i class="num">3</i>
 								<span class="strip"></span>
 								<span class="strip-over"></span>
 								<p class="text">在线支付</p>
 							</li>
 							<li class="last">
-								<i class="num">3</i>
+								<i class="num">4</i>
 								<span class="strip"></span>
 								<span class="strip-over"></span>
 								<p class="text">完成</p>
@@ -919,11 +923,11 @@
 								<div class="wrap">
 									<div class="hd"><h3>支付方式</h3></div>
 									<div class="bd">
-										<dl class="pay-item">
+										<dl class="pay-item alipay selected">
 											<dt><label><input type="radio" class="radio" name="payMode" value="20" checked="checked" />支付宝在线付款</label></dt>
 											<dd><span class="ico alipay"><img src="${imgDomain }/pay/alipay.jpg" alt="" /></span>使用支付宝账号在线付款。</dd>
 										</dl>
-										<dl class="pay-item selected">
+										<dl class="pay-item bank">
 											<dt><label><input type="radio" class="radio" name="payType" value="1" />网上银行在线付款</label></dt>
 											<dd>
 												<span class="ico checkedBank"></span>
