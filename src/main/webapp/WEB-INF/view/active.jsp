@@ -19,7 +19,7 @@
 		</ul>
 	</div>
 	<!-- banner -->
-	<div id="mainBanner">
+	<div id="mainBanner" style="text-align:center;"> 
 		<div class="wrap">
 									<c:if test ="${!empty brandShow.homeBannerImg}">									
 									<img src="${my:random(imgGetUrl)}?rid=${brandShow.homeBannerImg}"/>
