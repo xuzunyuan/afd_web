@@ -91,7 +91,41 @@ public class CartController{
 	}
 	
 	@RequestMapping("/cart")
-	public String cart() {
+	public String cart(@CookieValue(value = "cart", required = false) String cookieCart,Long bsid, Long skuid,HttpServletResponse response, HttpServletRequest request) {
+		if(null != bsid && null != skuid) {
+			BrandShowDetail bsd = brandShowService.getBrandShowDetailBySkuId(bsid.intValue(), skuid.intValue());
+			if(null != bsd && null != bsd.getbSDId()) {
+				List<CartItem> cartItems = new ArrayList<CartItem>();
+				if (!StringUtils.isBlank(cookieCart)) {
+					cartItems = CartTransferUtils.cookieCartToCartItem(JSON
+							.parseObject(cookieCart,
+									new TypeReference<List<CookieCartItem>>() {
+									}));
+				}
+				boolean exist = false;
+				if(null == cartItems){
+					cartItems = new ArrayList<CartItem>();
+				}
+				for(CartItem cartItem : cartItems) {
+					if(cartItem.getBrandShowDetailId().equals(bsd.getbSDId().longValue())) {
+						exist = true;
+						cartItem.setNum(cartItem.getNum() + 1);
+						cartItem.setSelected(true);
+						break;
+					}
+				}
+				if(!exist) {
+					CartItem cartItem = new CartItem();
+					cartItem.setBrandShowDetailId(bsd.getbSDId().longValue());
+					cartItem.setNum(1l);
+					cartItem.setSelected(true);
+					cartItems.add(cartItem);
+				}
+				saveCart(CartTransferUtils.cartItemsToCookieCartItems(cartItems), request, response);
+			}
+			
+		}
+		
 		return "/cart/cart";
 	}
 

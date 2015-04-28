@@ -21,10 +21,10 @@
 	<!-- banner -->
 	<div id="mainBanner" style="text-align:center;"> 
 		<div class="wrap">
-									<c:if test ="${!empty brandShow.homeBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?rid=${brandShow.homeBannerImg}"/>
+									<c:if test ="${!empty brandShow.showBannerImg}">									
+									<img src="${my:random(imgGetUrl)}?rid=${brandShow.showBannerImg}&op=s0_w1349_h395"/>
 									</c:if>
-									<c:if test ="${empty brandShow.homeBannerImg}">
+									<c:if test ="${empty brandShow.showBannerImg}">
 									<img src="${imgDomain}/temp/active.jpg"/>
 									</c:if>			
 		</div>

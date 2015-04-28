@@ -86,9 +86,9 @@
 						<!-- g-items -->
 						<div class="g-items active">
 							<div class="prices">
-								<dl class="g-item barginPrice"><dt>促销价</dt><dd><span>¥<em><fmt:formatNumber value="${bsdetail.showPrice}" pattern="0.00" /></em></span></dd></dl>
+								<dl class="g-item barginPrice"><dt>促销价</dt><dd><span>¥<em id="bdprice"><fmt:formatNumber value="${bsdetail.showPrice}" pattern="0.00" /></em></span></dd></dl>
 							</div>
-								<dl class="g-item"><dt>市场价</dt><dd><span><del>¥<fmt:formatNumber value="${product.marketPrice}" pattern="0.00" /></del></span></dd></dl>
+								<dl class="g-item"><dt>市场价</dt><dd><span><del>¥<span id="bddelprice"><fmt:formatNumber value="${bsdetail.orgPrice}" pattern="0.00" /></span></del></span></dd></dl>
 							<dl class="g-item">
 								<dt>快递费</dt>
 								<dd><div class="g-tag">包邮</div>
@@ -189,6 +189,8 @@
 			selecSku=skuList[get_sku()];
 			load_imgs();
 			initnums();
+			$("#bdprice").html(selecSku.salePrice.toFixed(2));//update price
+			$("#bddelprice").html(selecSku.marketPrice.toFixed(2));//update delprice
 		};
 	};
 	function check_spec_finish(){
@@ -204,7 +206,7 @@
 	};
 	
 	function initnums(){
-		$("#stack").val(selecSku.stockBalance);
+		$("#stack").val(selecSku.stockBalance);		
 		$("#numsid").val(1);
 		$("#plusid").addClass("disabled");
 		var stock_str=$("#stack").val();
