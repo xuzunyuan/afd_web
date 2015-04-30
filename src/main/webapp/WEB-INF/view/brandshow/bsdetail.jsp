@@ -36,7 +36,7 @@ totalpages=${pagetotal};
 									<div class="price">
 									<c:set value="${ fn:split(detail.showPrice, '.') }" var="prices" />
 										<p class="nowPrice"><span>￥</span>${prices[0]}.<span>${prices[1]}</span></p>
-										<p class="befPrice">原价：${detail.showPrice}</p>
+										<p class="befPrice">原价：${detail.orgPrice}</p>
 									</div>
 									<div class="onbuy"><a href="${ctx}/cart/cart.action?bsid=${detail.brandShowId}&skuid=${detail.skuId}" target="_blank"><img src="${imgDomain}/onbuy.png" alt=""></a></div>
 								</div>
