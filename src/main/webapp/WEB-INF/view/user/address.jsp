@@ -242,7 +242,7 @@
 					}
 				}
 				
-				if(geoFlg&&addrFlg&&zipFlg&&receiverFlg&&mobileFlg&&telFlg){
+				if(geoFlg&&addrFlg&&zipFlg&&receiverFlg&&(mobileFlg||telFlg)){
 					$("#form").submit();
 				}
 				
