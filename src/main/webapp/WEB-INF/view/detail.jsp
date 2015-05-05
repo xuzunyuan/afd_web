@@ -31,7 +31,7 @@
                         <span id="mini">27</span>分
                         <span id="sec">31</span>秒</p>
 <script type="text/javascript">
-    var timestr="${show.endDate}";
+    var timestr="${brandshow.endDate}";
     var time=Date.parse(timestr.replace(/-/g,"/"));
     var timehtml={
         sec:$("#sec")[0],
