@@ -115,7 +115,7 @@
 					<dt class="hd"><a href="${ctx}/user/orders.action">我的订单</a></dt>
 				</dl>
 				<dl class="myCenter">
-					<dt class="hd"><a href="${ctx}/user/userInfo.action">我的AFD<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
+					<dt class="hd"><a href="${ctx}/user/userInfo.action">我的巨友利<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
 				  	<dd class="bd">
 				  		<ul>
 				  		  <li><a href="${ctx}/user/orders.action">已买商品</a></li>
@@ -130,7 +130,7 @@
 				</dl>
 			</div>
 			<div class="signin">
-				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:login();">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
+				<span id="name">欢迎来到巨友利！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:login();">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
 			</div>
 		</div>
 	</div>
