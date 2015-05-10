@@ -204,7 +204,8 @@ public class BaseController {
 	    List<Sku> skus = new ArrayList<Sku>();
 	    Map<String, SkuSpec> prductSpecs=new TreeMap<String, SkuSpec>();
 	    Map<String, Sku> skuMapJson = new TreeMap<String,Sku>();
-	    List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	    List<BrandShowDetail> bsds;
+		//List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	    try{
 	        if(this.redis.opsForValue().size("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId)==0){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
