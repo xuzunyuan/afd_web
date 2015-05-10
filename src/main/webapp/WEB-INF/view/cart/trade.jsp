@@ -256,6 +256,7 @@
 					$("div.mask").removeClass("hidden");
 					$("div.pop-order").removeClass("hidden");
 					$("div.pop-order div.bd dd h2").text("请选择收货地址!");
+					$("div.pop-order div.bd dd p a").text("");
 					return false;
 				} else {
 					$("#dataForm input[name=payAddrId]").val($("div.addressList input[name=userAddr]:checked").val());
@@ -264,6 +265,7 @@
 					$("div.mask").removeClass("hidden");
 					$("div.pop-order").removeClass("hidden");
 					$("div.pop-order div.bd dd h2").text("请选择支付方式!");
+					$("div.pop-order div.bd dd p a").text("");
 					return false;
 				}
 				$("#dataForm").submit();
@@ -274,6 +276,7 @@
 				$("div.mask").removeClass("hidden");
 				$("div.pop-order").removeClass("hidden");
 				$("div.pop-order div.bd dd h2").text("您还没有选择商品，请选择您要结算的商品!");
+				$("div.pop-order div.bd dd p a").text("返回购物车修改 <em>&gt;</em>");
 			} else {
 				$("div.mask").addClass("hidden");
 				$("div.pop-order").addClass("hidden");
@@ -650,13 +653,15 @@
 		function chgTradePayMode() {
 			var html = "";
 			if("1" == $("div.payMode input[name=payType]:checked").val()) {
-				$("div.payItem.bank").addClass("selected");
-				$("div.payItem.alipay").removeClass("selected");
+				$("dl.pay-item.bank").addClass("selected");
+				$("dl.pay-item.alipay").removeClass("selected");
 				html += "<b>支付方式：</b><span>网上银行</span>";
+				$("dl.mod-banks").addClass("hover");
 			} else {
-				$("div.pay-item.bank").removeClass("selected");
-				$("div.pay-item.alipay").addClass("selected");
+				$("dl.pay-item.bank").removeClass("selected");
+				$("dl.pay-item.alipay").addClass("selected");
 				html += "<b>支付方式：</b><span>支付宝</span>";
+				$("dl.mod-banks").removeClass("hover");
 			}
 			$("div.orderSubmit div.checkedPay").html(html);
 		}

@@ -104,7 +104,7 @@
 														<p>
 															退款金额：<span class="errTxt"><fmt:formatNumber
 																	pattern="0.00"
-																	value="${retOrder.retOrderItems[0].retFee *　retOrder.retOrderItems[0].returnNumber}" />元</span>
+																	value="${retOrder.retOrderItems[0].retFee * retOrder.retOrderItems[0].returnNumber}" />元</span>
 														</p>
 														<c:if test="${retOrder.status == '1'}">
 															<p>

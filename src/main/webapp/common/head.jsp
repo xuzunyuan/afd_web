@@ -119,7 +119,6 @@
 				  	<dd class="bd">
 				  		<ul>
 				  		  <li><a href="${ctx}/user/orders.action">已买商品</a></li>
-				  		  <li><a href="#">我的足迹</a></li>
 				  		  <li><a href="${ctx}/cart/cart.action">我的购物车</a></li>
 				  		</ul>
 				  	</dd>
@@ -148,6 +147,9 @@
 					<a href="${ctx}/cart/cart.action">我的购物车<span class="arrow bottom-hollow"><b></b><i></i></span></a>
 				</div>
 				<div class="bd">
+					<div class='shoppingCart-empty show'>
+						<p>快去挑选喜欢的商品吧！</p>
+					</div>
 				</div>
 			</div>
 			<div id="safeguard"><img src="http://img.web.juyouli.com/safeguard.jpg"/></div>
