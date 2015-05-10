@@ -117,7 +117,7 @@
 							<dl class="g-item">
 								<dt>数量</dt>
 								<dd>
-									<div class="mod-modified">
+									<div class="mod-modified" style="width:101px">
 										<div id="minusid" onclick="changenums(-1)" class="minus disabled">-</div>
 										<input type="text" id="numsid" readonly="readonly" class="txt sm" value="1">
 										<div id="plusid" onclick="changenums(+1)" class="plus">+</div>
