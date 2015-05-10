@@ -208,7 +208,7 @@ public class BaseController {
 	    try{
 	        if(this.redis.opsForValue().size("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId)==0){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
-	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*24, TimeUnit.SECONDS);
+	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*2, TimeUnit.SECONDS);
 	        }else{
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	        } 
@@ -239,6 +239,10 @@ public class BaseController {
 			this.getSpecMap(skuSpecNames,SkuSpecIds,prductSpecs);			
 			skuMapJson.put(sku_temp.getSkuSpecId(), sku_temp);
 			skus.add(sku_temp);
+			if(sku.getSkuId()==sku_temp.getSkuId()){
+				model.addAttribute("sku", sku_temp);
+				model.addAttribute("skujson",JSON.toJSONString(sku_temp));
+			}
 	    }
 	    if(skus==null||skus.size()==0){
 			return "redirect:/index.jsp";
