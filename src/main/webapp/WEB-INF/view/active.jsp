@@ -74,7 +74,7 @@ $(function(){
 		   
 });
 </script>
-	<div id="container">
+	<div id="container" 	<c:if test ="${!empty brandShow.bgColor}">style="background-color:#${brandShow.bgColor}"</c:if>>
 		<div class="wrap active">
 			<div class="hd">
 				<div class="hd-top">

@@ -25,7 +25,7 @@
 			<div class="wrap">
 				<div class="headSyn">
 					<div class="countDown">
-						<p>距特卖介绍还剩：<img src="${imgDomain}/clok.png" alt="">
+						<p>距特卖结束还剩：<img src="${imgDomain}/clok.png" alt="">
 						<span id="day">29</span>天
                         <span id="hour">21</span>时
                         <span id="mini">27</span>分
