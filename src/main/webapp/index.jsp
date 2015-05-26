@@ -15,7 +15,7 @@
 
 	<div class="crossnav">
 		<ul>
-			<li class="on"><a href="#">首&nbsp;&nbsp;页 </a></li>
+			<li class="on"><a href="http://www.juyouli.com">首&nbsp;&nbsp;页 </a></li>
 		</ul>
 	</div>
 	<!-- banner -->

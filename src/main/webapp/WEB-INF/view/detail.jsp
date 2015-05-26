@@ -14,7 +14,7 @@
 		<!-- crossnav -->
 		<div class="crossnav">
 			<ul>
-				<li class="on"><a href="#">详情&nbsp;&nbsp;页</a></li>
+				<li class="on"><a href="${ctx}/index.jsp">首&nbsp;&nbsp;页</a></li>
 			</ul>
 		</div>
 		<!-- crossnav -->
