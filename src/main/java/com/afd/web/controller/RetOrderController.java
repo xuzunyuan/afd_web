@@ -28,6 +28,7 @@ import com.afd.model.product.Sku;
 import com.afd.model.seller.Seller;
 import com.afd.model.seller.SellerLogin;
 import com.afd.model.seller.SellerRetAddress;
+import com.afd.param.order.OrderCondition;
 import com.afd.service.order.IOrderService;
 import com.afd.service.order.IRetOrderService;
 import com.afd.service.product.IBrandShowService;
@@ -107,9 +108,15 @@ public class RetOrderController {
 	public String myRetDetail(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		Page<ReturnOrder> page=new Page<ReturnOrder>();
 		page.setPageSize(1);
-		String userId = LoginServiceImpl.getUserIdByCookie(request);
-		page = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId),page);
-		ReturnOrder returnOrder = page.getResult().get(0);
+		Map<String, String> cond =new HashMap<>();
+		 ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
+		if(returnOrder==null){
+			return "redirect:http://www.juyouli.com";
+		}
+		String rcode = returnOrder.getRetOrderCode();
+		cond.put("retOrderCode",rcode);
+		page = this.retOrderService.getRetOrdersByPage(cond ,page);
+		returnOrder = page.getResult().get(0);
 		if(returnOrder==null){
 			return "redirect:http://www.juyouli.com";
 		}
@@ -117,11 +124,16 @@ public class RetOrderController {
 		List<ReturnOrderItem> retOrderItems = returnOrder.getRetOrderItems();
 		ReturnOrderItem retOrderItem=retOrderItems.get(0);
 		map.addAttribute("retOrderItem", retOrderItem);
-		Order order = this.orderService.getOrderById(orderId);
+		OrderCondition orderCondition = new OrderCondition();
+		orderCondition.setOrderId(orderId);
+		Page<Order> pageOrder=new Page<Order>();
+		pageOrder.setPageSize(1);
+		pageOrder = this.orderService.getOrdersByOrderConditon(orderCondition, pageOrder);
+		Order order =  pageOrder.getResult().get(0);
 		if(retOrderItem==null){
 			return "redirect:http://www.juyouli.com";
 		}
-		List<OrderItem> orderItems= this.orderService.getOrderItemsByOrderId(orderId.intValue());
+		List<OrderItem> orderItems= order.getOrderItems();
 		Long skuId = retOrderItem.getSkuId();
 		Sku sku = this.productService.getSkuById(skuId.intValue());
 		map.addAttribute("sku", sku);
