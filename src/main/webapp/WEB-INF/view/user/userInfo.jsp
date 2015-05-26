@@ -190,8 +190,8 @@
 				<div class="breadnav">
 					<span class="index"><a href="http://www.juyouli.com">首页</a></span>
 					<ul class="nav">
-						<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的AFD</a></li>
-						<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">个人中心</a></li>
+						<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的巨友利</a></li>
+						<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">个人资料</a></li>
 					</ul>
 				</div>
 				<!-- breadnav end -->

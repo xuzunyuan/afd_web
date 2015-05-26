@@ -312,13 +312,13 @@
 								<p class="text">确认订单</p>
 							</li>
 							<li class="">
-								<i class="num">2</i>
+								<i class="num">3</i>
 								<span class="strip"></span>
 								<span class="strip-over"></span>
 								<p class="text">在线支付</p>
 							</li>
 							<li class="last">
-								<i class="num">3</i>
+								<i class="num">4</i>
 								<span class="strip"></span>
 								<span class="strip-over"></span>
 								<p class="text">完成</p>

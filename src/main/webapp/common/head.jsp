@@ -115,22 +115,21 @@
 					<dt class="hd"><a href="${ctx}/user/orders.action">我的订单</a></dt>
 				</dl>
 				<dl class="myCenter">
-					<dt class="hd"><a href="${ctx}/user/userInfo.action">我的AFD<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
+					<dt class="hd"><a href="${ctx}/user/userInfo.action">我的巨友利<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
 				  	<dd class="bd">
 				  		<ul>
 				  		  <li><a href="${ctx}/user/orders.action">已买商品</a></li>
-				  		  <li><a href="#">我的足迹</a></li>
 				  		  <li><a href="${ctx}/cart/cart.action">我的购物车</a></li>
 				  		</ul>
 				  	</dd>
 				</dl>
 				<dl class="noSubmenu">
-			  		<dt class="hd"><a href="#">我是商家</a></dt>
+			  		<dt class="hd"><a href="http://seller.juyouli.com">我是商家</a></dt>
 			 		
 				</dl>
 			</div>
 			<div class="signin">
-				<span id="name">欢迎来到AFD！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:login();">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
+				<span id="name">欢迎来到巨友利！</span><span id="unLogin" class="hide">请<a name="logon" href="javascript:login();">登录</a><em>/</em><a href="${ctx}/register.action">免费注册</a></span><span id="login" ><a id="logout" href="javascript:;" class="quit">[退出]</a></span>
 			</div>
 		</div>
 	</div>
@@ -148,6 +147,9 @@
 					<a href="${ctx}/cart/cart.action">我的购物车<span class="arrow bottom-hollow"><b></b><i></i></span></a>
 				</div>
 				<div class="bd">
+					<div class='shoppingCart-empty show'>
+						<p>快去挑选喜欢的商品吧！</p>
+					</div>
 				</div>
 			</div>
 			<div id="safeguard"><img src="http://img.web.juyouli.com/safeguard.jpg"/></div>

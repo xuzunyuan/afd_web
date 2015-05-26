@@ -90,7 +90,7 @@ public class BaseController {
         try{
         if(this.redis.opsForValue().size("bs"+s)==0){
         	list = this.brandShowService.getValidBrandShows(record);
-        	this.redis.opsForValue().set("bs"+s, (Serializable)list,3600*24, TimeUnit.SECONDS);
+        	this.redis.opsForValue().set("bs"+s, (Serializable)list,3600*2, TimeUnit.SECONDS);
         }else{
         	list = (List<BrandShow>)this.redis.opsForValue().get("bs"+s);
         } 
@@ -100,13 +100,19 @@ public class BaseController {
         
         
 		if(list!=null&&list.size()>0){
+			List<BrandShow> list_del= new ArrayList<BrandShow>();
+			Date now_time = new Date();
 			for(BrandShow item:list){
 				Integer bsid = item.getBrandShowId();
+				Date b_date = item.getEndDate();
+				if(null==b_date||b_date.before(now_time)){					
+					list_del.add(item);
+				}
 				if(item.getBrandId()!=null){
 					Integer bradndId = item.getBrandId();
 					Brand brand = this.brandService.getByBrandId(new Long(bradndId));//todo
 					if(brand!=null){
-						item.setHomeBannerImg(brand.getLogoUrl());
+						item.setShowBannerImg(brand.getLogoUrl());
 					}
 				}				
 				BigDecimal lowestPrice = this.brandShowService.getLowestPrice(bsid);
@@ -116,6 +122,7 @@ public class BaseController {
 					item.setLowestPrice(new BigDecimal("0.00"));
 				}
 			}
+			list.removeAll(list_del);
 		}
 		model.addAttribute("showlist", list);
     	 return "brandshow/index";
@@ -135,7 +142,7 @@ public class BaseController {
 		        if(this.redis.opsForValue().size("bsd"+bsid+"p"+bsid)==0){
 		        	map.put("bsid", bsid);
 		    		ret = this.brandShowService.getBrandShowDetailByPage(map, page);
-		    		this.redis.opsForValue().set("bsd"+bsid+"p"+bsid, (Serializable)ret,3600*24, TimeUnit.SECONDS);
+		    		this.redis.opsForValue().set("bsd"+bsid+"p"+bsid, (Serializable)ret,3600*2, TimeUnit.SECONDS);
 		        }else{
 		        	ret = (Page<BrandShowDetail>)this.redis.opsForValue().get("bsd"+bsid+"p"+bsid);
 		        } 
@@ -197,11 +204,12 @@ public class BaseController {
 	    List<Sku> skus = new ArrayList<Sku>();
 	    Map<String, SkuSpec> prductSpecs=new TreeMap<String, SkuSpec>();
 	    Map<String, Sku> skuMapJson = new TreeMap<String,Sku>();
-	    List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	    List<BrandShowDetail> bsds;
+		//List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	    try{
 	        if(this.redis.opsForValue().size("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId)==0){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
-	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*24, TimeUnit.SECONDS);
+	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*2, TimeUnit.SECONDS);
 	        }else{
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	        } 
@@ -225,11 +233,17 @@ public class BaseController {
 	        	}
 	        	
 	        }
+			sku_temp.setSalePrice(bsd_temp.getShowPrice());
+			sku_temp.setMarketPrice(bsd_temp.getOrgPrice());
 			String SkuSpecIds = sku_temp.getSkuSpecId();
 			String skuSpecNames=sku_temp.getSkuSpecName();
 			this.getSpecMap(skuSpecNames,SkuSpecIds,prductSpecs);			
 			skuMapJson.put(sku_temp.getSkuSpecId(), sku_temp);
 			skus.add(sku_temp);
+			if(sku.getSkuId()==sku_temp.getSkuId()){
+				model.addAttribute("sku", sku_temp);
+				model.addAttribute("skujson",JSON.toJSONString(sku_temp));
+			}
 	    }
 	    if(skus==null||skus.size()==0){
 			return "redirect:/index.jsp";

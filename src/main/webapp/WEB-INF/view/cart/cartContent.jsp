@@ -45,7 +45,7 @@
 					<dt><img src="${imgDomain }/person.png" alt="" /></dt>
 					<dd>
 						<h3>购物车很空很伤心<br />主人，快点填充我空虚的内心吧...</h3>
-						<p><a href="${ctx }">去首页逛逛 <em>&gt;</em></a></p>
+						<p><a href="http://www.juyouli.com">去首页逛逛 <em>&gt;</em></a></p>
 					</dd>
 				</dl>
 			</div>

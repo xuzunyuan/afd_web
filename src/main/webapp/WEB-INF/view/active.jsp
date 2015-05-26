@@ -6,6 +6,7 @@
 	<title>活动页</title>
 	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/allstyle.css"/>
 	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/active.css"/>
+	<link rel="stylesheet" type="text/css" href="${cssDomain}/css/show.css"/>
 	<script type="text/javascript">
 	
 	</script>
@@ -19,12 +20,12 @@
 		</ul>
 	</div>
 	<!-- banner -->
-	<div id="mainBanner">
+	<div id="mainBanner" style="text-align:center;"> 
 		<div class="wrap">
-									<c:if test ="${!empty brandShow.homeBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?rid=${brandShow.homeBannerImg}"/>
+									<c:if test ="${!empty brandShow.showBannerImg}">									
+									<img src="${my:random(imgGetUrl)}?rid=${brandShow.showBannerImg}"/>
 									</c:if>
-									<c:if test ="${empty brandShow.homeBannerImg}">
+									<c:if test ="${empty brandShow.showBannerImg}">
 									<img src="${imgDomain}/temp/active.jpg"/>
 									</c:if>			
 		</div>
@@ -73,7 +74,7 @@ $(function(){
 		   
 });
 </script>
-	<div id="container">
+	<div id="container" 	<c:if test ="${!empty brandShow.bgColor}">style="background-color:#${brandShow.bgColor}"</c:if>>
 		<div class="wrap active">
 			<div class="hd">
 				<div class="hd-top">
@@ -91,7 +92,7 @@ $(function(){
                     <span id="mini">27</span>分
                     <span id="sec">31</span>秒</p>
 <script type="text/javascript">
-    var timestr="${show.endDate}";
+    var timestr="${brandShow.endDate}";
     var time=Date.parse(timestr.replace(/-/g,"/"));
     var timehtml={
         sec:$("#sec")[0],

@@ -21,8 +21,8 @@
 				<div class="breadnav">
 					<span class="index"><a href="">首页</a></span>
 					<ul class="nav">
-						<li><span>&gt;</span><a href="">我的AFD</a></li>
-						<li><span>&gt;</span><a href="">个人中心</a></li>
+						<li><span>&gt;</span><a href="">我的巨友利</a></li>
+						<li><span>&gt;</span><a href="">安全设置</a></li>
 					</ul>
 				</div>
 				<!-- breadnav end -->

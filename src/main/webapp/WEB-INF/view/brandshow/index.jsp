@@ -1,12 +1,13 @@
 ﻿<%@include file="/common/common.jsp" %>
 <c:if test="${!empty showlist}">
  <c:forEach items="${showlist}" var="show" varStatus="status">
+ <a href="${ctx}/brandshow.action?bsid=${show.brandShowId}">
  <div class="mod-goodsShow">
-							<a href="${ctx}/brandshow.action?bsid=${show.brandShowId}">
+							
 								<div class="g-info">
 			
-									<c:if test ="${!empty show.homeBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?rid=${show.homeBannerImg}" alt="" />
+									<c:if test ="${!empty show.showBannerImg}">									
+									<img onerror="this.src='${imgDomain}/temp/img7.jpg'" src="${my:random(imgGetUrl)}?rid=${show.showBannerImg}&op=s0_w140_h50" alt="" />
 									</c:if>
 									<c:if test ="${empty show.homeBannerImg}">
 									<img src="${imgDomain}/temp/img7.jpg" alt="" />
@@ -22,15 +23,16 @@
                                     <span id="sec${status.index + 1}">31</span>秒</p>
 								</div>
 								<div class="g-img">
-								<c:if test ="${!empty show.showBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?rid=${show.showBannerImg}" alt="" />
+								<c:if test ="${!empty show.homeBannerImg}">									
+									<img onerror="this.src='${imgDomain}/temp/img2.jpg'" src="${my:random(imgGetUrl)}?rid=${show.homeBannerImg}&op=s0_w468_h240" alt="" />
 									</c:if>
-									<c:if test ="${empty show.showBannerImg}">
+									<c:if test ="${empty show.homeBannerImg}">
 									<img src="${imgDomain}/temp/img2.jpg" alt="" />
 									</c:if>
 								</div>
-							</a>
+							
  </div>
+ </a>
  </c:forEach>
  <script type="text/javascript">
   $(".g-time").each(function(){

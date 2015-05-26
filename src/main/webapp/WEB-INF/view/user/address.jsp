@@ -242,7 +242,7 @@
 					}
 				}
 				
-				if(geoFlg&&addrFlg&&zipFlg&&receiverFlg&&mobileFlg&&telFlg){
+				if(geoFlg&&addrFlg&&zipFlg&&receiverFlg&&(mobileFlg||telFlg)){
 					$("#form").submit();
 				}
 				
@@ -389,7 +389,7 @@
 				<div class="breadnav">
 					<span class="index"><a href="http://www.juyouli.com">首页</a></span>
 					<ul class="nav">
-						<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的AFD</a></li>
+						<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的巨友利</a></li>
 						<li><span>&gt;</span><a href="${ctx}/user/userAddress.action">收货地址</a></li>
 					</ul>
 				</div>

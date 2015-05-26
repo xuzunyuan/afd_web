@@ -86,7 +86,7 @@
 		<div id="header">
 			<div class="wrap">
 				<div id="logo">
-					<div class="logo"><a href="#" title="logo"><img src="${imgDomain}/logo.png" alt="logo"></a></div>
+					<div class="logo"><a href="http://www.juyouli.com" title="logo"><img src="${imgDomain}/logo.png" alt="logo"></a></div>
 					<div class="slogan"><img src="${imgDomain}/slogan.png"/></div>
 				</div>
 				<div id="safeguard"><img src="${imgDomain}/safeguard.jpg"/></div>

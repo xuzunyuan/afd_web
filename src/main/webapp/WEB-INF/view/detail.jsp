@@ -25,13 +25,13 @@
 			<div class="wrap">
 				<div class="headSyn">
 					<div class="countDown">
-						<p>距特卖介绍还剩：<img src="${imgDomain}/clok.png" alt="">
+						<p>距特卖结束还剩：<img src="${imgDomain}/clok.png" alt="">
 						<span id="day">29</span>天
                         <span id="hour">21</span>时
                         <span id="mini">27</span>分
                         <span id="sec">31</span>秒</p>
 <script type="text/javascript">
-    var timestr="${show.endDate}";
+    var timestr="${brandshow.endDate}";
     var time=Date.parse(timestr.replace(/-/g,"/"));
     var timehtml={
         sec:$("#sec")[0],
@@ -86,9 +86,9 @@
 						<!-- g-items -->
 						<div class="g-items active">
 							<div class="prices">
-								<dl class="g-item barginPrice"><dt>促销价</dt><dd><span>¥<em><fmt:formatNumber value="${bsdetail.showPrice}" pattern="0.00" /></em></span></dd></dl>
+								<dl class="g-item barginPrice"><dt>促销价</dt><dd><span>¥<em id="bdprice"><fmt:formatNumber value="${bsdetail.showPrice}" pattern="0.00" /></em></span></dd></dl>
 							</div>
-								<dl class="g-item"><dt>市场价</dt><dd><span><del>¥<fmt:formatNumber value="${product.marketPrice}" pattern="0.00" /></del></span></dd></dl>
+								<dl class="g-item"><dt>市场价</dt><dd><span><del>¥<span id="bddelprice"><fmt:formatNumber value="${bsdetail.orgPrice}" pattern="0.00" /></span></del></span></dd></dl>
 							<dl class="g-item">
 								<dt>快递费</dt>
 								<dd><div class="g-tag">包邮</div>
@@ -117,7 +117,7 @@
 							<dl class="g-item">
 								<dt>数量</dt>
 								<dd>
-									<div class="mod-modified">
+									<div class="mod-modified" style="width:101px">
 										<div id="minusid" onclick="changenums(-1)" class="minus disabled">-</div>
 										<input type="text" id="numsid" readonly="readonly" class="txt sm" value="1">
 										<div id="plusid" onclick="changenums(+1)" class="plus">+</div>
@@ -189,6 +189,8 @@
 			selecSku=skuList[get_sku()];
 			load_imgs();
 			initnums();
+			$("#bdprice").html(selecSku.salePrice.toFixed(2));//update price
+			$("#bddelprice").html(selecSku.marketPrice.toFixed(2));//update delprice
 		};
 	};
 	function check_spec_finish(){
@@ -204,7 +206,7 @@
 	};
 	
 	function initnums(){
-		$("#stack").val(selecSku.stockBalance);
+		$("#stack").val(selecSku.stockBalance);		
 		$("#numsid").val(1);
 		$("#plusid").addClass("disabled");
 		var stock_str=$("#stack").val();

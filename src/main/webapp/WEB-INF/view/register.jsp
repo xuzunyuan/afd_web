@@ -287,7 +287,7 @@
 		<div id="header">
 			<div class="wrap">
 				<div id="logo">
-					<div class="logo"><a href="#" title="logo"><img src="${imgDomain}/logo.png" alt="logo"></a></div>
+					<div class="logo"><a href="http://www.juyouli.com" title="logo"><img src="${imgDomain}/logo.png" alt="logo"></a></div>
 					<div class="slogan"><img src="${imgDomain}/slogan.png"/></div>
 				</div>
 				<div id="safeguard"><img src="${imgDomain}/safeguard.jpg"/></div>
@@ -297,7 +297,7 @@
 		<!-- container -->
 		<div id="container">
 			<div class="wrap wrap-register">
-				<div class="signin-hd">注册成为AFD买家</div>
+				<div class="signin-hd">注册成为巨友利买家</div>
 				<div class="signinForm clearfix">
 					 <form class="form" id="form" action="${ctx}/formRegister.action" method="post">
 						<dl class="form-item item-user">
@@ -347,7 +347,7 @@
 							<dt class="item-label"></dt>
 							<dd class="item-cont">
 								<input id="register" type="button" value="同意协议并注册"  class="btn btn-primary regBtn">
-								<p><a href="#">《afd用户注册协议》</a></p>
+								<p><a href="#">《巨友利用户注册协议》</a></p>
 							</dd>
 						</dl>
 					</form>
