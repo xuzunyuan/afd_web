@@ -15,15 +15,25 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
             <pattern>%-5level %logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
-
+    <appender name="tradeLog" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+			<fileNamePattern>/tmp/log/yiwang/shopping/tradeLog.%d{yyyy-MM-dd}.log</fileNamePattern>   
+			<maxHistory>7</maxHistory>    
+		</rollingPolicy>   
+		<encoder>   
+			<pattern>%-5level %logger{0} - %d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>   
+		</encoder>   
+	</appender>
 	<!--<logger name="org.hibernate" level="debug"/> -->
    <!-- Uncomment and add your logger here:
     <logger name="org.springframework.samples.service.service" level="debug"/> -->
     <logger name="com.alibaba.dubbo" level="error"/>
     <logger name="org.springframework" level="error"/>
     <logger name="org.apache.zookeeper" level="error"/>
-        
-    <root level="ERROR">
-        <appender-ref ref="console"/>
+    <logger name="com.afd.web.controller.AliPayController" additivity="false" level="error" >
+    	<appender-ref ref="tradeLog"/> 
+    </logger>       
+    <root level="error">
+        <appender-ref ref="tradeLog"/>
     </root>
 </configuration>
