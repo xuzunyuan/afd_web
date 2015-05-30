@@ -99,7 +99,7 @@
 											<c:if test="${returnOrder.status== '1'}">
 											<p class="errTxt">您可以直接联系卖家协商退货事宜，节省退货时间，推进退货进程。</p>
 											<div class="btnGro">
-												<a href="${ctx}/retOrder/cancelRetOrder1.action" class="btn btn-primary">取消申请</a>
+												<a href="${ctx}/retOrder/cancelRetOrder1.action?myRetId=${returnOrder.retOrderId}" class="btn btn-primary">取消申请</a>
 											</div>
 											</c:if>
 										</div>
