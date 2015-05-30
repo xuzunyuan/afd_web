@@ -240,7 +240,9 @@ public class BaseController {
 			this.getSpecMap(skuSpecNames,SkuSpecIds,prductSpecs);			
 			skuMapJson.put(sku_temp.getSkuSpecId(), sku_temp);
 			skus.add(sku_temp);
-			if(sku.getSkuId()==sku_temp.getSkuId()){
+			Integer sku_cur_id = sku.getSkuId();
+			Integer sku_temp_id = sku_temp.getSkuId();
+			if(sku_cur_id.compareTo(sku_temp_id)==0){
 				model.addAttribute("sku", sku_temp);
 				model.addAttribute("skujson",JSON.toJSONString(sku_temp));
 			}
