@@ -107,16 +107,12 @@ public class RetOrderController {
 	@RequestMapping("/myRetDetail")
 	public String myRetDetail(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		Page<ReturnOrder> page=new Page<ReturnOrder>();
-		page.setPageSize(1);
-		Map<String, String> cond =new HashMap<>();
+		page.setPageSize(1);		
 		 ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
 		if(returnOrder==null){
 			return "redirect:http://www.juyouli.com";
 		}
-		String rcode = returnOrder.getRetOrderCode();
-		cond.put("retOrderCode",rcode);
-		page = this.retOrderService.getRetOrdersByPage(cond ,page);
-		returnOrder = page.getResult().get(0);
+		returnOrder = this.retOrderService.getRetOrderInfoByRetOrderId(myRetId);
 		if(returnOrder==null){
 			return "redirect:http://www.juyouli.com";
 		}
