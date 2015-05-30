@@ -181,7 +181,7 @@ public class RetOrderController {
 		return "retOrder/myRetDetail";
 	}
 	
-	@RequestMapping("/cancelRetOrder")
+	@RequestMapping("/cancelRetOrder1")
 	public String cancelRetOrder(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
 		if(returnOrder==null||!returnOrder.getStatus().equals("1")){

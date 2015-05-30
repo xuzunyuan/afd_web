@@ -131,7 +131,7 @@ public class BaseController {
 	@RequestMapping(value = "/bsdetails")
 	public String showDetail(@RequestParam(value="pageno", required=false, defaultValue="1") int pageNo,Long bsid,HttpServletRequest request,Model model, HttpServletResponse response){
 		if(bsid==null){			
-			return "redirect:/index.jsp";
+			return "";
 		}
 		Page<BrandShowDetail> page=new Page<BrandShowDetail>();
 		Page<BrandShowDetail> ret=new Page<BrandShowDetail>();

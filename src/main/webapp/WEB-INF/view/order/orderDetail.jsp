@@ -114,7 +114,7 @@
 						<div class="breadnav">
 							<span class="index"><a href="">首页</a></span>
 							<ul class="nav">
-								<li><span>&gt;</span><a href="">我的巨友利</a></li>
+								<li><span>&gt;</span><a href="${ctx}/user/userCenter.action">我的巨友利</a></li>
 								<li><span>&gt;</span><a href="">我的订单</a></li>
 							</ul>
 						</div>

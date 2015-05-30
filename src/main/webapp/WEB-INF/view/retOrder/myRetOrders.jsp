@@ -103,10 +103,11 @@
 																<p>
 																	<strong>状态：<c:out value="${retOrder.strStatus}" /></strong>
 																</p>
-																<p>
+																<p> <c:set value="${retOrder.retOrderItems[0].retFee}" var="p" />
+																    <c:set value="${retOrder.retOrderItems[0].returnNumber}" var="n" />
 																	退款金额：<span class="errTxt"><fmt:formatNumber
 																			pattern="0.00"
-																			value="${retOrder.retOrderItems[0].retFee *　retOrder.retOrderItems[0].returnNumber}" />元</span>
+																			value="${n*p}" />元</span>
 																</p>
 																<c:if test="${retOrder.status == '1'}">
 																	<p>

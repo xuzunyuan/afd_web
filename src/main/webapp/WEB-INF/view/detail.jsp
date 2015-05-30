@@ -137,6 +137,15 @@
 				<!-- goodsRec -->
 				<div class="goodRec">
 					<!-- goodsDetails -->
+					<div id="buytab" class="hd rec-hd"><!--当让其固定是 加class名“fixed” -->
+							<ul>
+								<a href="#pdanchor"><li class="det">商品详情</li></a>
+							</ul>
+							<div class="btn-hd">
+								<a class="btn btn-assist btn-addCart" href="javascript:void(0);" onclick="addtocart()"><i class="icon i-cartSM"></i>加入购物车</a>
+							</div>						
+						</div>
+				   <a name="pdanchor"></a>
 					<div class="goodsDetails">
 					${product.detail}
 					</div>
@@ -407,6 +416,25 @@
                     alwaysOn:false
                 });
             });
+            
+            
+            function totalFloat() {
+        		
+        			var totalTop = $("div.goodRec").offset().top;
+        			var scrollTop = $(document).scrollTop();
+        			var screenHeight = $(window).height();
+        			if ((totalTop+ 38 > scrollTop)) {
+        				$("#buytab").removeClass("fixed");
+        			} else {
+        				$("#buytab").addClass("fixed");
+        			}
+        			return totalTop + 56;        		
+        		return 0;
+        	}
+            $(function() {
+            	totalTop = totalFloat();
+        		intervalId = setInterval("totalFloat()",1000);
+            	}); 
         </script>
 <div id="popupdiv" class="popup popup-info pop-order pop-success" style="display:none">
 			<div class="hd">
