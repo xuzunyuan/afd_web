@@ -131,7 +131,7 @@ public class BaseController {
 	@RequestMapping(value = "/bsdetails")
 	public String showDetail(@RequestParam(value="pageno", required=false, defaultValue="1") int pageNo,Long bsid,HttpServletRequest request,Model model, HttpServletResponse response){
 		if(bsid==null){			
-			return "redirect:/index.jsp";
+			return "";
 		}
 		Page<BrandShowDetail> page=new Page<BrandShowDetail>();
 		Page<BrandShowDetail> ret=new Page<BrandShowDetail>();
@@ -204,11 +204,12 @@ public class BaseController {
 	    List<Sku> skus = new ArrayList<Sku>();
 	    Map<String, SkuSpec> prductSpecs=new TreeMap<String, SkuSpec>();
 	    Map<String, Sku> skuMapJson = new TreeMap<String,Sku>();
-	    List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	    List<BrandShowDetail> bsds;
+		//List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	    try{
 	        if(this.redis.opsForValue().size("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId)==0){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
-	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*24, TimeUnit.SECONDS);
+	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*2, TimeUnit.SECONDS);
 	        }else{
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	        } 
@@ -239,6 +240,12 @@ public class BaseController {
 			this.getSpecMap(skuSpecNames,SkuSpecIds,prductSpecs);			
 			skuMapJson.put(sku_temp.getSkuSpecId(), sku_temp);
 			skus.add(sku_temp);
+			Integer sku_cur_id = sku.getSkuId();
+			Integer sku_temp_id = sku_temp.getSkuId();
+			if(sku_cur_id.compareTo(sku_temp_id)==0){
+				model.addAttribute("sku", sku_temp);
+				model.addAttribute("skujson",JSON.toJSONString(sku_temp));
+			}
 	    }
 	    if(skus==null||skus.size()==0){
 			return "redirect:/index.jsp";

@@ -115,7 +115,7 @@
 					<dt class="hd"><a href="${ctx}/user/orders.action">我的订单</a></dt>
 				</dl>
 				<dl class="myCenter">
-					<dt class="hd"><a href="${ctx}/user/userInfo.action">我的巨友利<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
+					<dt class="hd"><a href="${ctx}/user/userCenter.action">我的巨友利<span class="arrow bottom-hollow xs"><b></b><i></i></span></a></dt>
 				  	<dd class="bd">
 				  		<ul>
 				  		  <li><a href="${ctx}/user/orders.action">已买商品</a></li>
@@ -124,7 +124,7 @@
 				  	</dd>
 				</dl>
 				<dl class="noSubmenu">
-			  		<dt class="hd"><a href="#">我是商家</a></dt>
+			  		<dt class="hd"><a href="http://seller.juyouli.com">我是商家</a></dt>
 			 		
 				</dl>
 			</div>

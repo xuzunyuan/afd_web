@@ -139,7 +139,7 @@
 						<div class="breadnav">
 							<span class="index"><a href="http://www.juyouli.com">首页</a></span>
 							<ul class="nav">
-								<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的巨友利</a></li>
+								<li><span>&gt;</span><a href="${ctx}/user/userCenter.action">我的巨友利</a></li>
 								<li><span>&gt;</span><a href="${ctx}/retOrder/retOrderApply.action">退货申请</a></li>
 							</ul>
 						</div>

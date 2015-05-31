@@ -78,85 +78,109 @@
 									</tbody>
 								</table>
 							</div>
-							<div class="myorder-bd">
-								<c:forEach items="${retOrders}" var="retOrder">
-									<div class="salereturnList">
+							<c:choose>
+								<c:when test="${!empty(retOrders)}">
+									<div class="myorder-bd">
+										<c:forEach items="${retOrders}" var="retOrder">
+											<div class="salereturnList">
+												<table>
+													<colgroup>
+														<col width="200">
+														<col width="440">
+														<col width="200">
+													</colgroup>
+													<thead>
+														<tr>
+															<th colspan="3"><span>退货单编号：${retOrder.retOrderId}</span>
+																<span>申请时间：<fmt:formatDate
+																		value="${retOrder.createDate}"
+																		pattern="yyyy-MM-dd HH:mm:ss" /></span></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>
+																<p>
+																	<strong>状态：<c:out value="${retOrder.strStatus}" /></strong>
+																</p>
+																<p> <c:set value="${retOrder.retOrderItems[0].retFee}" var="p" />
+																    <c:set value="${retOrder.retOrderItems[0].returnNumber}" var="n" />
+																	退款金额：<span class="errTxt"><fmt:formatNumber
+																			pattern="0.00"
+																			value="${n*p}" />元</span>
+																</p>
+																<c:if test="${retOrder.status == '1'}">
+																	<p>
+																		<input retOrderId="${retOrder.retOrderId}" name="cancel" type="button" value="取消申请" class="btn btn-primary" />
+																	</p>
+																</c:if>
+																<p>
+																	<a target="_blank" href="${ctx}/retOrder/myRetDetail.action?myRetId=${retOrder.retOrderId}">查看详情</a>
+																</p>
+															</td>
+															<td class="salemeg">
+																<p class="ordernum">
+																	订单编号：<a href="#">${retOrder.orderId}</a>
+																</p> 
+																<c:forEach items="${retOrder.retOrderItems}" var="retOrderItem">
+																	<div>
+																		<dl class="mod-orderGoods">
+																			<dt>
+																				<a href="javascript:;" class="thumbnail">
+																					<img src="${imgUrl}?rid=${retOrderItem.sku.skuImgUrl}&op=s1_w50_h50_e1-c3_w50_h50" alt="">
+																				</a>
+																			</dt>
+																			<dd>
+																				<p class="title">
+																					<a href="javascript:;"><c:out value="${retOrderItem.sku.product.title}" /></a>
+																				</p>
+																			</dd>
+																		</dl>
+																		<span>${retOrderItem.returnNumber}</span> <span><fmt:formatNumber pattern="￥0.00" value="${retOrderItem.retFee}" /></span>
+																	</div>
+																</c:forEach>
+															</td>
+															<td>
+																<ul>
+																	<li><p>卖家姓名：<c:out value="${retOrder.seller.bizManName}" /></p></li>
+																	<li><p>联系电话：<c:out value="${retOrder.seller.tel}" /></p></li>
+																	<li><p>QQ号码：<c:out value="${retOrder.seller.bizManQq}" /></p></li>
+																</ul>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</c:forEach>
+									</div>
+									<div class="pagingGroup">
+										<!-- paging -->
+										<form id="form" action="${ctx}/retOrder/myRetOrders.action" method="post">
+										<pg:page name="retOrder" page="${page}" formId="form"></pg:page>
+										</form>
+										<!-- paging end -->
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="orderListnull">
 										<table>
 											<colgroup>
-												<col width="200">
-												<col width="440">
-												<col width="200">
+												<col width="300">
+												<col width="110">
+												<col width="110">
+												<col width="110">
+												<col width="90">
+												<col width="120">
 											</colgroup>
-											<thead>
-												<tr>
-													<th colspan="3"><span>退货单编号：${retOrder.retOrderId}</span>
-														<span>申请时间：<fmt:formatDate
-																value="${retOrder.createDate}"
-																pattern="yyyy-MM-dd HH:mm:ss" /></span></th>
-												</tr>
-											</thead>
 											<tbody>
 												<tr>
-													<td>
-														<p>
-															<strong>状态：<c:out value="${retOrder.strStatus}" /></strong>
-														</p>
-														<p>
-															退款金额：<span class="errTxt"><fmt:formatNumber
-																	pattern="0.00"
-																	value="${retOrder.retOrderItems[0].retFee * retOrder.retOrderItems[0].returnNumber}" />元</span>
-														</p>
-														<c:if test="${retOrder.status == '1'}">
-															<p>
-																<input retOrderId="${retOrder.retOrderId}" name="cancel" type="button" value="取消申请" class="btn btn-primary" />
-															</p>
-														</c:if>
-														<p>
-															<a target="_blank" href="${ctx}/retOrder/myRetDetail.action?myRetId=${retOrder.retOrderId}">查看详情</a>
-														</p>
-													</td>
-													<td class="salemeg">
-														<p class="ordernum">
-															订单编号：<a href="#">${retOrder.orderId}</a>
-														</p> 
-														<c:forEach items="${retOrder.retOrderItems}" var="retOrderItem">
-															<div>
-																<dl class="mod-orderGoods">
-																	<dt>
-																		<a href="javascript:;" class="thumbnail">
-																			<img src="${imgUrl}?rid=${retOrderItem.sku.skuImgUrl}&op=s1_w50_h50_e1-c3_w50_h50" alt="">
-																		</a>
-																	</dt>
-																	<dd>
-																		<p class="title">
-																			<a href="javascript:;"><c:out value="${retOrderItem.sku.product.title}" /></a>
-																		</p>
-																	</dd>
-																</dl>
-																<span>${retOrderItem.returnNumber}</span> <span><fmt:formatNumber pattern="￥0.00" value="${retOrderItem.retFee}" /></span>
-															</div>
-														</c:forEach>
-													</td>
-													<td>
-														<ul>
-															<li><p>卖家姓名：<c:out value="${retOrder.seller.bizManName}" /></p></li>
-															<li><p>联系电话：<c:out value="${retOrder.seller.tel}" /></p></li>
-															<li><p>QQ号码：<c:out value="${retOrder.seller.bizManQq}" /></p></li>
-														</ul>
-													</td>
+												 	<td colspan="6">您还没有退货单呦~</td>
 												</tr>
 											</tbody>
 										</table>
 									</div>
-								</c:forEach>
-							</div>
-							<div class="pagingGroup">
-								<!-- paging -->
-								<form id="form" action="${ctx}/retOrder/myRetOrders.action" method="post">
-								<pg:page name="retOrder" page="${page}" formId="form"></pg:page>
-								</form>
-								<!-- paging end -->
-							</div>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<!-- main end-->

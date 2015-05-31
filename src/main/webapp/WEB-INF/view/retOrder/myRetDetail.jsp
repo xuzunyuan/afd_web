@@ -22,7 +22,7 @@
 						<div class="breadnav">
 							<span class="index"><a href="http://www.juyouli.com">首页</a></span>
 							<ul class="nav">
-								<li><span>&gt;</span><a href="${ctx}/user/userInfo.action">我的巨友利</a></li>
+								<li><span>&gt;</span><a href="${ctx}/user/userCenter.action">我的巨友利</a></li>
 								<li><span>&gt;</span><a href="${ctx}/retOrder/myRetDetail.action">退货详情</a></li>
 							</ul>
 						</div>
@@ -96,10 +96,10 @@
 													<li>QQ号码：<c:out value="${brandShow.serviceQq}"/></li>
 												</ul>
 											</div>
-											<c:if test="${returnOrder.status=='1'}">
+											<c:if test="${returnOrder.status== '1'}">
 											<p class="errTxt">您可以直接联系卖家协商退货事宜，节省退货时间，推进退货进程。</p>
 											<div class="btnGro">
-												<a href="#" class="btn btn-primary">取消申请</a>
+												<a href="${ctx}/retOrder/cancelRetOrder1.action?myRetId=${returnOrder.retOrderId}" class="btn btn-primary">取消申请</a>
 											</div>
 											</c:if>
 										</div>
@@ -131,6 +131,7 @@
 											<th width="130">单价（元）</th>
 											<th width="116">数量</th>
 											<th width="130">成交价（元）</th>
+											<th width="134">状态</th>
 										</tr>
 									</tbody>
 								</table>
@@ -172,6 +173,14 @@
 											<td><c:out value="${orderItem.number}"/></td>
 											<td>
 												<p class="subtotal">¥<fmt:formatNumber value="${orderItem.transPrice}" pattern="0.00" /></p>
+											</td>
+											<td>
+											<p class="note">
+												<c:if test="${returnOrder.status=='1'}">等待卖家处理 </c:if>
+											                   <c:if test="${returnOrder.status=='2'}">卖家已受理 </c:if>
+											                   <c:if test="${returnOrder.status=='3'}">卖家已确认 </c:if>
+											                   <c:if test="${returnOrder.status=='4'}">卖家已退款 </c:if>
+											</p>                   
 											</td>
 										</tr>
 									</tbody>

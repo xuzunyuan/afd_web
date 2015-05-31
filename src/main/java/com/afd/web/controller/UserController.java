@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,8 @@ import com.afd.model.user.Geo;
 import com.afd.model.user.User;
 import com.afd.model.user.UserAddress;
 import com.afd.model.user.UserExt;
+import com.afd.param.cart.Cart;
+import com.afd.service.order.ICartService;
 import com.afd.service.user.IAddressService;
 import com.afd.service.user.IGeoService;
 import com.afd.service.user.IUserService;
@@ -55,6 +58,8 @@ public class UserController {
 	@Autowired
 	private IGeoService geoService;
 	@Autowired
+	private ICartService cartService;
+	@Autowired
 	private RedisTemplate<String, Object> redis;
 	
 	@RequestMapping("/userInfo")
@@ -65,6 +70,24 @@ public class UserController {
 		String success = request.getParameter("success");
 		map.addAttribute("success", success);
 		return "user/userInfo";
+	}
+	
+	@RequestMapping("/userCenter")
+	public String userCenter(HttpServletRequest request,ModelMap map,@CookieValue(value = "cart", required = false) String cookieCart){
+		String userId = LoginServiceImpl.getUserIdByCookie(request);
+		User user = this.userService.getUserInfoById(Long.parseLong(userId));
+		map.addAttribute("user", user);
+		List<Cart> carts = cartService.showCart(cookieCart);
+		if(carts==null||carts.size()<1){
+			map.addAttribute("hasproduct", 0);
+		}else{
+			int nums=carts.size();
+			carts.subList(0,nums>2?3:nums);
+			map.addAttribute("hasproduct", 1);
+			map.addAttribute("carts", carts);
+		}
+		
+		return "user/userCenter";
 	}
 	
 	@RequestMapping("/saveUserInfo")

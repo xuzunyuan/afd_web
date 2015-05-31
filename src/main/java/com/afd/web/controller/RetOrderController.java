@@ -28,6 +28,7 @@ import com.afd.model.product.Sku;
 import com.afd.model.seller.Seller;
 import com.afd.model.seller.SellerLogin;
 import com.afd.model.seller.SellerRetAddress;
+import com.afd.param.order.OrderCondition;
 import com.afd.service.order.IOrderService;
 import com.afd.service.order.IRetOrderService;
 import com.afd.service.product.IBrandShowService;
@@ -106,10 +107,12 @@ public class RetOrderController {
 	@RequestMapping("/myRetDetail")
 	public String myRetDetail(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		Page<ReturnOrder> page=new Page<ReturnOrder>();
-		page.setPageSize(1);
-		String userId = LoginServiceImpl.getUserIdByCookie(request);
-		page = this.retOrderService.getRetOrdersByUserId(Long.parseLong(userId),page);
-		ReturnOrder returnOrder = page.getResult().get(0);
+		page.setPageSize(1);		
+		 ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
+		if(returnOrder==null){
+			return "redirect:http://www.juyouli.com";
+		}
+		returnOrder = this.retOrderService.getRetOrderInfoByRetOrderId(myRetId);
 		if(returnOrder==null){
 			return "redirect:http://www.juyouli.com";
 		}
@@ -117,11 +120,16 @@ public class RetOrderController {
 		List<ReturnOrderItem> retOrderItems = returnOrder.getRetOrderItems();
 		ReturnOrderItem retOrderItem=retOrderItems.get(0);
 		map.addAttribute("retOrderItem", retOrderItem);
-		Order order = this.orderService.getOrderById(orderId);
+		OrderCondition orderCondition = new OrderCondition();
+		orderCondition.setOrderId(orderId);
+		Page<Order> pageOrder=new Page<Order>();
+		pageOrder.setPageSize(1);
+		pageOrder = this.orderService.getOrdersByOrderConditon(orderCondition, pageOrder);
+		Order order =  pageOrder.getResult().get(0);
 		if(retOrderItem==null){
 			return "redirect:http://www.juyouli.com";
 		}
-		List<OrderItem> orderItems= this.orderService.getOrderItemsByOrderId(orderId.intValue());
+		List<OrderItem> orderItems= order.getOrderItems();
 		Long skuId = retOrderItem.getSkuId();
 		Sku sku = this.productService.getSkuById(skuId.intValue());
 		map.addAttribute("sku", sku);
@@ -169,7 +177,7 @@ public class RetOrderController {
 		return "retOrder/myRetDetail";
 	}
 	
-	@RequestMapping("/cancelRetOrder")
+	@RequestMapping("/cancelRetOrder1")
 	public String cancelRetOrder(@RequestParam Long myRetId,HttpServletRequest request,ModelMap map){
 		ReturnOrder returnOrder = this.retOrderService.getRetOrderByRetOrderId(myRetId);
 		if(returnOrder==null||!returnOrder.getStatus().equals("1")){
