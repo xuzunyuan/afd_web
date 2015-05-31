@@ -932,29 +932,29 @@
 											<dt><label><input type="radio" class="radio" name="payMode" value="20" checked="checked" />支付宝在线付款</label></dt>
 											<dd><span class="ico alipay"><img src="${imgDomain }/pay/alipay.jpg" alt="" /></span>使用支付宝账号在线付款。</dd>
 										</dl>
-										<dl class="pay-item bank">
-											<dt><label><input type="radio" class="radio" name="payType" value="1" />网上银行在线付款</label></dt>
+										<dl class="pay-item bank" style="display:none;">
+											<dt><label><input type="radio" class="radio" name="payType" value="1" disabled="disabled"/>网上银行在线付款</label></dt>
 											<dd>
 												<span class="ico checkedBank"></span>
 												<dl class="mod-banks"><!-- 鼠标移上加class=hover -->
 													<dt><span class="btn btn-def">选择支付银行<i class="arrow bottom-solid sm muted"></i></span></dt>
 													<dd>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="10" /><img src="${imgDomain }/pay/icbc.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="11" /><img src="${imgDomain }/pay/abc.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="12" /><img src="${imgDomain }/pay/boc.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="13" /><img src="${imgDomain }/pay/cbc.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="14" /><img src="${imgDomain }/pay/ctb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="15" /><img src="${imgDomain }/pay/cmb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="16" /><img src="${imgDomain }/pay/ceb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="17" /><img src="${imgDomain }/pay/citic.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="18" /><img src="${imgDomain }/pay/cmbc.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="19" /><img src="${imgDomain }/pay/sdb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1a" /><img src="${imgDomain }/pay/hxb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1b" /><img src="${imgDomain }/pay/cgb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1c" /><img src="${imgDomain }/pay/spdb.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1d" /><img src="${imgDomain }/pay/cib.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1e" /><img src="${imgDomain }/pay/psbc.jpg" alt="" /></label></div>
-														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1f" /><img src="${imgDomain }/pay/bea.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="10" disabled="disabled"/><img src="${imgDomain }/pay/icbc.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="11" disabled="disabled"/><img src="${imgDomain }/pay/abc.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="12" disabled="disabled"/><img src="${imgDomain }/pay/boc.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="13" disabled="disabled"/><img src="${imgDomain }/pay/cbc.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="14" disabled="disabled"/><img src="${imgDomain }/pay/ctb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="15" disabled="disabled"/><img src="${imgDomain }/pay/cmb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="16" disabled="disabled"/><img src="${imgDomain }/pay/ceb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="17" disabled="disabled"/><img src="${imgDomain }/pay/citic.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="18" disabled="disabled"/><img src="${imgDomain }/pay/cmbc.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="19" disabled="disabled"/><img src="${imgDomain }/pay/sdb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1a" disabled="disabled"/><img src="${imgDomain }/pay/hxb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1b" disabled="disabled"/><img src="${imgDomain }/pay/cgb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1c" disabled="disabled"/><img src="${imgDomain }/pay/spdb.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1d" disabled="disabled"/><img src="${imgDomain }/pay/cib.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1e" disabled="disabled"/><img src="${imgDomain }/pay/psbc.jpg" alt="" /></label></div>
+														<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1f" disabled="disabled"/><img src="${imgDomain }/pay/bea.jpg" alt="" /></label></div>
 													</dd>
 												</dl>使用您的网上银行借记卡及部分银行信用卡进行支付。
 											</dd>
