@@ -126,7 +126,7 @@
 									<div class="pay-ebank"><!--选择支付方式后加class  "selected"-->
 										<div class="whichEbank">
 											<p class="selectedMode"><em>支付方式：</em><span class="ico"><img src="" alt="" /></span>
-												<a href="javascript:;" class="hint1">修改适合您的在线支付方式</a></p>
+												<a href="javascript:;" class="hint1" style="display:none">修改适合您的在线支付方式</a></p>
 										</div>
 										<div class="ebankList">
 											<div class="tab">
@@ -142,24 +142,24 @@
 															<div class="bank-item on"><label><input type="radio" class="radio" name="payMode" id="" value="20"><img src="${imgDomain }/pay/alipay1.jpg" alt=""></label></div>
 														</div>
 													</div>
-													<div name="bank" class="tabGroup">
+													<div name="bank" class="tabGroup" style="display:none;">
 														<div class="wrap">
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="10"><img src="${imgDomain }/pay/icbc.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="11"><img src="${imgDomain }/pay/abc.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="12"><img src="${imgDomain }/pay/boc.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="13"><img src="${imgDomain }/pay/cbc.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="14"><img src="${imgDomain }/pay/ctb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="15"><img src="${imgDomain }/pay/cmb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="16"><img src="${imgDomain }/pay/ceb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="17"><img src="${imgDomain }/pay/citic.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="18"><img src="${imgDomain }/pay/cmbc.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="19"><img src="${imgDomain }/pay/sdb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1a"><img src="${imgDomain }/pay/hxb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1b"><img src="${imgDomain }/pay/cgb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1c"><img src="${imgDomain }/pay/spdb.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1d"><img src="${imgDomain }/pay/cib.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1e"><img src="${imgDomain }/pay/psbc.jpg" alt=""></label></div>
-															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1f"><img src="${imgDomain }/pay/bea.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="10" disabled="disabled"><img src="${imgDomain }/pay/icbc.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="11" disabled="disabled"><img src="${imgDomain }/pay/abc.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="12" disabled="disabled"><img src="${imgDomain }/pay/boc.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="13" disabled="disabled"><img src="${imgDomain }/pay/cbc.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="14" disabled="disabled"><img src="${imgDomain }/pay/ctb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="15" disabled="disabled"><img src="${imgDomain }/pay/cmb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="16" disabled="disabled"><img src="${imgDomain }/pay/ceb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="17" disabled="disabled"><img src="${imgDomain }/pay/citic.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="18" disabled="disabled"><img src="${imgDomain }/pay/cmbc.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="19" disabled="disabled"><img src="${imgDomain }/pay/sdb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1a" disabled="disabled"><img src="${imgDomain }/pay/hxb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1b" disabled="disabled"><img src="${imgDomain }/pay/cgb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1c" disabled="disabled"><img src="${imgDomain }/pay/spdb.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1d" disabled="disabled"><img src="${imgDomain }/pay/cib.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1e" disabled="disabled"><img src="${imgDomain }/pay/psbc.jpg" alt=""></label></div>
+															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1f" disabled="disabled"><img src="${imgDomain }/pay/bea.jpg" alt=""></label></div>
 														</div>
 													</div>
 												</div>
