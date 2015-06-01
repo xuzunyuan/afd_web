@@ -215,7 +215,8 @@
 	};
 	
 	function initnums(){
-		$("#stack").val(selecSku.stockBalance);		
+		$("#stack").val(selecSku.stockBalance);	
+		$("#stack").html(selecSku.stockBalance);	
 		$("#numsid").val(1);
 		$("#plusid").addClass("disabled");
 		var stock_str=$("#stack").val();

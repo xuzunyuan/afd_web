@@ -41,6 +41,10 @@ public class PaymentController {
 	@RequestMapping(value = "/payment")
 	public String  payment(HttpServletRequest request, ModelMap modelMap,
 			HttpServletResponse response){
+		boolean isLogin = LoginServiceImpl.isLogin(request, response);
+		if(!isLogin) {
+			return "redirect:http://www.juyouli.com";
+		}
 		String orderid = request.getParameter("orderid");
 		String uid = request.getParameter("uid");
 		String paymentid = request.getParameter("paymentid");

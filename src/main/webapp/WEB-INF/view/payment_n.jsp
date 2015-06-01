@@ -142,7 +142,7 @@
 															<div class="bank-item on"><label><input type="radio" class="radio" name="payMode" id="" value="20"><img src="${imgDomain }/pay/alipay1.jpg" alt=""></label></div>
 														</div>
 													</div>
-													<div name="bank" class="tabGroup" style="display:none;">
+													<!--div name="bank" class="tabGroup" style="display:none;">
 														<div class="wrap">
 															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="10" disabled="disabled"><img src="${imgDomain }/pay/icbc.jpg" alt=""></label></div>
 															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="11" disabled="disabled"><img src="${imgDomain }/pay/abc.jpg" alt=""></label></div>
@@ -161,7 +161,7 @@
 															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1e" disabled="disabled"><img src="${imgDomain }/pay/psbc.jpg" alt=""></label></div>
 															<div class="bank-item"><label><input type="radio" class="radio" name="payMode" id="" value="1f" disabled="disabled"><img src="${imgDomain }/pay/bea.jpg" alt=""></label></div>
 														</div>
-													</div>
+													</div-->
 												</div>
 											</div>
 										</div>
@@ -189,8 +189,7 @@
 		<div class="bd">
 			<h2>请在新开的网银页面完成付款后选择：</h2>
 			<p><i class="icon i-rightSM"></i><b>付款成功</b><span>您可以：<a href="${ctx }/cart/cart.action">返回购物车继续购物</a><a href="${ctx }/user/orders.action" >查看订单</a></span></p>
-			<p><i class="icon i-graveSM"></i><b>付款失败</b><span>建议您：<a href="javascript:;" onclick="$('div.pop-pay').hide();$('div.mask').hide()">重新支付</a>
-				<a href="javascript:;" onclick="$('div.pop-pay').hide();$('div.mask').hide();$('div.pay-ebank').removeClass('selected');">更改支付方式</a></span></p>
+			<p><i class="icon i-graveSM"></i><b>付款失败</b><span>建议您：<a href="javascript:;" onclick="$('div.pop-pay').hide();$('div.mask').hide()">重新支付</a></span></p>
 		</div>
 	</div>
 	<!-- popup end -->
