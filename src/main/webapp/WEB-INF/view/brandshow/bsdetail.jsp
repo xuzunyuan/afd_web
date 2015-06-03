@@ -9,15 +9,16 @@ totalpages=${pagetotal};
 <div class="mod-activegoods">
 						<a href="${ctx}/detail.action?bsdid=${detail.bSDId}" target="_blank">
 						<div class="g-m">
-						    <c:if test ="${!empty detail.prodImg}">									
+						    <c:if test ="${!empty detail.prodImg}">	
+						    <div class="g-img">								
 									<img src="${my:random(imgGetUrl)}?rid=${detail.prodImg}&op=s0_w238_h238"/>
-							</c:if>
-							<c:if test ="${empty detail.prodImg}">									
-									<img src="${imgDomain}/temp/active-good.jpg" alt="">
-							</c:if>
-							<!--  div class="g-img">
-								<img src="${imgDomain}/temp/active-good.jpg" alt="prodImg"-->
 							</div>
+							</c:if>
+							<c:if test ="${empty detail.prodImg}">
+							<div class="g-img">									
+									<img src="${imgDomain}/temp/active-good.jpg" alt="">
+						    </div>
+							</c:if>
 							<div class="g-info">
 								<div class="hd">
 									<span>

@@ -59,9 +59,9 @@
 				<div class="goodsBuy">
 					<div class="article">
 						<div class="g-preview">
-						<div class="clearfix">
-						   <a id="picbig" href="" class="jqzoom" rel="gal1">
-							<img  id="picsmall" src=""   title="triumph"  style="border: 1px solid #a2a0a0;">
+						<div class="clearfix g-img">
+						   <a id="picbig" href="" class="jqzoom" rel="gal1"> 
+							<img  id="picsmall" src="" title="triumph">
 						  </a>
 							<div class="ico"><i></i></div>
 						</div>
@@ -137,17 +137,20 @@
 				<!-- goodsRec -->
 				<div class="goodRec">
 					<!-- goodsDetails -->
+					
+				    <a name="pdanchor"></a>
+					<div class="goodsDetails">
 					<div id="buytab" class="hd rec-hd"><!--当让其固定是 加class名“fixed” -->
 							<ul>
-								<a href="#pdanchor"><li class="det">商品详情</li></a>
+								<a href="#pdanchor"><li id="pdli" class="det on">商品详情</li></a>
 							</ul>
 							<div class="btn-hd">
 								<a class="btn btn-assist btn-addCart" href="javascript:void(0);" onclick="addtocart()"><i class="icon i-cartSM"></i>加入购物车</a>
 							</div>						
-						</div>
-				   <a name="pdanchor"></a>
-					<div class="goodsDetails">
+					</div>
+					<div class="bd">
 					${product.detail}
+					</div>
 					</div>
 					<!-- goodsDetails -->
 					<!-- goodsRecommend -->
@@ -426,8 +429,10 @@
         			var screenHeight = $(window).height();
         			if ((totalTop+ 38 > scrollTop)) {
         				$("#buytab").removeClass("fixed");
+        				$("#pdli").addClass("on");
         			} else {
         				$("#buytab").addClass("fixed");
+        				$("#pdli").removeClass("on");
         			}
         			return totalTop + 56;        		
         		return 0;

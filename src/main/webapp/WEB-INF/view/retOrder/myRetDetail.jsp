@@ -41,11 +41,19 @@
 									<span class="arrow top-hollow xl"><b></b><i></i></span>
 									<div class="wrap" style=" height:;">
 										<div class="bd">
-											<h2>当前退货单状态：<c:if test="${returnOrder.status=='1'}">等待卖家处理 </c:if>
+											<h2>当前退货单状态：<c:if test="${returnOrder.status=='-1'}">驳回</c:if>
+											                   <c:if test="${returnOrder.status=='0'}">已取消</c:if>
+											                   <c:if test="${returnOrder.status=='1'}">等待卖家处理 </c:if>
 											                   <c:if test="${returnOrder.status=='2'}">卖家已受理 </c:if>
 											                   <c:if test="${returnOrder.status=='3'}">卖家已确认 </c:if>
 											                   <c:if test="${returnOrder.status=='4'}">卖家已退款 </c:if>
 											</h2>
+											<c:if test="${returnOrder.status=='0'}">										
+											<p>关闭类型：买家取消订单</p>
+											</c:if>
+											<c:if test="${returnOrder.status=='-1'}">
+											<p>关闭类型：卖家驳回</p>
+											</c:if>
 											<c:if test="${returnOrder.status=='2'}">
 											<div class="selleraccept">
 												<p class="errTxt">请将退货商品自行寄回以下地址：</p>
@@ -176,7 +184,9 @@
 											</td>
 											<td>
 											<p class="note">
-												<c:if test="${returnOrder.status=='1'}">等待卖家处理 </c:if>
+											                   <c:if test="${returnOrder.status=='-1'}">驳回</c:if>
+											                   <c:if test="${returnOrder.status=='0'}">已取消</c:if>
+												               <c:if test="${returnOrder.status=='1'}">等待卖家处理 </c:if>
 											                   <c:if test="${returnOrder.status=='2'}">卖家已受理 </c:if>
 											                   <c:if test="${returnOrder.status=='3'}">卖家已确认 </c:if>
 											                   <c:if test="${returnOrder.status=='4'}">卖家已退款 </c:if>

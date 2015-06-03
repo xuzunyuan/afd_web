@@ -97,10 +97,10 @@
 										<td>
 											<dl class="mod-orderGoods">
 												<dt>
-													<a href="${ctx}/detail.action?bsdid=${cartItem.brandShowDetailId}" class="thumbnail"><img src="${my:random(imgGetUrl)}?rid=${cartItem.prodImgUrl }&op=s0_w52_h52" alt="" /></a>
+													<a href="${ctx}/detail.action?bsdid=${cartItem.brandShowDetailId}" class="thumbnail" target="_blank"><img src="${my:random(imgGetUrl)}?rid=${cartItem.prodImgUrl }&op=s0_w52_h52" alt="" /></a>
 												</dt>
 												<dd>
-													<p class="title"><a href="${ctx}/detail.action?bsdid=${cartItem.brandShowDetailId}"><c:out value="${cartItem.prodName }"/></a></p>
+													<p class="title"><a href="${ctx}/detail.action?bsdid=${cartItem.brandShowDetailId}" target="_blank"><c:out value="${cartItem.prodName }"/></a></p>
 												</dd>
 											</dl>
 										</td>

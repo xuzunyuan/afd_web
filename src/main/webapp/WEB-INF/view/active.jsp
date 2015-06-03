@@ -23,7 +23,7 @@
 	<div id="mainBanner" style="text-align:center;"> 
 		<div class="wrap">
 									<c:if test ="${!empty brandShow.showBannerImg}">									
-									<img src="${my:random(imgGetUrl)}?rid=${brandShow.showBannerImg}"/>
+									<a href="" target="_blank"><img src="${my:random(imgGetUrl)}?rid=${brandShow.showBannerImg}"/></a>
 									</c:if>
 									<c:if test ="${empty brandShow.showBannerImg}">
 									<img src="${imgDomain}/temp/active.jpg"/>
