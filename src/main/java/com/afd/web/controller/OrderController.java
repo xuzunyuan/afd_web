@@ -43,11 +43,8 @@ public class OrderController {
 		String userId = LoginServiceImpl.getUserIdByCookie(request);
 		Long uid = Long.parseLong(userId);
 		Page<Order> allOrders = this.orderService.getOrdersByUserId(uid, page);
-		allOrders.setTotalRecord(allOrders.getResult().size());
 		Page<Order> waitPayOrders = this.orderService.getOrdersByUserIdAndStatus(uid, OrderConstants.ORDER_STATUS_WAITPAYMENT, page);
-		waitPayOrders.setTotalRecord(waitPayOrders.getResult().size());
 		Page<Order> waitDeliveredOrders = this.orderService.getOrdersByUserIdAndStatus(uid, OrderConstants.ORDER_STATUS_WAITDELIVERED, page);
-		waitDeliveredOrders.setTotalRecord(waitDeliveredOrders.getResult().size());
 		modelMap.addAttribute("allCount", allOrders.getTotalRecord());
 		modelMap.addAttribute("waitPayCount", waitPayOrders.getTotalRecord());
 		modelMap.addAttribute("waitDeliveredCount", waitDeliveredOrders.getTotalRecord());
