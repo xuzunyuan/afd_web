@@ -91,6 +91,9 @@
 												<c:when test="${cartItem.statusCode == 0 || cartItem.statusCode == -8 || cartItem.statusCode == -9}">
 													<input name="item" type="checkbox" class="chk" bsDetailId="${cartItem.brandShowDetailId }" ${cartItem.selected ? 'checked' : '' }/>
 												</c:when>
+												<c:when test="${cartItem.statusCode != 0 && cartItem.statusCode != -8 && cartItem.statusCode != -9}">
+													<input readonly="readonly" name="item" type="checkbox" class="chk" bsDetailId="${cartItem.brandShowDetailId }" ${cartItem.selected ? 'checked' : '' }/>
+												</c:when>
 											</c:choose>
 											
 										</td>

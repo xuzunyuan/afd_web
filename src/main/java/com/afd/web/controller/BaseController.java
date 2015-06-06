@@ -115,8 +115,19 @@ public class BaseController {
 					if(brand!=null){
 						item.setShowBannerImg(brand.getLogoUrl());
 					}
-				}				
-				BigDecimal lowestPrice = this.brandShowService.getLowestPrice(bsid);
+				}
+				BigDecimal lowestPrice=new BigDecimal(0.00);
+				 try{
+				        if(this.redis.opsForValue().size("lowestp"+bsid)==0){
+				        	lowestPrice = this.brandShowService.getLowestPrice(bsid);
+				        	this.redis.opsForValue().set("lowestp"+s, (Serializable)lowestPrice,3600*2, TimeUnit.SECONDS);
+				        }else{
+				        	lowestPrice = (BigDecimal) this.redis.opsForValue().get("lowestp"+bsid);
+				        } 
+				        }catch (Exception e){
+				        	 lowestPrice = this.brandShowService.getLowestPrice(bsid);
+						}
+				
 				if(lowestPrice!=null){
 					item.setLowestPrice(lowestPrice);
 				}else{
@@ -140,12 +151,12 @@ public class BaseController {
 		page.setCurrentPageNo(pageNo);
 		Map<String,Object> map=new HashMap<String,Object>();
 		 try{
-		        if(this.redis.opsForValue().size("bsd"+bsid+"p"+bsid)==0){
+		        if(this.redis.opsForValue().size("bsdpage"+bsid+"p"+pageNo)==0){
 		        	map.put("bsid", bsid);
 		    		ret = this.brandShowService.getBrandShowDetailByPage(map, page);
-		    		this.redis.opsForValue().set("bsd"+bsid+"p"+bsid, (Serializable)ret,3600*2, TimeUnit.SECONDS);
+		    		this.redis.opsForValue().set("bsdpage"+bsid+"p"+pageNo, (Serializable)ret,3600*2, TimeUnit.SECONDS);
 		        }else{
-		        	ret = (Page<BrandShowDetail>)this.redis.opsForValue().get("bsd"+bsid+"p"+bsid);
+		        	ret = (Page<BrandShowDetail>)this.redis.opsForValue().get("bsdpage"+bsid+"p"+pageNo);
 		        } 
 		        }catch (Exception e){
 		        	map.put("bsid", bsid);
@@ -208,11 +219,11 @@ public class BaseController {
 	    List<BrandShowDetail> bsds;
 		//List<BrandShowDetail> bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
 	    try{
-	        if(this.redis.opsForValue().size("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId)==0){
+	        if(this.redis.opsForValue().size("bsdprods"+brandshow.getBrandShowId()+"p"+prodId)==0){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
-	    		this.redis.opsForValue().set("bsds_prod_bs"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*2, TimeUnit.SECONDS);
+	    		this.redis.opsForValue().set("bsdprods"+brandshow.getBrandShowId()+"p"+prodId,(Serializable)bsds,3600*2, TimeUnit.SECONDS);
 	        }else{
-	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
+	        	bsds = (List<BrandShowDetail>) this.redis.opsForValue().get("bsdprods"+brandshow.getBrandShowId()+"p"+prodId);
 	        } 
 	        }catch (Exception e){
 	        	bsds = this.brandShowService.getBrandShowDetailsByProdId(brandshow.getBrandShowId(), prodId);
