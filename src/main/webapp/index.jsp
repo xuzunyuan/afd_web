@@ -21,7 +21,7 @@
 	<!-- banner -->
 	<div id="mainBanner">
 		<div class="wrap">
-			<a href="#"><img src="${imgDomain}/temp/banner1.jpg"/></a>
+			<a href="" target="_blank"><img src="${imgDomain}/temp/banner1.jpg"/></a>
 		</div>
 	</div>
 	<!-- banner -->
@@ -48,7 +48,7 @@
 					</div>
 					<div class="bd">
 						<div class="mod-goods g-def">
-							<a href="#">
+							<a href="" target="_blank">
 								<img src="${imgDomain}/temp/img1.jpg" alt="">
 								<div class="g-info">热销单品火速去抢</div>
 								<div class="maskBar"></div>
