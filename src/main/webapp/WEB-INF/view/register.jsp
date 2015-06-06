@@ -86,7 +86,7 @@
 						}else{
 							$("#mobileTip").removeClass("hide");
 							$("#mobileTip").removeClass("errTxt");
-							$("#mobileTip").children("div.hintBox").html('<span>此号码已经注册，请直接 <a href="#">登录</a></span>');
+							$("#mobileTip").children("div.hintBox").html('<span>此号码已经注册，请直接 <a href="${ctx}/login.action">登录</a></span>');
 							$("#mobileOk").addClass("hide");
 							$(this).focus();
 						}
@@ -229,7 +229,7 @@
 							}else if(json.mobileStatus ==3){
 								$("#mobileTip").removeClass("hide");
 								$("#mobileTip").removeClass("errTxt");
-								$("#mobileTip").children("div.hintBox").html('<span>此号码已经注册，请直接 <a href="#">登录</a></span>');
+								$("#mobileTip").children("div.hintBox").html('<span>此号码已经注册，请直接 <a href="${ctx}/login.action">登录</a></span>');
 								$("#mobileOk").addClass("hide");
 							}
 							
@@ -313,7 +313,7 @@
 							<dt class="item-label"><label><em>*</em>手机号：</label></dt>
 							<dd class="item-cont">
 								<input id="mobile" name="mobile" type="text" placeholder="" class="txt xl w-xl" />
-								<div id="mobileTip" class="checkHint hide"><div class="hintBox"><span>此号码已经注册，请直接 <a href="#">登录</a></span></div></div>
+								<div id="mobileTip" class="checkHint hide"><div class="hintBox"><span>此号码已经注册，请直接 <a href="${ctx}/login.action">登录</a></span></div></div>
 								<div id="mobileOk" class="checkHint hide"><div class="hintBox"><span><i class="icon i-ok"></i></span></div></div>
 							</dd>
 						</dl>

@@ -149,7 +149,9 @@
 							</div>						
 					</div>
 					<div class="bd">
+					<div class="details-main">
 					${product.detail}
+					</div>
 					</div>
 					</div>
 					<!-- goodsDetails -->

@@ -83,8 +83,9 @@ public class BaseController {
 	@RequestMapping(value = "/brandshows")
      public String index(HttpServletRequest request,Model model, HttpServletResponse response){
 		BrandShow record=new BrandShow();
-		DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        String s = format1.format(new Date());
+//		DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+//      String s = format1.format(new Date());
+		String s = "online";
         List<BrandShow> list =new ArrayList<BrandShow>();
         
         try{
