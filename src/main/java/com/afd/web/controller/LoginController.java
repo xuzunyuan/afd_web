@@ -115,6 +115,17 @@ public class LoginController {
 		String userName = request.getParameter("userName");
 		String mobile = request.getParameter("mobile");
 		String pwd = request.getParameter("pwd");
+		String code = request.getParameter("code");
+		String repwd = request.getParameter("repwd");
+		
+		Map<String,Integer> mapValid = this.validUserInfo(code, mobile, userName, pwd, repwd);
+		if(mapValid!=null&&mapValid.size()>0){
+			for(Integer status : mapValid.values()){
+				if(status>0){
+					return "register";
+				}
+			}
+		}
 		
 		User user = new User();
 		user.setUserName(userName.toLowerCase());
@@ -170,10 +181,7 @@ public class LoginController {
 		return JSON.toJSONString(map);
 	}
 	
-	@ResponseBody
-	@RequestMapping("/validRegister")
-	public String validRegister(@RequestParam(required=false) String code,@RequestParam(required=false) String mobile,
-			@RequestParam(required=false) String userName,@RequestParam(required=false) String pwd,@RequestParam(required=false) String repwd){
+	private Map<String,Integer> validUserInfo(String code,String mobile,String userName,String pwd,String repwd){
 		Map<String,Integer> map = new HashMap<String, Integer>();
 		
 		//验证用户名
@@ -245,6 +253,14 @@ public class LoginController {
 				map.put("repwdStatus", 0);
 			}
 		}
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/validRegister")
+	public String validRegister(@RequestParam(required=false) String code,@RequestParam(required=false) String mobile,
+			@RequestParam(required=false) String userName,@RequestParam(required=false) String pwd,@RequestParam(required=false) String repwd){
+		Map<String,Integer> map = this.validUserInfo(code, mobile, userName, pwd, repwd);
 		
 		return JSON.toJSONString(map);
 	}
